@@ -9,7 +9,7 @@ public class Connect {
 		DAO<Computer> computerDao = new ComputerDAO(SdzConnection.getInstance());
 		Computer c = computerDao.find(86);
 		List<Computer> lc = computerDao.list();
-		// System.out.print("LCV " + lc.size());
+		System.out.print("LCV " + lc.size());
 		// System.out.println("ELEVE NUM " + c.getId() + " " + c.getName());
 		/*
 		 * try {

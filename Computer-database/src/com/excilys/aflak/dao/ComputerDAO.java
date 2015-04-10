@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.aflak.model.Computer;
@@ -54,7 +55,7 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public List<Computer> list() {
-		List<Computer> listComputer = null;
+		List<Computer> listComputer = new ArrayList<Computer>();
 		Computer computer = new Computer();
 		try {
 
@@ -65,18 +66,23 @@ public class ComputerDAO extends DAO<Computer> {
 			int k = 0;
 
 			while (result.next()) {
-				System.out.print(" k " + k);
+				System.out.print(k + " ");
 				k++;
-				for (int i = 1; i <= resultMeta.getColumnCount(); i++) {
-					if (result.getObject(i) != null) {
-						System.out.print("\t" + result.getObject(i).toString()
-								+ "\t |");
-					} else {
-						System.out.print("\t" + null + "\t |");
-					}
 
-				}
-				System.out.println("");
+				computer = new Computer(result.getInt("id"),
+						result.getString("name"), null, null, null);
+				/*
+				 * for (int i = 1; i <= resultMeta.getColumnCount(); i++) { if
+				 * (result.getObject(i) != null) {
+				 * 
+				 * System.out.print("\t" + result.getObject(i).toString() +
+				 * "\t |"); } else { System.out.print("\t" + null + "\t |"); }
+				 * 
+				 * }
+				 */
+				listComputer.add(computer);
+				System.out.println(computer.getId() + " " + computer.getName());
+				System.out.println("SIZAE " + listComputer.size());
 			}
 
 		} catch (Exception e) {
