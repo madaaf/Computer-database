@@ -1,6 +1,7 @@
 package com.excilys.aflak.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -17,8 +18,25 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public boolean create(Computer obj) {
+	public boolean create(Computer computer) {
 		// TODO Auto-generated method stub
+		try {
+			PreparedStatement state = SdzConnection
+					.getInstance()
+					.prepareStatement(
+							"INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)");
+			state.setString(1, computer.getName());
+			state.setTimestamp(2, computer.getIntroduced());
+			state.setTimestamp(3, computer.getDiscontinued());
+			state.setInt(4, computer.getCompanyId());
+			int resultat = state.executeUpdate();
+			if (resultat == 1)
+				return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.print(e);
+			return false;
+		}
 		return false;
 	}
 
@@ -40,9 +58,42 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public boolean update(Computer obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public Computer update(Computer computer) {
+		try {
+			StringBuilder query = new StringBuilder("UPDATE computer SET");
+			Boolean haveBefore = false;
+
+			if (!(computer.getName() == null)) {
+				query.append(" name = '").append(computer.getName())
+						.append("'");
+				haveBefore = true;
+			}
+
+			if (!(computer.getIntroduced() == null)) {
+				if (haveBefore)
+					query.append(",");
+				query.append(" introduced = '")
+						.append(computer.getIntroduced()).append("'");
+				haveBefore = true;
+			}
+			if (!(computer.getDiscontinued() == null)) {
+				if (haveBefore)
+					query.append(",");
+				query.append(" discontinued = '")
+						.append(computer.getDiscontinued()).append("'");
+				haveBefore = true;
+			}
+
+			query.append(" where id = ").append(computer.getId());
+			System.out.println(" " + query);
+
+			Statement state = SdzConnection.getInstance().createStatement();
+			int result = state.executeUpdate(query.toString());
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
 	}
 
 	@Override

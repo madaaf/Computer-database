@@ -33,7 +33,7 @@ public abstract class DAO<T> {
 	 * @return boolean
 	 */
 
-	public abstract boolean update(T obj);
+	public abstract T update(T obj);
 
 	/**
 	 * Methode de recherche d('informations

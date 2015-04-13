@@ -29,9 +29,9 @@ public class CompanyDAO extends DAO<Company> {
 	}
 
 	@Override
-	public boolean update(Company obj) {
+	public Company update(Company obj) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 	@Override

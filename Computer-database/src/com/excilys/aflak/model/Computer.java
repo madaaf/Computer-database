@@ -13,6 +13,7 @@ public class Computer {
 	private Timestamp discontinued;
 	private String dateDiscontinued;
 	private Company ccompany;
+	private int companyId;
 
 	public Computer() {
 	}
@@ -26,6 +27,17 @@ public class Computer {
 		dateIntroduced = convertTimeToString(introduced);
 		dateDiscontinued = convertTimeToString(discontinued);
 		this.ccompany = ccompagny;
+	}
+
+	public Computer(int id, String name, Timestamp introduced,
+			Timestamp discontinued, int companyId) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		dateIntroduced = convertTimeToString(introduced);
+		dateDiscontinued = convertTimeToString(discontinued);
+		this.companyId = companyId;
 	}
 
 	public String convertTimeToString(Timestamp time) {
@@ -96,12 +108,20 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 
-	public Company getCompany_id() {
+	public Company getCompany() {
 		return ccompany;
 	}
 
-	public void setCompany_id(Company ccompany) {
+	public void setCompany(Company ccompany) {
 		this.ccompany = ccompany;
+	}
+
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 
 	@Override
