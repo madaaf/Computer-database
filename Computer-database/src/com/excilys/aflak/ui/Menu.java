@@ -33,7 +33,7 @@ public class Menu {
 	}
 
 	public static void printMenu() {
-		System.out.println("1- List computers");
+		System.out.println("\n1- List computers");
 		System.out.println("2- List companies");
 		System.out.println("3- Show computer details");
 		System.out.println("4- Create a computer");
@@ -58,12 +58,13 @@ public class Menu {
 
 	public static void selectMenu() {
 		String name;
-		Timestamp introduced;
+		Timestamp introduced = null;
 		int idCompany = -1;
 		int idComputer = -1;
-		Timestamp discontinued;
+		Timestamp discontinued = null;
 		String input;
 		boolean isInteger;
+		boolean isDateFr;
 
 		switch (choice) {
 		case "1":
@@ -102,13 +103,37 @@ public class Menu {
 
 			System.out
 					.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
-			introduced = displayTimeFormat(sc.nextLine());
+			input = sc.nextLine();
+			isDateFr = Regex.isDateFormatFr(input);
+
+			if (input.isEmpty()) {
+				introduced = null;
+			} else {
+				while (!isDateFr) {
+					System.err
+							.println(" You have to respect the format's date");
+
+					System.out
+							.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
+					input = sc.nextLine();
+					isDateFr = Regex.isDateFormatFr(input);
+				}
+				introduced = displayTimeFormat(input);
+			}
 
 			System.out
 					.println(" Enter the date of discontinued (dd-mm-yyyy)  : ");
-			discontinued = displayTimeFormat(sc.nextLine());
+			input = sc.nextLine();
+			isDateFr = Regex.isDateFormatFr(input);
+			if (isDateFr) {
+				discontinued = displayTimeFormat(input);
+			} else if (input.isEmpty()) {
+				discontinued = null;
+			} else {
+				System.err.println(" \nYou have to respect the format's date");
+			}
 
-			System.out.println(" Enter the id of its company : ");
+			System.out.println("Enter the id of its company : ");
 			input = sc.nextLine();
 			isInteger = Regex.isInteger(input);
 			if (isInteger) {
@@ -117,8 +142,7 @@ public class Menu {
 						idComputer);
 				computerDao.create(com);
 			} else {
-				System.out.println("You have to enter a number");
-				break;
+				System.err.println("You have to enter a number");
 			}
 
 			break;
@@ -131,7 +155,7 @@ public class Menu {
 				if (isInteger) {
 					idComputer = Integer.parseInt(input);
 				} else {
-					System.out.println("Enter a number");
+					System.err.println("\nEnter a number");
 					break;
 				}
 			} else {
@@ -150,7 +174,15 @@ public class Menu {
 					.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
 			input = sc.nextLine();
 			if (!input.isEmpty()) {
-				introduced = displayTimeFormat(input);
+				isDateFr = Regex.isDateFormatFr(input);
+				if (isDateFr) {
+					introduced = displayTimeFormat(input);
+				} else {
+					System.err
+							.println(" You have to respect the format's date");
+					break;
+				}
+
 			} else {
 				introduced = null;
 			}
@@ -159,7 +191,15 @@ public class Menu {
 					.println(" Enter the date of discontinued (dd-mm-yyyy)  : ");
 			input = sc.nextLine();
 			if (!input.isEmpty()) {
-				discontinued = displayTimeFormat(input);
+				isDateFr = Regex.isDateFormatFr(input);
+				if (isDateFr) {
+					discontinued = displayTimeFormat(input);
+				} else {
+					System.err
+							.println(" You have to respect the format's date");
+					break;
+				}
+
 			} else {
 				discontinued = null;
 			}
@@ -171,7 +211,7 @@ public class Menu {
 				if (isInteger) {
 					idCompany = Integer.parseInt(input);
 				} else {
-					System.out.println("you have to enter a number");
+					System.err.println("\n You have to enter a number");
 					break;
 				}
 
@@ -196,17 +236,15 @@ public class Menu {
 				boolean isDeleted = computerDao.delete(idComputer);
 				if (isDeleted == true) {
 					System.out.println("your computer is deleted");
-				} else {
-					System.out.println("it is doesn't work");
 				}
 				break;
 			} else {
-				System.out.println("You have to enter a number");
+				System.err.println("\nYou have to enter a number");
 				break;
 			}
 
 		default:
-			System.out.println("Error : Try again");
+			System.err.println("\nError : Try again");
 			break;
 		}
 		printMenu();

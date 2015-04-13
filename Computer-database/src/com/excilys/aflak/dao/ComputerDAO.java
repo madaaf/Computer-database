@@ -30,12 +30,15 @@ public class ComputerDAO extends DAO<Computer> {
 			state.setTimestamp(3, computer.getDiscontinued());
 			state.setInt(4, computer.getCompanyId());
 			int resultat = state.executeUpdate();
-			if (resultat == 1)
+			if (resultat == 1) {
+				System.out.println("Your computer is created");
 				return true;
+			} else {
+				System.err.println("Your computer is not created");
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.print(e);
-			return false;
+			System.err.println("Conection failed");
 		}
 		return false;
 	}
@@ -48,10 +51,14 @@ public class ComputerDAO extends DAO<Computer> {
 			Statement state = SdzConnection.getInstance().createStatement();
 			result = state.executeUpdate("DELETE FROM computer WHERE id = "
 					+ id);
-			// return 1 if ok, 0 id not
+			if (result == 0) {
+				System.err.println(" This ID doesn't exist in the bdd");
+				return false;
+			}
+
 			return true;
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println("Connection failed");
 			return false;
 		}
 

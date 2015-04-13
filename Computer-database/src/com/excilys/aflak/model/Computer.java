@@ -1,8 +1,8 @@
 package com.excilys.aflak.model;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Calendar;
+
+import com.excilys.aflak.utils.Regex;
 
 public class Computer {
 
@@ -24,8 +24,8 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		dateIntroduced = convertTimeToString(introduced);
-		dateDiscontinued = convertTimeToString(discontinued);
+		dateIntroduced = Regex.convertTimestampToString(introduced);
+		dateDiscontinued = Regex.convertTimestampToString(discontinued);
 		this.ccompany = ccompagny;
 	}
 
@@ -35,37 +35,9 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		dateIntroduced = convertTimeToString(introduced);
-		dateDiscontinued = convertTimeToString(discontinued);
+		dateIntroduced = Regex.convertTimestampToString(introduced);
+		dateDiscontinued = Regex.convertTimestampToString(discontinued);
 		this.companyId = companyId;
-	}
-
-	public String convertTimeToString(Timestamp time) {
-		String timeFormat = null;
-		Calendar cal = Calendar.getInstance();
-		if (time != null) {
-			cal.setTime(new Date(time.getTime()));
-			String year = Integer.toString(cal.get(Calendar.YEAR));
-
-			int m = cal.get(Calendar.MONTH) + 1;
-			String month = Integer.toString(m);
-
-			if (m < 10) {
-				month = "0" + month;
-			}
-
-			int d = cal.get(Calendar.DAY_OF_MONTH);
-			String day = Integer.toString(d);
-			if (d < 10) {
-				day = "0" + day;
-			}
-
-			timeFormat = new StringBuilder(day).append("/").append(month)
-					.append("/").append(year).toString();
-		} else {
-			timeFormat = " 0 ";
-		}
-		return timeFormat;
 	}
 
 	public String getDateIntroduced() {
