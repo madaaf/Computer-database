@@ -28,4 +28,11 @@ public class Company {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder("Id : ").append(id).append("\t|\tName : ")
+				.append(name).toString();
+
+	}
 }

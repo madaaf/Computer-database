@@ -2,11 +2,11 @@ package com.excilys.aflak.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 
 public class ComputerDAO extends DAO<Computer> {
@@ -23,9 +23,20 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public boolean delete(Computer obj) {
+	public boolean delete(int id) {
 		// TODO Auto-generated method stub
-		return false;
+		int result = 0;
+		try {
+			Statement state = SdzConnection.getInstance().createStatement();
+			result = state.executeUpdate("DELETE FROM computer WHERE id = "
+					+ id);
+			// return 1 if ok, 0 id not
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+
 	}
 
 	@Override
@@ -37,14 +48,21 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public Computer find(int id) {
 		Computer computer = new Computer();
+		Company company = new Company();
 		try {
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery(
-					"SELECT * FROM computer WHERE id =" + id);
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+							ResultSet.CONCUR_READ_ONLY)
+					.executeQuery(
+							"select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id ="
+									+ id);
 			if (result.first()) {
-				computer = new Computer(id, result.getString("name"), null,
-						null, null);
+				company = new Company(result.getInt("company_id"),
+						result.getString("company_name"));
+				computer = new Computer(result.getInt("id"),
+						result.getString("name"),
+						result.getTimestamp("introduced"),
+						result.getTimestamp("discontinued"), company);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -57,32 +75,22 @@ public class ComputerDAO extends DAO<Computer> {
 	public List<Computer> list() {
 		List<Computer> listComputer = new ArrayList<Computer>();
 		Computer computer = new Computer();
+		Company company = new Company();
 		try {
 
 			Statement state = SdzConnection.getInstance().createStatement();
-			ResultSet result = state.executeQuery("select * from computer");
-			ResultSetMetaData resultMeta = result.getMetaData();
-
-			int k = 0;
+			ResultSet result = state
+					.executeQuery("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id");
 
 			while (result.next()) {
-				System.out.print(k + " ");
-				k++;
-
+				company = new Company(result.getInt("company_id"),
+						result.getString("company_name"));
 				computer = new Computer(result.getInt("id"),
-						result.getString("name"), null, null, null);
-				/*
-				 * for (int i = 1; i <= resultMeta.getColumnCount(); i++) { if
-				 * (result.getObject(i) != null) {
-				 * 
-				 * System.out.print("\t" + result.getObject(i).toString() +
-				 * "\t |"); } else { System.out.print("\t" + null + "\t |"); }
-				 * 
-				 * }
-				 */
+						result.getString("name"),
+						result.getTimestamp("introduced"),
+						result.getTimestamp("discontinued"), company);
 				listComputer.add(computer);
-				System.out.println(computer.getId() + " " + computer.getName());
-				System.out.println("SIZAE " + listComputer.size());
+
 			}
 
 		} catch (Exception e) {

@@ -18,6 +18,7 @@ public class SdzConnection {
 				connect = DriverManager.getConnection(url, user, password);
 			} catch (Exception e) {
 				// TODO: handle exception
+				System.out.println(e);
 			}
 		}
 		return connect;
