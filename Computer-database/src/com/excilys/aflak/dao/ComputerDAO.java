@@ -92,7 +92,6 @@ public class ComputerDAO extends DAO<Computer> {
 			}
 
 			query.append(" where id = ").append(computer.getId());
-			System.out.println(" " + query);
 
 			Statement state = SdzConnection.getInstance().createStatement();
 			int result = state.executeUpdate(query.toString());

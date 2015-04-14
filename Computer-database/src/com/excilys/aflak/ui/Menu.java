@@ -1,10 +1,7 @@
 package com.excilys.aflak.ui;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,12 +15,26 @@ import com.excilys.aflak.utils.Regex;
 
 public class Menu {
 
-	private static String choice;
 	private static DAO<Computer> computerDao;
 	private static DAO<Company> companyDao;
-	private static Scanner sc = new Scanner(System.in);
 	private static List<Computer> listComputer = new ArrayList<Computer>();
 	private static List<Company> listCompany = new ArrayList<Company>();
+
+	private static Scanner sc = new Scanner(System.in);
+
+	private static String choice;
+	private static String input;
+	private static String name;
+
+	private static Timestamp dateFormated = null;
+	private static Timestamp introduced = null;
+	private static Timestamp discontinued = null;
+
+	private static int idCompany = -1;
+	private static int idComputer = -1;
+
+	private static boolean isInteger;
+	private static boolean isDateFr;
 
 	public static void main(String[] args) {
 		computerDao = new ComputerDAO(SdzConnection.getInstance());
@@ -42,29 +53,53 @@ public class Menu {
 		choice = sc.nextLine();
 	}
 
-	public static Timestamp displayTimeFormat(String date) {
-		Date dateStamp;
-		Timestamp timeFormated = null;
-		try {
-			dateStamp = new SimpleDateFormat("dd-MM-yyy").parse(date);
-			long time = dateStamp.getTime();
-			timeFormated = new Timestamp(time);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static Computer createAndUpdateComputer(int computerId) {
+		// demande le nom de l'ordinateur
+		System.out.println(" Enter the name of your computer : ");
+		name = sc.nextLine();
+		// demande la date "introduced"
+		introduced = DisplayDate();
+		// demande la date "discontinued"
+		discontinued = DisplayDate();
+		// demande l'id de la companie
+		System.out.println("Enter the id of its company : ");
+		input = sc.nextLine();
+		// verifie si l'id correspond à un chiffre
+		isInteger = Regex.isInteger(input);
+		Computer com = null;
+		if (isInteger) {
+			idCompany = Integer.parseInt(input);
 		}
-		return timeFormated;
+		com = new Computer(computerId, name, introduced, discontinued,
+				idCompany);
+		return com;
+	}
+
+	// demande la date
+	// si l'utilisateur ne rentre rien, passez à l'étape suivante
+	// s'il rentre un format incorrect, posez lui la question une
+	// nouvelle fois
+	// renvoyez la date en format Timestamp
+	public static Timestamp DisplayDate() {
+		do {
+			System.out
+					.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
+			input = sc.nextLine();
+			isDateFr = Regex.isDateFormatFr(input);
+
+			if (input.isEmpty()) {
+				dateFormated = null;
+			} else if (isDateFr) {
+				dateFormated = Regex.convertStringToTimestamp(input);
+			} else {
+				System.err.println(" You have to respect the format's date");
+			}
+
+		} while (!input.isEmpty() && !isDateFr);
+		return dateFormated;
 	}
 
 	public static void selectMenu() {
-		String name;
-		Timestamp introduced = null;
-		int idCompany = -1;
-		int idComputer = -1;
-		Timestamp discontinued = null;
-		String input;
-		boolean isInteger;
-		boolean isDateFr;
 
 		switch (choice) {
 		case "1":
@@ -83,6 +118,7 @@ public class Menu {
 				System.out.println(listCompany.get(i).toString());
 			}
 			break;
+
 		case "3":
 			System.out.println(" Enter the id of your computer :");
 			input = sc.nextLine();
@@ -94,58 +130,15 @@ public class Menu {
 				System.out.println("You have to enter a number");
 				break;
 			}
-
 			System.out.println("Details : \n " + computer.toString());
 			break;
 		case "4":
-			System.out.println(" Enter the name of your computer : ");
-			name = sc.nextLine();
-
-			System.out
-					.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
-			input = sc.nextLine();
-			isDateFr = Regex.isDateFormatFr(input);
-
-			if (input.isEmpty()) {
-				introduced = null;
-			} else {
-				while (!isDateFr) {
-					System.err
-							.println(" You have to respect the format's date");
-
-					System.out
-							.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
-					input = sc.nextLine();
-					isDateFr = Regex.isDateFormatFr(input);
-				}
-				introduced = displayTimeFormat(input);
-			}
-
-			System.out
-					.println(" Enter the date of discontinued (dd-mm-yyyy)  : ");
-			input = sc.nextLine();
-			isDateFr = Regex.isDateFormatFr(input);
-			if (isDateFr) {
-				discontinued = displayTimeFormat(input);
-			} else if (input.isEmpty()) {
-				discontinued = null;
-			} else {
-				System.err.println(" \nYou have to respect the format's date");
-			}
-
-			System.out.println("Enter the id of its company : ");
-			input = sc.nextLine();
-			isInteger = Regex.isInteger(input);
-			if (isInteger) {
-				idComputer = Integer.parseInt(input);
-				Computer com = new Computer(-1, name, introduced, discontinued,
-						idComputer);
+			Computer com = createAndUpdateComputer(-1);
+			if (com != null) {
 				computerDao.create(com);
-			} else {
-				System.err.println("You have to enter a number");
 			}
-
 			break;
+
 		case "5":
 			System.out
 					.println(" Enter the id of the computer you want to update : ");
@@ -158,71 +151,12 @@ public class Menu {
 					System.err.println("\nEnter a number");
 					break;
 				}
-			} else {
-				idComputer = -1;
 			}
 
-			System.out.println(" Enter the new name of your computer : ");
-			input = sc.nextLine();
-			if (!input.isEmpty()) {
-				name = input;
-			} else {
-				name = null;
+			Computer comp = createAndUpdateComputer(idComputer);
+			if (comp != null) {
+				computerDao.update(comp);
 			}
-
-			System.out
-					.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
-			input = sc.nextLine();
-			if (!input.isEmpty()) {
-				isDateFr = Regex.isDateFormatFr(input);
-				if (isDateFr) {
-					introduced = displayTimeFormat(input);
-				} else {
-					System.err
-							.println(" You have to respect the format's date");
-					break;
-				}
-
-			} else {
-				introduced = null;
-			}
-
-			System.out
-					.println(" Enter the date of discontinued (dd-mm-yyyy)  : ");
-			input = sc.nextLine();
-			if (!input.isEmpty()) {
-				isDateFr = Regex.isDateFormatFr(input);
-				if (isDateFr) {
-					discontinued = displayTimeFormat(input);
-				} else {
-					System.err
-							.println(" You have to respect the format's date");
-					break;
-				}
-
-			} else {
-				discontinued = null;
-			}
-
-			System.out.println(" Enter the id of its company : ");
-			input = sc.nextLine();
-			if (!input.isEmpty()) {
-				isInteger = Regex.isInteger(input);
-				if (isInteger) {
-					idCompany = Integer.parseInt(input);
-				} else {
-					System.err.println("\n You have to enter a number");
-					break;
-				}
-
-			} else {
-				idCompany = -1;
-			}
-
-			Computer c = new Computer(idComputer, name, introduced,
-					discontinued, null);
-
-			computerDao.update(c);
 
 			break;
 		case "6":

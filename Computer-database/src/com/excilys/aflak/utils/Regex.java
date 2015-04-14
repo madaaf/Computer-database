@@ -1,8 +1,10 @@
 package com.excilys.aflak.utils;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,6 +55,20 @@ public class Regex {
 			timeFormat = " 0 ";
 		}
 		return timeFormat;
+	}
+
+	public static Timestamp convertStringToTimestamp(String date) {
+		Date dateStamp;
+		Timestamp timeFormated = null;
+		try {
+			dateStamp = new SimpleDateFormat("dd-MM-yyy").parse(date);
+			long time = dateStamp.getTime();
+			timeFormated = new Timestamp(time);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return timeFormated;
 	}
 
 }
