@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 import com.excilys.aflak.dao.CompanyDAO;
 import com.excilys.aflak.dao.ComputerDAO;
+import com.excilys.aflak.dao.ConnectionBdd;
 import com.excilys.aflak.dao.DAO;
-import com.excilys.aflak.dao.SdzConnection;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.utils.Regex;
@@ -37,8 +37,8 @@ public class Menu {
 	private static boolean isDateFr;
 
 	public static void main(String[] args) {
-		computerDao = new ComputerDAO(SdzConnection.getInstance());
-		companyDao = new CompanyDAO(SdzConnection.getInstance());
+		computerDao = new ComputerDAO(ConnectionBdd.getInstance());
+		companyDao = new CompanyDAO(ConnectionBdd.getInstance());
 		printMenu();
 		selectMenu();
 	}

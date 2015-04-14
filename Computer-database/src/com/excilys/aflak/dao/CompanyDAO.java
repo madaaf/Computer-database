@@ -46,7 +46,7 @@ public class CompanyDAO extends DAO<Company> {
 		Company company = new Company();
 		try {
 
-			Statement state = SdzConnection.getInstance().createStatement();
+			Statement state = ConnectionBdd.getInstance().createStatement();
 			ResultSet result = state.executeQuery("select * from company");
 			ResultSetMetaData resultMeta = result.getMetaData();
 

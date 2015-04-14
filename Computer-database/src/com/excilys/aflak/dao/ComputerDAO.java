@@ -21,7 +21,7 @@ public class ComputerDAO extends DAO<Computer> {
 	public boolean create(Computer computer) {
 		// TODO Auto-generated method stub
 		try {
-			PreparedStatement state = SdzConnection
+			PreparedStatement state = ConnectionBdd
 					.getInstance()
 					.prepareStatement(
 							"INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)");
@@ -48,7 +48,7 @@ public class ComputerDAO extends DAO<Computer> {
 		// TODO Auto-generated method stub
 		int result = 0;
 		try {
-			Statement state = SdzConnection.getInstance().createStatement();
+			Statement state = ConnectionBdd.getInstance().createStatement();
 			result = state.executeUpdate("DELETE FROM computer WHERE id = "
 					+ id);
 			if (result == 0) {
@@ -93,7 +93,7 @@ public class ComputerDAO extends DAO<Computer> {
 
 			query.append(" where id = ").append(computer.getId());
 
-			Statement state = SdzConnection.getInstance().createStatement();
+			Statement state = ConnectionBdd.getInstance().createStatement();
 			int result = state.executeUpdate(query.toString());
 
 		} catch (Exception e) {
@@ -135,7 +135,7 @@ public class ComputerDAO extends DAO<Computer> {
 		Company company = new Company();
 		try {
 
-			Statement state = SdzConnection.getInstance().createStatement();
+			Statement state = ConnectionBdd.getInstance().createStatement();
 			ResultSet result = state
 					.executeQuery("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id");
 
