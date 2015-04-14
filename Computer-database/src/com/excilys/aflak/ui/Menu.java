@@ -5,18 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.excilys.aflak.dao.CompanyDAO;
-import com.excilys.aflak.dao.ComputerDAO;
-import com.excilys.aflak.dao.ConnectionBdd;
-import com.excilys.aflak.dao.DAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.service.ServiceCompany;
+import com.excilys.aflak.service.ServiceComputer;
 import com.excilys.aflak.utils.Regex;
+import com.excilys.aflak.utils.TimeConvertor;
 
 public class Menu {
 
-	private static DAO<Computer> computerDao;
-	private static DAO<Company> companyDao;
 	private static List<Computer> listComputer = new ArrayList<Computer>();
 	private static List<Company> listCompany = new ArrayList<Company>();
 
@@ -37,8 +34,6 @@ public class Menu {
 	private static boolean isDateFr;
 
 	public static void main(String[] args) {
-		computerDao = new ComputerDAO(ConnectionBdd.getInstance());
-		companyDao = new CompanyDAO(ConnectionBdd.getInstance());
 		printMenu();
 		selectMenu();
 	}
@@ -70,7 +65,9 @@ public class Menu {
 		if (isInteger) {
 			idCompany = Integer.parseInt(input);
 		}
-		com = new Computer(computerId, name, introduced, discontinued,
+		com = new Computer(computerId, name,
+				TimeConvertor.convertTimestampToLocalDateTime(introduced),
+				TimeConvertor.convertTimestampToLocalDateTime(discontinued),
 				idCompany);
 		return com;
 	}
@@ -90,7 +87,7 @@ public class Menu {
 			if (input.isEmpty()) {
 				dateFormated = null;
 			} else if (isDateFr) {
-				dateFormated = Regex.convertStringToTimestamp(input);
+				dateFormated = TimeConvertor.convertStringToTimestamp(input);
 			} else {
 				System.err.println(" You have to respect the format's date");
 			}
@@ -104,7 +101,7 @@ public class Menu {
 		switch (choice) {
 		case "1":
 			System.out.println("List of computers : ");
-			listComputer = computerDao.list();
+			listComputer = ServiceComputer.getAllComputers();
 
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
@@ -113,7 +110,7 @@ public class Menu {
 			break;
 		case "2":
 			System.out.println("List of companies : ");
-			listCompany = companyDao.list();
+			listCompany = ServiceCompany.getAllCompanies();
 			for (int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
@@ -125,7 +122,8 @@ public class Menu {
 			isInteger = Regex.isInteger(input);
 			Computer computer = new Computer();
 			if (isInteger) {
-				computer = computerDao.find(Integer.parseInt(input));
+				computer = ServiceComputer
+						.findComputer(Integer.parseInt(input));
 			} else {
 				System.out.println("You have to enter a number");
 				break;
@@ -135,7 +133,7 @@ public class Menu {
 		case "4":
 			Computer com = createAndUpdateComputer(-1);
 			if (com != null) {
-				computerDao.create(com);
+				ServiceComputer.createComputer(com);
 			}
 			break;
 
@@ -155,7 +153,7 @@ public class Menu {
 
 			Computer comp = createAndUpdateComputer(idComputer);
 			if (comp != null) {
-				computerDao.update(comp);
+				ServiceComputer.updateComputer(comp);
 			}
 
 			break;
@@ -167,7 +165,7 @@ public class Menu {
 			isInteger = Regex.isInteger(input);
 			if (isInteger) {
 				idComputer = Integer.parseInt(input);
-				boolean isDeleted = computerDao.delete(idComputer);
+				boolean isDeleted = ServiceComputer.deleteComputer(idComputer);
 				if (isDeleted == true) {
 					System.out.println("your computer is deleted");
 				}

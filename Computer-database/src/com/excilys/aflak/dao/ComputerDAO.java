@@ -3,32 +3,37 @@ package com.excilys.aflak.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.utils.TimeConvertor;
 
-public class ComputerDAO extends DAO<Computer> {
+public enum ComputerDAO implements IDAOComputer {
 
-	public ComputerDAO(Connection connect) {
-		super(connect);
-		// TODO Auto-generated constructor stub
-	}
+	INSTANCE;
 
 	@Override
 	public boolean create(Computer computer) {
-		// TODO Auto-generated method stub
+		PreparedStatement state = null;
+		Connection connect = ConnectionBdd.getConnection();
 		try {
-			PreparedStatement state = ConnectionBdd
-					.getInstance()
-					.prepareStatement(
-							"INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)");
+			state = connect
+					.prepareStatement("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)");
 			state.setString(1, computer.getName());
-			state.setTimestamp(2, computer.getIntroduced());
-			state.setTimestamp(3, computer.getDiscontinued());
-			state.setInt(4, computer.getCompanyId());
+			state.setTimestamp(2, TimeConvertor
+					.convertLocalDateTimeToTimestamp(computer.getIntroduced()));
+			state.setTimestamp(3,
+					TimeConvertor.convertLocalDateTimeToTimestamp(computer
+							.getDiscontinued()));
+			if (computer.getCompanyId() == (-1)) {
+				state.setNull(4, Types.BIGINT);
+			} else {
+				state.setInt(4, (computer.getCompanyId()));
+			}
+
 			int resultat = state.executeUpdate();
 			if (resultat == 1) {
 				System.out.println("Your computer is created");
@@ -39,6 +44,8 @@ public class ComputerDAO extends DAO<Computer> {
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println("Conection failed");
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, null);
 		}
 		return false;
 	}
@@ -47,10 +54,18 @@ public class ComputerDAO extends DAO<Computer> {
 	public boolean delete(int id) {
 		// TODO Auto-generated method stub
 		int result = 0;
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
 		try {
-			Statement state = ConnectionBdd.getInstance().createStatement();
-			result = state.executeUpdate("DELETE FROM computer WHERE id = "
-					+ id);
+			state = connect
+					.prepareStatement("DELETE FROM computer WHERE id = ?");
+			if (id > 0) {
+				state.setInt(1, id);
+			} else {
+				state.setNull(1, Types.BIGINT);
+			}
+
+			result = state.executeUpdate();
 			if (result == 0) {
 				System.err.println(" This ID doesn't exist in the bdd");
 				return false;
@@ -60,44 +75,46 @@ public class ComputerDAO extends DAO<Computer> {
 		} catch (Exception e) {
 			System.err.println("Connection failed");
 			return false;
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, null);
 		}
 
 	}
 
 	@Override
 	public Computer update(Computer computer) {
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+
 		try {
-			StringBuilder query = new StringBuilder("UPDATE computer SET");
-			Boolean haveBefore = false;
+			state = connect
+					.prepareStatement("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
 
-			if (!(computer.getName() == null)) {
-				query.append(" name = '").append(computer.getName())
-						.append("'");
-				haveBefore = true;
+			state.setString(1, computer.getName());
+			state.setTimestamp(2, TimeConvertor
+					.convertLocalDateTimeToTimestamp(computer.getIntroduced()));
+			state.setTimestamp(3,
+					TimeConvertor.convertLocalDateTimeToTimestamp(computer
+							.getDiscontinued()));
+			System.out.println("COMPANY ID " + computer.getCompanyId());
+			if (computer.getCompanyId() > 0) {
+				state.setInt(4, computer.getCompanyId());
+			} else {
+				state.setNull(4, Types.BIGINT);
 			}
 
-			if (!(computer.getIntroduced() == null)) {
-				if (haveBefore)
-					query.append(",");
-				query.append(" introduced = '")
-						.append(computer.getIntroduced()).append("'");
-				haveBefore = true;
-			}
-			if (!(computer.getDiscontinued() == null)) {
-				if (haveBefore)
-					query.append(",");
-				query.append(" discontinued = '")
-						.append(computer.getDiscontinued()).append("'");
-				haveBefore = true;
+			if (computer.getId() > 0) {
+				state.setInt(5, computer.getId());
+			} else {
+				state.setNull(5, Types.BIGINT);
 			}
 
-			query.append(" where id = ").append(computer.getId());
-
-			Statement state = ConnectionBdd.getInstance().createStatement();
-			int result = state.executeUpdate(query.toString());
+			int result = state.executeUpdate();
 
 		} catch (Exception e) {
 			System.out.println(e);
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, null);
 		}
 		return null;
 	}
@@ -106,23 +123,34 @@ public class ComputerDAO extends DAO<Computer> {
 	public Computer find(int id) {
 		Computer computer = new Computer();
 		Company company = new Company();
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+		ResultSet result = null;
 		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-							ResultSet.CONCUR_READ_ONLY)
-					.executeQuery(
-							"select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id ="
-									+ id);
+			state = connect
+					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id = ?");
+			if (id > 0) {
+				state.setInt(1, id);
+			} else {
+				state.setNull(1, Types.BIGINT);
+			}
+
+			result = state.executeQuery();
+
 			if (result.first()) {
 				company = new Company(result.getInt("company_id"),
 						result.getString("company_name"));
 				computer = new Computer(result.getInt("id"),
 						result.getString("name"),
-						result.getTimestamp("introduced"),
-						result.getTimestamp("discontinued"), company);
+						TimeConvertor.convertTimestampToLocalDateTime(result
+								.getTimestamp("introduced")),
+						TimeConvertor.convertTimestampToLocalDateTime(result
+								.getTimestamp("discontinued")), company);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, result);
 		}
 		// TODO Auto-generated method stub
 		return computer;
@@ -133,25 +161,32 @@ public class ComputerDAO extends DAO<Computer> {
 		List<Computer> listComputer = new ArrayList<Computer>();
 		Computer computer = new Computer();
 		Company company = new Company();
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+		ResultSet result = null;
 		try {
 
-			Statement state = ConnectionBdd.getInstance().createStatement();
-			ResultSet result = state
-					.executeQuery("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id");
+			state = connect
+					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id");
 
+			result = state.executeQuery();
 			while (result.next()) {
 				company = new Company(result.getInt("company_id"),
 						result.getString("company_name"));
 				computer = new Computer(result.getInt("id"),
 						result.getString("name"),
-						result.getTimestamp("introduced"),
-						result.getTimestamp("discontinued"), company);
+						TimeConvertor.convertTimestampToLocalDateTime(result
+								.getTimestamp("introduced")),
+						TimeConvertor.convertTimestampToLocalDateTime(result
+								.getTimestamp("discontinued")), company);
 				listComputer.add(computer);
 
 			}
 
 		} catch (Exception e) {
 			// TODO: handle exception
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, result);
 		}
 
 		return listComputer;

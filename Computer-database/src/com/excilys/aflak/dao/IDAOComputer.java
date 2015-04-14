@@ -3,12 +3,11 @@ package com.excilys.aflak.dao;
 import java.sql.Connection;
 import java.util.List;
 
-public abstract class DAO<T> {
-	protected Connection connect = null;
+import com.excilys.aflak.model.Computer;
 
-	public DAO(Connection connect) {
-		this.connect = connect;
-	}
+public interface IDAOComputer {
+
+	Connection connect = null;
 
 	/**
 	 * Methode de creation
@@ -16,7 +15,7 @@ public abstract class DAO<T> {
 	 * @param obj
 	 * @return boolean
 	 */
-	public abstract boolean create(T obj);
+	boolean create(Computer obj);
 
 	/**
 	 * Methode pour effacer
@@ -24,7 +23,7 @@ public abstract class DAO<T> {
 	 * @param id
 	 * @return boolean
 	 */
-	public abstract boolean delete(int id);
+	boolean delete(int id);
 
 	/**
 	 * Methode de mise a jour
@@ -33,22 +32,22 @@ public abstract class DAO<T> {
 	 * @return boolean
 	 */
 
-	public abstract T update(T obj);
+	Computer update(Computer obj);
 
 	/**
 	 * Methode de recherche d('informations
 	 * 
 	 * @param id
-	 * @return T
+	 * @return Computer
 	 */
 
-	public abstract T find(int id);
+	Computer find(int id);
 
 	/**
 	 * Methode qui liste
 	 * 
-	 * @return <T>
+	 * @return <Computer>
 	 */
-	public abstract List<T> list();
+	List<Computer> list();
 
 }
