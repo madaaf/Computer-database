@@ -64,11 +64,15 @@ public class Menu {
 		Computer com = null;
 		if (isInteger) {
 			idCompany = Integer.parseInt(input);
+
+			Company c = new Company(2, null);
+			com = new Computer(
+					computerId,
+					name,
+					TimeConvertor.convertTimestampToLocalDateTime(introduced),
+					TimeConvertor.convertTimestampToLocalDateTime(discontinued),
+					c);
 		}
-		com = new Computer(computerId, name,
-				TimeConvertor.convertTimestampToLocalDateTime(introduced),
-				TimeConvertor.convertTimestampToLocalDateTime(discontinued),
-				idCompany);
 		return com;
 	}
 

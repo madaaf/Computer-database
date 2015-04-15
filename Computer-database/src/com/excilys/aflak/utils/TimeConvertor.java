@@ -58,7 +58,7 @@ public class TimeConvertor {
 		Date dateStamp;
 		Timestamp timeFormated = null;
 		try {
-			dateStamp = new SimpleDateFormat("dd-MM-yyy").parse(date);
+			dateStamp = new SimpleDateFormat("dd-MM-yyyy").parse(date);
 			long time = dateStamp.getTime();
 			timeFormated = new Timestamp(time);
 		} catch (ParseException e) {

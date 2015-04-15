@@ -8,13 +8,16 @@ import java.sql.SQLException;
 
 public class ConnectionBdd {
 	private static String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
-	private static String user = "admincdb";
-	private static String password = "qwerty1234";
+	private static String urlTest = "jdbc:mysql://localhost:3306/computer-database-db-test?zeroDateTimeBehavior=convertToNull";
+	private final static String user = "admincdb";
+	private final static String password = "qwerty1234";
+	public static boolean TEST = false;
 
 	public static Connection getConnection() {
 		Connection connect = null;
 		try {
-			connect = DriverManager.getConnection(url, user, password);
+			connect = DriverManager.getConnection((TEST ? urlTest : url), user,
+					password);
 		} catch (Exception e) {
 			System.out.println(e);
 		}

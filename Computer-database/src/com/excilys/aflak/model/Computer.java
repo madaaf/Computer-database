@@ -2,18 +2,13 @@ package com.excilys.aflak.model;
 
 import java.time.LocalDateTime;
 
-import com.excilys.aflak.utils.TimeConvertor;
-
 public class Computer {
 
 	private int id;
 	private String name;
 	private LocalDateTime introduced;
-	private String dateIntroduced;
 	private LocalDateTime discontinued;
-	private String dateDiscontinued;
 	private Company ccompany;
-	private int companyId;
 
 	public Computer() {
 	}
@@ -24,30 +19,7 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		dateIntroduced = TimeConvertor.convertLocalDateTimeToString(introduced);
-		dateDiscontinued = TimeConvertor
-				.convertLocalDateTimeToString(discontinued);
 		this.ccompany = ccompagny;
-	}
-
-	public Computer(int id, String name, LocalDateTime introduced,
-			LocalDateTime discontinued, int companyId) {
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		dateIntroduced = TimeConvertor.convertLocalDateTimeToString(introduced);
-		dateDiscontinued = TimeConvertor
-				.convertLocalDateTimeToString(discontinued);
-		this.companyId = companyId;
-	}
-
-	public String getDateIntroduced() {
-		return dateIntroduced;
-	}
-
-	public void setDateIntroduced(String dateIntroduced) {
-		this.dateIntroduced = dateIntroduced;
 	}
 
 	public int getId() {
@@ -90,21 +62,61 @@ public class Computer {
 		this.ccompany = ccompany;
 	}
 
-	public int getCompanyId() {
-		return companyId;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((ccompany == null) ? 0 : ccompany.hashCode());
+		result = prime * result
+				+ ((discontinued == null) ? 0 : discontinued.hashCode());
+		result = prime * result + id;
+		result = prime * result
+				+ ((introduced == null) ? 0 : introduced.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
 	}
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Computer other = (Computer) obj;
+		if (ccompany == null) {
+			if (other.ccompany != null)
+				return false;
+		} else if (!ccompany.equals(other.ccompany))
+			return false;
+		if (discontinued == null) {
+			if (other.discontinued != null)
+				return false;
+		} else if (!discontinued.equals(other.discontinued))
+			return false;
+		if (id != other.id)
+			return false;
+		if (introduced == null) {
+			if (other.introduced != null)
+				return false;
+		} else if (!introduced.equals(other.introduced))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
 
 		return new StringBuilder(" ").append(id).append("\t|\t").append(name)
-				.append("\t|\t ").append(dateIntroduced).append("\t|\t")
-				.append(dateDiscontinued).append("\t|\t")
-				.append(ccompany.getId()).append("\t|\t")
-				.append(ccompany.getName()).toString();
+				.append("\t|\t ").append(introduced).append("\t|\t")
+				.append(discontinued).append("\t|\t").append(ccompany)
+				.toString();
 	}
 }

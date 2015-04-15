@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.aflak.model.Company;
+import com.excilys.aflak.utils.Mapper;
 
 public enum CompanyDAO implements IDAOCompany {
 	// toute les methode en static
@@ -26,10 +27,8 @@ public enum CompanyDAO implements IDAOCompany {
 			result = state.executeQuery();
 
 			while (result.next()) {
-				company = new Company(result.getInt("id"),
-						result.getString("name"));
+				company = Mapper.mapCompany(result);
 				listCompany.add(company);
-
 			}
 
 		} catch (Exception e) {

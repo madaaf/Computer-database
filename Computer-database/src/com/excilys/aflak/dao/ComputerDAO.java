@@ -3,12 +3,14 @@ package com.excilys.aflak.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.utils.Mapper;
 import com.excilys.aflak.utils.TimeConvertor;
 
 public enum ComputerDAO implements IDAOComputer {
@@ -28,22 +30,19 @@ public enum ComputerDAO implements IDAOComputer {
 			state.setTimestamp(3,
 					TimeConvertor.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
-			if (computer.getCompanyId() == (-1)) {
+			if (computer.getCompany().getId() == (-1)) {
 				state.setNull(4, Types.BIGINT);
 			} else {
-				state.setInt(4, (computer.getCompanyId()));
+				state.setInt(4, (computer.getCompany().getId()));
 			}
 
 			int resultat = state.executeUpdate();
 			if (resultat == 1) {
-				System.out.println("Your computer is created");
 				return true;
-			} else {
-				System.err.println("Your computer is not created");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.err.println("Conection failed");
+			e.printStackTrace();
+
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, null);
 		}
@@ -64,17 +63,14 @@ public enum ComputerDAO implements IDAOComputer {
 			} else {
 				state.setNull(1, Types.BIGINT);
 			}
-
 			result = state.executeUpdate();
 			if (result == 0) {
-				System.err.println(" This ID doesn't exist in the bdd");
-				return false;
+				throw new DAOException("This ID doesn't exist in the bdd");
 			}
-
 			return true;
-		} catch (Exception e) {
-			System.err.println("Connection failed");
-			return false;
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed");
+
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, null);
 		}
@@ -96,9 +92,8 @@ public enum ComputerDAO implements IDAOComputer {
 			state.setTimestamp(3,
 					TimeConvertor.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
-			System.out.println("COMPANY ID " + computer.getCompanyId());
-			if (computer.getCompanyId() > 0) {
-				state.setInt(4, computer.getCompanyId());
+			if (computer.getCompany().getId() > 0) {
+				state.setInt(4, computer.getCompany().getId());
 			} else {
 				state.setNull(4, Types.BIGINT);
 			}
@@ -138,14 +133,7 @@ public enum ComputerDAO implements IDAOComputer {
 			result = state.executeQuery();
 
 			if (result.first()) {
-				company = new Company(result.getInt("company_id"),
-						result.getString("company_name"));
-				computer = new Computer(result.getInt("id"),
-						result.getString("name"),
-						TimeConvertor.convertTimestampToLocalDateTime(result
-								.getTimestamp("introduced")),
-						TimeConvertor.convertTimestampToLocalDateTime(result
-								.getTimestamp("discontinued")), company);
+				computer = Mapper.mapComputer(result);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -171,20 +159,13 @@ public enum ComputerDAO implements IDAOComputer {
 
 			result = state.executeQuery();
 			while (result.next()) {
-				company = new Company(result.getInt("company_id"),
-						result.getString("company_name"));
-				computer = new Computer(result.getInt("id"),
-						result.getString("name"),
-						TimeConvertor.convertTimestampToLocalDateTime(result
-								.getTimestamp("introduced")),
-						TimeConvertor.convertTimestampToLocalDateTime(result
-								.getTimestamp("discontinued")), company);
+				computer = Mapper.mapComputer(result);
 				listComputer.add(computer);
 
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, result);
 		}
