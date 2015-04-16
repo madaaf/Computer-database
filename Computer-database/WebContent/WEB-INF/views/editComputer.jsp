@@ -1,12 +1,13 @@
 <!DOCTYPE jsp>
+<%@page import="com.excilys.aflak.model.Computer"%>
 <html>
 <head>
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
@@ -22,26 +23,28 @@
                         id: 0
                     </div>
                     <h1>Edit Computer</h1>
-
+					<% 
+					Computer com = (Computer)request.getAttribute("computer");
+					%>
                     <form action="editComputer" method="POST">
                         <input type="hidden" value="0"/>
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name">
+                                <input type="text" class="form-control" id="computerName" name="editName" placeholder="${computer.name}" />
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" name="editIntroduced" placeholder="${computer.introduced}"/>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" name="editDiscontinued" placeholder="${computer.discontinued}"/>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" >
-                                    <option value="0">--</option>
+                                <select class="form-control" id="companyId" name="editCompany">
+                                    <option value="${computer.company.id}"> ${computer.company.name} </option>
                                 </select>
                             </div>            
                         </fieldset>

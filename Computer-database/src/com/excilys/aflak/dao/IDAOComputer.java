@@ -46,8 +46,15 @@ public interface IDAOComputer {
 	/**
 	 * Methode qui liste
 	 * 
-	 * @return <Computer>
+	 * @return List<Computer>
 	 */
 	List<Computer> list();
+
+	/**
+	 * 
+	 * @return List<Computer>
+	 */
+
+	List<Computer> getSomeComputers();
 
 }

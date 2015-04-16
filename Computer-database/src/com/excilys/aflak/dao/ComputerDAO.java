@@ -16,6 +16,8 @@ import com.excilys.aflak.utils.TimeConvertor;
 public enum ComputerDAO implements IDAOComputer {
 
 	INSTANCE;
+	private static int compteur = 0;
+	private static final int LIMIT = 10;
 
 	@Override
 	public boolean create(Computer computer) {
@@ -117,7 +119,7 @@ public enum ComputerDAO implements IDAOComputer {
 	@Override
 	public Computer find(int id) {
 		Computer computer = new Computer();
-		Company company = new Company();
+		Company company;
 		Connection connect = ConnectionBdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
@@ -148,7 +150,7 @@ public enum ComputerDAO implements IDAOComputer {
 	public List<Computer> list() {
 		List<Computer> listComputer = new ArrayList<Computer>();
 		Computer computer = new Computer();
-		Company company = new Company();
+		Company company;
 		Connection connect = ConnectionBdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
@@ -172,4 +174,33 @@ public enum ComputerDAO implements IDAOComputer {
 
 		return listComputer;
 	}
+
+	@Override
+	public List<Computer> getSomeComputers() {
+		List<Computer> list = new ArrayList<Computer>();
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+		ResultSet result = null;
+		Computer computer = new Computer();
+		Company company;
+		try {
+			state = connect
+					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id LIMIT "
+							+ LIMIT + " OFFSET " + compteur * LIMIT);
+			result = state.executeQuery();
+			while (result.next()) {
+				computer = Mapper.mapComputer(result);
+				list.add(computer);
+			}
+			compteur++;
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, result);
+		}
+
+		return list;
+	}
+
 }

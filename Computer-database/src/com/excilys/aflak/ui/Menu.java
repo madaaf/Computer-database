@@ -105,13 +105,28 @@ public class Menu {
 		switch (choice) {
 		case "1":
 			System.out.println("List of computers : ");
-			listComputer = ServiceComputer.getAllComputers();
-
+			listComputer = ServiceComputer.getSomeComputers();
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
 
+			System.out.println("n pour suivant, q pour quitter");
+			input = sc.nextLine();
+			do {
+				switch (input) {
+				case "n":
+					listComputer = ServiceComputer.getSomeComputers();
+					for (int i = 0; i < listComputer.size(); i++) {
+						System.out.println(listComputer.get(i).toString());
+					}
+					System.out.println("n pour suivant, q pour quitter");
+					break;
+				}
+				input = sc.nextLine();
+			} while (input.equals("n"));
+
 			break;
+
 		case "2":
 			System.out.println("List of companies : ");
 			listCompany = ServiceCompany.getAllCompanies();

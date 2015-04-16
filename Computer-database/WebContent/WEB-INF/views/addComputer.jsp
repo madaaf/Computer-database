@@ -1,12 +1,16 @@
 <!DOCTYPE jsp>
+<%@page import="com.excilys.aflak.service.ServiceCompany"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.excilys.aflak.model.Company"%>
+<%@page import="java.util.List"%>
 <html>
 <head>
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
@@ -24,20 +28,27 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="Computer name">
+                                <input type="text" class="form-control" id="computerName" name="name" placeholder="Computer name">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="dd-mm-yyyy">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="dd-mm-yyyy">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" >
-                                    <option value="0">--</option>
+                                <select class="form-control" name="companies" id="companyId" >
+                                <%
+                                List<Company> listCompanies =  (List<Company>)request.getAttribute("listCompanies");
+                                for(Company company : listCompanies){
+                                %>
+                                    <option value="<%out.print(company.getId());%>"><% out.println(company.getName());%></option>
+                                <%
+                                }
+                                %>
                                 </select>
                             </div>                  
                         </fieldset>

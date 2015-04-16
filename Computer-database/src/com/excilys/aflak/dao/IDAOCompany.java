@@ -11,4 +11,11 @@ public interface IDAOCompany {
 	 * @return <Computer>
 	 */
 	List<Company> list();
+
+	/**
+	 * @param id
+	 * @return company
+	 */
+
+	Company find(int id);
 }

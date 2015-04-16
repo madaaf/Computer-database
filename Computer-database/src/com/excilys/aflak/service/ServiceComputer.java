@@ -26,4 +26,8 @@ public abstract class ServiceComputer {
 	public static List<Computer> getAllComputers() {
 		return ComputerDAO.INSTANCE.list();
 	}
+
+	public static List<Computer> getSomeComputers() {
+		return ComputerDAO.INSTANCE.getSomeComputers();
+	}
 }

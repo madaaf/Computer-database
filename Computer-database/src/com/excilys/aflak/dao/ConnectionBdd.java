@@ -13,6 +13,15 @@ public class ConnectionBdd {
 	private final static String password = "qwerty1234";
 	public static boolean TEST = false;
 
+	static {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static Connection getConnection() {
 		Connection connect = null;
 		try {

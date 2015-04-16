@@ -10,4 +10,8 @@ public class ServiceCompany {
 	public static List<Company> getAllCompanies() {
 		return CompanyDAO.INSTANCE.list();
 	}
+
+	public static Company findCompany(int id) {
+		return CompanyDAO.INSTANCE.find(id);
+	}
 }

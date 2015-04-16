@@ -46,8 +46,8 @@ public class TimeConvertor {
 				day = "0" + day;
 			}
 
-			timeFormat = new StringBuilder(day).append("/").append(month)
-					.append("/").append(year).toString();
+			timeFormat = new StringBuilder(day).append("-").append(month)
+					.append("-").append(year).toString();
 		} else {
 			timeFormat = " 0 ";
 		}
@@ -66,6 +66,12 @@ public class TimeConvertor {
 			e.printStackTrace();
 		}
 		return timeFormated;
+	}
+
+	public static LocalDateTime convertStringToLocalDateTime(String date) {
+		Timestamp ts = convertStringToTimestamp(date);
+		LocalDateTime ldt = convertTimestampToLocalDateTime(ts);
+		return ldt;
 	}
 
 	public static String convertLocalDateTimeToString(LocalDateTime ldt) {

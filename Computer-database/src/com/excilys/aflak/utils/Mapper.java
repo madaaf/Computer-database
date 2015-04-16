@@ -5,8 +5,13 @@ import java.sql.SQLException;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.presentation.dto.ComputerDTO;
 
 public class Mapper {
+
+	public static void main(String[] args) {
+		// Computer =
+	}
 
 	public static Computer mapComputer(ResultSet result) {
 		Company company = null;
@@ -37,5 +42,27 @@ public class Mapper {
 			e.printStackTrace();
 		}
 		return company;
+	}
+
+	public static Computer computerDTOToComputer(ComputerDTO cdto) {
+		Company company = new Company((int) cdto.getCompanyId(),
+				cdto.getCompanyName());
+		return new Computer(
+				(int) cdto.getId(),
+				cdto.getName(),
+				TimeConvertor.convertStringToLocalDateTime(cdto.getIntroduced()),
+				TimeConvertor.convertStringToLocalDateTime(cdto
+						.getDiscontinued()), company);
+
+	}
+
+	public static ComputerDTO computerToComputerDTO(Computer computer) {
+		return new ComputerDTO(computer.getId(), computer.getName(),
+				TimeConvertor.convertLocalDateTimeToString(computer
+						.getIntroduced()),
+				TimeConvertor.convertLocalDateTimeToString(computer
+						.getDiscontinued()), computer.getCompany().getId(),
+				computer.getCompany().getName());
+
 	}
 }

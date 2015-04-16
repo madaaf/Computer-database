@@ -8,7 +8,7 @@ public class Computer {
 	private String name;
 	private LocalDateTime introduced;
 	private LocalDateTime discontinued;
-	private Company ccompany;
+	private Company company;
 
 	public Computer() {
 	}
@@ -19,7 +19,7 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.ccompany = ccompagny;
+		this.company = ccompagny;
 	}
 
 	public int getId() {
@@ -55,19 +55,18 @@ public class Computer {
 	}
 
 	public Company getCompany() {
-		return ccompany;
+		return company;
 	}
 
-	public void setCompany(Company ccompany) {
-		this.ccompany = ccompany;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((ccompany == null) ? 0 : ccompany.hashCode());
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result
 				+ ((discontinued == null) ? 0 : discontinued.hashCode());
 		result = prime * result + id;
@@ -86,10 +85,10 @@ public class Computer {
 		if (getClass() != obj.getClass())
 			return false;
 		Computer other = (Computer) obj;
-		if (ccompany == null) {
-			if (other.ccompany != null)
+		if (company == null) {
+			if (other.company != null)
 				return false;
-		} else if (!ccompany.equals(other.ccompany))
+		} else if (!company.equals(other.company))
 			return false;
 		if (discontinued == null) {
 			if (other.discontinued != null)
@@ -116,7 +115,7 @@ public class Computer {
 
 		return new StringBuilder(" ").append(id).append("\t|\t").append(name)
 				.append("\t|\t ").append(introduced).append("\t|\t")
-				.append(discontinued).append("\t|\t").append(ccompany)
+				.append(discontinued).append("\t|\t").append(company)
 				.toString();
 	}
 }
