@@ -55,6 +55,6 @@ public interface IDAOComputer {
 	 * @return List<Computer>
 	 */
 
-	List<Computer> getSomeComputers();
+	List<Computer> getSomeComputers(int debut, int nbr);
 
 }

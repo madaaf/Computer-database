@@ -1,5 +1,7 @@
 <!DOCTYPE jsp>
 <%@page import="com.excilys.aflak.model.Computer"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
 <title>Computer Database</title>
@@ -12,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.jsp"> Application - Computer Database </a>
+            <a class="navbar-brand" href="index"> Application - Computer Database </a>
         </div>
     </header>
     <section id="main">
@@ -23,9 +25,7 @@
                         id: 0
                     </div>
                     <h1>Edit Computer</h1>
-					<% 
-					Computer com = (Computer)request.getAttribute("computer");
-					%>
+				
                     <form action="editComputer" method="POST">
                         <input type="hidden" value="0"/>
                         <fieldset>
@@ -44,14 +44,14 @@
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" id="companyId" name="editCompany">
-                                    <option value="${computer.company.id}"> ${computer.company.name} </option>
+                                    <option value="${computer.companyId}"> ${computeName} </option>
                                 </select>
                             </div>            
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Edit" class="btn btn-primary">
                             or
-                            <a href="dashboard.jsp" class="btn btn-default">Cancel</a>
+                            <a href="index" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

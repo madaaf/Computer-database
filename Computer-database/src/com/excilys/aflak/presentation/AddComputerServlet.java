@@ -58,14 +58,15 @@ public class AddComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		String computerName = request.getParameter("name");
-		String ok = request.getParameter("introduced");
 		LocalDateTime introduced = TimeConvertor
-				.convertStringToLocalDateTime(ok);
-		String ook = request.getParameter("discontinued");
+				.convertStringToLocalDateTime(request
+						.getParameter("introduced"));
 		LocalDateTime discontinued = TimeConvertor
-				.convertStringToLocalDateTime(ook);
+				.convertStringToLocalDateTime(request
+						.getParameter("discontinued"));
 
 		int companyId = Integer.parseInt(request.getParameter("companies"));
+
 		Company company = ServiceCompany.findCompany(companyId);
 		Computer com = new Computer(-1, computerName, introduced, discontinued,
 				company);

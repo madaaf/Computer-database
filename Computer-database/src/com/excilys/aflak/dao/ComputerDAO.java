@@ -16,7 +16,7 @@ import com.excilys.aflak.utils.TimeConvertor;
 public enum ComputerDAO implements IDAOComputer {
 
 	INSTANCE;
-	private static int compteur = 0;
+	private int compteur = 0;
 	private static final int LIMIT = 10;
 
 	@Override
@@ -176,7 +176,7 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public List<Computer> getSomeComputers() {
+	public List<Computer> getSomeComputers(int debut, int nbr) {
 		List<Computer> list = new ArrayList<Computer>();
 		Connection connect = ConnectionBdd.getConnection();
 		PreparedStatement state = null;
@@ -186,7 +186,7 @@ public enum ComputerDAO implements IDAOComputer {
 		try {
 			state = connect
 					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id LIMIT "
-							+ LIMIT + " OFFSET " + compteur * LIMIT);
+							+ nbr + " OFFSET " + debut);
 			result = state.executeQuery();
 			while (result.next()) {
 				computer = Mapper.mapComputer(result);

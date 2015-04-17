@@ -1,8 +1,11 @@
 <!DOCTYPE jsp>
+<%@page import="com.excilys.aflak.presentation.dto.ComputerDTO"%>
 <%@page import="com.excilys.aflak.utils.TimeConvertor"%>
 <%@page import="com.excilys.aflak.model.Computer"%>
 <%@page import="com.excilys.aflak.dao.ComputerDAO"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <html>
 <head>
 <title>Computer Database</title>
@@ -16,10 +19,9 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="mada"> Application - Computer Database </a>
+            <a class="navbar-brand" href="index?page=0"> Application - Computer Database </a>
         </div>
     </header>
-
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
@@ -79,52 +81,26 @@
                 </thead>
 
                 <!-- Browse attribute computers -->
-                <% 
-                List<Computer> listComputers = (List<Computer>)request.getAttribute("listComputers");
-            	for(int i =0; i<listComputers.size(); i++){       
-                %>
+                <c:forEach  items="${listComputers}" var="computer">
+       
                 <tbody id="results">
                     <tr>
                         <td class="editMode"> <input type="checkbox" name="cb" class="cb" value="0"> </td>
-                        <td> <a href="editComputer?id=<% out.print(listComputers.get(i).getId());%>" onclick=""> <% out.println(listComputers.get(i).getName()); %></a> </td>
-                        <td><% if( listComputers.get(i).getIntroduced() !=null) { out.println(TimeConvertor.convertLocalDateTimeToString(listComputers.get(i).getIntroduced()));}%></td>
-                        <td><% if(listComputers.get(i).getDiscontinued() != null) {  out.println(TimeConvertor.convertLocalDateTimeToString(listComputers.get(i).getDiscontinued()));}%></td>
-                        <td><% if(listComputers.get(i).getCompany().getName() != null ) out.println(listComputers.get(i).getCompany().getName()); %></td>
+                        <td> <a href="editComputer?id=${computer.id} " onclick="">${computer.id} ${computer.name}</a> </td>
+                        <td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>        
+                        <td> <c:if test="${computer.discontinued}"> ${computer.discontined}</c:if></td>
+                        <td> <c:if test="${computer.companyName}">${computer.companyName}</c:if></td>
 
                     </tr>                    
                 </tbody>
-                <%
-            	}
-                %>
+             </c:forEach>
             </table>
         </div>
     </section>
 
     <footer class="navbar-fixed-bottom">
-        <div class="container text-center">
-            <ul class="pagination">
-                <li>
-                    <a href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                  </a>
-              </li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
 
-        <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default">10</button>
-            <button type="button" class="btn btn-default">50</button>
-            <button type="button" class="btn btn-default">100</button>
-        </div>
+<tags:page nbrOfPages="${nbrOfPages}" debut="${debut}" fin="${fin}"></tags:page>
 
     </footer>
 <script src="../js/jquery.min.js"></script>

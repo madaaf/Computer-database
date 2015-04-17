@@ -3,6 +3,8 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.excilys.aflak.model.Company"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
 <title>Computer Database</title>
@@ -41,14 +43,9 @@
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" name="companies" id="companyId" >
-                                <%
-                                List<Company> listCompanies =  (List<Company>)request.getAttribute("listCompanies");
-                                for(Company company : listCompanies){
-                                %>
-                                    <option value="<%out.print(company.getId());%>"><% out.println(company.getName());%></option>
-                                <%
-                                }
-                                %>
+                                <c:forEach items="${listCompanies}" var="company">                                                       
+                                    <option value="${company.id}">${company.name}</option>
+                                  </c:forEach>
                                 </select>
                             </div>                  
                         </fieldset>

@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.presentation.dto.ComputerDTO;
 import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.utils.Mapper;
 import com.excilys.aflak.utils.TimeConvertor;
 
 /**
@@ -38,8 +40,8 @@ public class editComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		int id = Integer.parseInt(request.getParameter("id"));
 		Computer computer = ServiceComputer.findComputer(id);
-		System.out.print("IIIID " + computer.getName());
-		request.setAttribute("computer", computer);
+		ComputerDTO dto = Mapper.computerToComputerDTO(computer);
+		request.setAttribute("computer", dto);
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
 				.forward(request, response);

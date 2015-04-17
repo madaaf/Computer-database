@@ -1,11 +1,7 @@
 package com.excilys.aflak.utils;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 public class TimeConvertor {
 
@@ -26,60 +22,28 @@ public class TimeConvertor {
 		}
 	}
 
-	public static String convertTimestampToString(Timestamp time) {
-		String timeFormat = null;
-		Calendar cal = Calendar.getInstance();
-		if (time != null) {
-			cal.setTime(new Date(time.getTime()));
-			String year = Integer.toString(cal.get(Calendar.YEAR));
-
-			int m = cal.get(Calendar.MONTH) + 1;
-			String month = Integer.toString(m);
-
-			if (m < 10) {
-				month = "0" + month;
-			}
-
-			int d = cal.get(Calendar.DAY_OF_MONTH);
-			String day = Integer.toString(d);
-			if (d < 10) {
-				day = "0" + day;
-			}
-
-			timeFormat = new StringBuilder(day).append("-").append(month)
-					.append("-").append(year).toString();
-		} else {
-			timeFormat = " 0 ";
-		}
-		return timeFormat;
-	}
-
-	public static Timestamp convertStringToTimestamp(String date) {
-		Date dateStamp;
-		Timestamp timeFormated = null;
-		try {
-			dateStamp = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-			long time = dateStamp.getTime();
-			timeFormated = new Timestamp(time);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return timeFormated;
-	}
-
+	// date format : dd-mm-yyyy
 	public static LocalDateTime convertStringToLocalDateTime(String date) {
-		Timestamp ts = convertStringToTimestamp(date);
-		LocalDateTime ldt = convertTimestampToLocalDateTime(ts);
-		return ldt;
+		if (Regex.isDateFormatFr(date)) {
+			String[] parts = date.split("-");
+			String day = parts[0]; // 004
+			String month = parts[1];
+			String year = parts[2];
+			return LocalDateTime.of(Integer.parseInt(year),
+					Integer.parseInt(month), Integer.parseInt(day), 0, 0);
+		}
+		return null;
 	}
 
 	public static String convertLocalDateTimeToString(LocalDateTime ldt) {
 		if (ldt == null) {
 			return null;
 		} else {
-			Timestamp ts = convertLocalDateTimeToTimestamp(ldt);
-			return convertTimestampToString(ts);
+			int day = ldt.getDayOfMonth();
+			int month = ldt.getMonthValue();
+			int year = ldt.getYear();
+			return new StringBuilder().append(day).append("-").append(month)
+					.append("-").append(year).toString();
 		}
 	}
 

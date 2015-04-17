@@ -1,6 +1,6 @@
 package com.excilys.aflak.ui;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,9 +23,9 @@ public class Menu {
 	private static String input;
 	private static String name;
 
-	private static Timestamp dateFormated = null;
-	private static Timestamp introduced = null;
-	private static Timestamp discontinued = null;
+	private static LocalDateTime dateFormated = null;
+	private static LocalDateTime introduced = null;
+	private static LocalDateTime discontinued = null;
 
 	private static int idCompany = -1;
 	private static int idComputer = -1;
@@ -53,9 +53,9 @@ public class Menu {
 		System.out.println(" Enter the name of your computer : ");
 		name = sc.nextLine();
 		// demande la date "introduced"
-		introduced = DisplayDate();
+		introduced = DisplayDate("introduced");
 		// demande la date "discontinued"
-		discontinued = DisplayDate();
+		discontinued = DisplayDate("discontinued");
 		// demande l'id de la companie
 		System.out.println("Enter the id of its company : ");
 		input = sc.nextLine();
@@ -66,12 +66,7 @@ public class Menu {
 			idCompany = Integer.parseInt(input);
 
 			Company c = new Company(2, null);
-			com = new Computer(
-					computerId,
-					name,
-					TimeConvertor.convertTimestampToLocalDateTime(introduced),
-					TimeConvertor.convertTimestampToLocalDateTime(discontinued),
-					c);
+			com = new Computer(computerId, name, introduced, discontinued, c);
 		}
 		return com;
 	}
@@ -81,17 +76,18 @@ public class Menu {
 	// s'il rentre un format incorrect, posez lui la question une
 	// nouvelle fois
 	// renvoyez la date en format Timestamp
-	public static Timestamp DisplayDate() {
+	public static LocalDateTime DisplayDate(String name) {
 		do {
-			System.out
-					.println(" Enter the date of introduced (dd-mm-yyyy)  : ");
+			System.out.println(" Enter the date of " + name
+					+ " (dd-mm-yyyy)  : ");
 			input = sc.nextLine();
 			isDateFr = Regex.isDateFormatFr(input);
 
 			if (input.isEmpty()) {
 				dateFormated = null;
 			} else if (isDateFr) {
-				dateFormated = TimeConvertor.convertStringToTimestamp(input);
+				dateFormated = TimeConvertor
+						.convertStringToLocalDateTime(input);
 			} else {
 				System.err.println(" You have to respect the format's date");
 			}
@@ -104,8 +100,10 @@ public class Menu {
 
 		switch (choice) {
 		case "1":
+			int debut = 0;
+			int nbr = 10;
 			System.out.println("List of computers : ");
-			listComputer = ServiceComputer.getSomeComputers();
+			listComputer = ServiceComputer.getSomeComputers(debut, nbr);
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
@@ -115,7 +113,9 @@ public class Menu {
 			do {
 				switch (input) {
 				case "n":
-					listComputer = ServiceComputer.getSomeComputers();
+					debut++;
+					listComputer = ServiceComputer.getSomeComputers(
+							debut * nbr, nbr);
 					for (int i = 0; i < listComputer.size(); i++) {
 						System.out.println(listComputer.get(i).toString());
 					}
@@ -153,6 +153,10 @@ public class Menu {
 			Computer com = createAndUpdateComputer(-1);
 			if (com != null) {
 				ServiceComputer.createComputer(com);
+				System.out.println("Your computer is created : "
+						+ com.toString());
+			} else {
+				System.out.println("Your computer is empty");
 			}
 			break;
 
