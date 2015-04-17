@@ -4,4 +4,5 @@
 <%@ attribute name="body" required="true" type="java.lang.String" description=""%>  
 
 
- <a href="index?page=${page}" >${body} </a>
+ <a href="index?page=${page}">${body} </a>
+ 

@@ -26,7 +26,7 @@
                            
               <li>
                <c:if test="${fin<nbrOfPages}" >
-              		<tags:link body="<span aria-hidden='true'>&raquo;</span>" page="${fin+1}"> </tags:link>
+              		<tags:link body="<span aria-hidden='true'>&raquo;</span>" page="${fin+1}" />
                 </c:if>
             </li>
       
