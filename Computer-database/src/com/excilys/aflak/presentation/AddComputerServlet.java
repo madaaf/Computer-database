@@ -73,7 +73,7 @@ public class AddComputerServlet extends HttpServlet {
 		ServiceComputer.createComputer(com);
 		// redirection vers une url ,recharger la page
 		// forward = > redirection jsp
-		response.sendRedirect("mada");
+		response.sendRedirect("index");
 
 	}
 }

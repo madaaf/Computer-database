@@ -26,7 +26,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 				
-                    <form action="editComputer" method="POST">
+                    <form action="editComputer" name="computerForm" method="POST" onsubmit="return validateForm();" >
                         <input type="hidden" value="0"/>
                         <fieldset>
                             <div class="form-group">
@@ -58,5 +58,6 @@
             </div>
         </div>
     </section>
+    <script src="js/editComputer.js"></script>
 </body>
 </html>

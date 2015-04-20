@@ -7,6 +7,7 @@
 
 <html>
 <head>
+
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
@@ -17,7 +18,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.jsp"> Application - Computer Database </a>
+            <a class="navbar-brand" href="index"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -26,17 +27,17 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="addComputer" method="POST">
+                    <form action="addComputer" method="POST" name="computerForm" onsubmit=" return checkForm()" >
                         <fieldset>
-                            <div class="form-group">
+                            <div class="form-group" id="divName" >
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="name" placeholder="Computer name">
+                                <input type="text" class="form-control" id="computerName" name="name"  placeholder="Computer name">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"  id="divIntroduced">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" placeholder="dd-mm-yyyy">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="divDiscontinued" >
                                 <label for="discontinued">Discontinued date</label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="dd-mm-yyyy">
                             </div>
@@ -50,14 +51,18 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" value="Add" class="btn btn-primary" id="addComputer">
                             or
-                            <a href="dashboard.jsp" class="btn btn-default">Cancel</a>
+                            <a href="index" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+        <script src="js/jquery.min.js"></script>
+     <script src="js/editComputer.js"></script>
+
+
 </body>
 </html>
