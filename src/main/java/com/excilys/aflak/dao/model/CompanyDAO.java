@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,10 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.aflak.dao.connection.ConnectionBdd;
+import com.excilys.aflak.dao.inter.IDAOCompany;
+import com.excilys.aflak.dao.mapper.MapperDAO;
 import com.excilys.aflak.model.Company;
-import com.excilys.aflak.utils.Mapper;
 
 public enum CompanyDAO implements IDAOCompany {
 	// toute les methode en static
@@ -28,7 +30,7 @@ public enum CompanyDAO implements IDAOCompany {
 			result = state.executeQuery();
 
 			while (result.next()) {
-				company = Mapper.mapCompany(result);
+				company = MapperDAO.mapCompany(result);
 				listCompany.add(company);
 			}
 
@@ -59,7 +61,7 @@ public enum CompanyDAO implements IDAOCompany {
 
 			result = state.executeQuery();
 			if (result.first()) {
-				company = Mapper.mapCompany(result);
+				company = MapperDAO.mapCompany(result);
 			}
 
 		} catch (Exception e) {

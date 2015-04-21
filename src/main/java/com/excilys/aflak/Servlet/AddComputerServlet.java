@@ -39,7 +39,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<Company> listCompanies = ServiceCompany.getAllCompanies();
+		List<Company> listCompanies = ServiceCompany.SERVICE.getAllCompanies();
 		request.setAttribute("listCompanies", listCompanies);
 
 		request.getServletContext()
@@ -67,10 +67,10 @@ public class AddComputerServlet extends HttpServlet {
 
 		int companyId = Integer.parseInt(request.getParameter("companies"));
 
-		Company company = ServiceCompany.findCompany(companyId);
+		Company company = ServiceCompany.SERVICE.findCompany(companyId);
 		Computer com = new Computer(-1, computerName, introduced, discontinued,
 				company);
-		ServiceComputer.createComputer(com);
+		ServiceComputer.SERVICE.createComputer(com);
 		// redirection vers une url ,recharger la page
 		// forward = > redirection jsp
 		response.sendRedirect("index");

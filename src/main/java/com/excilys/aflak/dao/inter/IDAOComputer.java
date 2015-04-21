@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.inter;
 
 import java.sql.Connection;
 import java.util.List;
@@ -13,9 +13,9 @@ public interface IDAOComputer {
 	 * Methode de creation
 	 * 
 	 * @param obj
-	 * @return boolean
+	 * @return id computer created
 	 */
-	boolean create(Computer obj);
+	long create(Computer obj);
 
 	/**
 	 * Methode pour effacer
@@ -57,4 +57,9 @@ public interface IDAOComputer {
 
 	List<Computer> getSomeComputers(int debut, int nbr);
 
+	/**
+	 * @return size Table of Computer
+	 */
+
+	int getSizeTabCommputers();
 }

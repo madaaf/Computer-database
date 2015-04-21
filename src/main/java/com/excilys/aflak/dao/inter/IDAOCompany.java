@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.inter;
 
 import java.util.List;
 

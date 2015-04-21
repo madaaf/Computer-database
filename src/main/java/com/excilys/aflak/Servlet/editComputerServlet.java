@@ -39,7 +39,7 @@ public class editComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		int id = Integer.parseInt(request.getParameter("id"));
-		Computer computer = ServiceComputer.findComputer(id);
+		Computer computer = ServiceComputer.SERVICE.findComputer(id);
 		ComputerDTO dto = Mapper.computerToComputerDTO(computer);
 		request.setAttribute("computer", dto);
 		request.getServletContext()

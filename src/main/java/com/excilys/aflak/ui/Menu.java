@@ -103,7 +103,7 @@ public class Menu {
 			int debut = 0;
 			int nbr = 10;
 			System.out.println("List of computers : ");
-			listComputer = ServiceComputer.getSomeComputers(debut, nbr);
+			listComputer = ServiceComputer.SERVICE.getSomeComputers(debut, nbr);
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
@@ -114,7 +114,7 @@ public class Menu {
 				switch (input) {
 				case "n":
 					debut++;
-					listComputer = ServiceComputer.getSomeComputers(
+					listComputer = ServiceComputer.SERVICE.getSomeComputers(
 							debut * nbr, nbr);
 					for (int i = 0; i < listComputer.size(); i++) {
 						System.out.println(listComputer.get(i).toString());
@@ -129,7 +129,7 @@ public class Menu {
 
 		case "2":
 			System.out.println("List of companies : ");
-			listCompany = ServiceCompany.getAllCompanies();
+			listCompany = ServiceCompany.SERVICE.getAllCompanies();
 			for (int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
@@ -141,8 +141,8 @@ public class Menu {
 			isInteger = Regex.isInteger(input);
 			Computer computer = new Computer();
 			if (isInteger) {
-				computer = ServiceComputer
-						.findComputer(Integer.parseInt(input));
+				computer = ServiceComputer.SERVICE.findComputer(Integer
+						.parseInt(input));
 			} else {
 				System.out.println("You have to enter a number");
 				break;
@@ -152,7 +152,7 @@ public class Menu {
 		case "4":
 			Computer com = createAndUpdateComputer(-1);
 			if (com != null) {
-				ServiceComputer.createComputer(com);
+				ServiceComputer.SERVICE.createComputer(com);
 				System.out.println("Your computer is created : "
 						+ com.toString());
 			} else {
@@ -176,7 +176,7 @@ public class Menu {
 
 			Computer comp = createAndUpdateComputer(idComputer);
 			if (comp != null) {
-				ServiceComputer.updateComputer(comp);
+				ServiceComputer.SERVICE.updateComputer(comp);
 			}
 
 			break;
@@ -188,7 +188,8 @@ public class Menu {
 			isInteger = Regex.isInteger(input);
 			if (isInteger) {
 				idComputer = Integer.parseInt(input);
-				boolean isDeleted = ServiceComputer.deleteComputer(idComputer);
+				boolean isDeleted = ServiceComputer.SERVICE
+						.deleteComputer(idComputer);
 				if (isDeleted == true) {
 					System.out.println("your computer is deleted");
 				}

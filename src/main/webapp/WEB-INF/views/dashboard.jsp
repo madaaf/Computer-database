@@ -96,7 +96,7 @@
 
     <footer class="navbar-fixed-bottom">
 
-<tags:page nbrOfPages="${nbrOfPages}" debut="${debut}" fin="${fin}"></tags:page>
+		<tags:page nbrOfPages="${nbrOfPages}" debut="${debut}" fin="${fin}" limit="${limit}"></tags:page>
 
     </footer>
 <script src="js/jquery.min.js"></script>

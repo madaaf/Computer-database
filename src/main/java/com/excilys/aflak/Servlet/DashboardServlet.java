@@ -21,18 +21,15 @@ import com.excilys.aflak.utils.Mapper;
 @WebServlet("/index")
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private int limit;
-	private int debut;
-	private int fin;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DashboardServlet() {
 		super();
-		this.limit = 10;
-		this.debut = 0;
-		this.fin = debut + 5;
+		// this.limit = 10;
+		// this.debut = 0;
+		// this.fin = debut + 5;
 	}
 
 	/**
@@ -42,8 +39,11 @@ public class DashboardServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		int limit = 10;
+		int debut = 0;
+		int fin = debut + 5;
 
-		int nbrComputers = ServiceComputer.getAllComputers().size();
+		int nbrComputers = ServiceComputer.SERVICE.getSizeTabComputers();
 		float nbrOfPagesF = (float) nbrComputers / (float) limit;
 		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
 
@@ -56,19 +56,16 @@ public class DashboardServlet extends HttpServlet {
 			fin = debut + 5;
 		}
 
-		request.setAttribute("debut", debut);
-		request.setAttribute("fin", fin);
-
-		System.out.println("debu " + debut);
-		System.out.println("fin " + fin);
-
-		// TODO Auto-generated method stub
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
-		for (Computer computer : ServiceComputer.getSomeComputers(
-				limit * debut, limit)) {
+		for (Computer computer : ServiceComputer.SERVICE.getSomeComputers(limit
+				* debut, limit)) {
 			listComputers.add(Mapper.computerToComputerDTO(computer));
 		}
+
+		request.setAttribute("debut", debut);
+		request.setAttribute("fin", fin);
 		request.setAttribute("listComputers", listComputers);
+		request.setAttribute("limit", limit);
 		request.setAttribute("nbrOfPages", nbrOfPages);
 
 		request.getServletContext()

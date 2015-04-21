@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +8,13 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.aflak.dao.connection.ConnectionBdd;
+import com.excilys.aflak.dao.connection.DAOException;
+import com.excilys.aflak.dao.inter.IDAOComputer;
+import com.excilys.aflak.dao.mapper.MapperDAO;
+import com.excilys.aflak.dao.utils.TimeConvertorDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.utils.Mapper;
-import com.excilys.aflak.utils.TimeConvertor;
 
 public enum ComputerDAO implements IDAOComputer {
 
@@ -20,17 +23,21 @@ public enum ComputerDAO implements IDAOComputer {
 	private static final int LIMIT = 10;
 
 	@Override
-	public boolean create(Computer computer) {
+	public long create(Computer computer) {
 		PreparedStatement state = null;
 		Connection connect = ConnectionBdd.getConnection();
+		ResultSet set = null;
+		long idComputer;
 		try {
 			state = connect
-					.prepareStatement("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)");
+					.prepareStatement(
+							"INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)",
+							state.RETURN_GENERATED_KEYS);
 			state.setString(1, computer.getName());
-			state.setTimestamp(2, TimeConvertor
+			state.setTimestamp(2, TimeConvertorDAO
 					.convertLocalDateTimeToTimestamp(computer.getIntroduced()));
 			state.setTimestamp(3,
-					TimeConvertor.convertLocalDateTimeToTimestamp(computer
+					TimeConvertorDAO.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
 			if (computer.getCompany().getId() == (-1)) {
 				state.setNull(4, Types.BIGINT);
@@ -38,17 +45,19 @@ public enum ComputerDAO implements IDAOComputer {
 				state.setInt(4, (computer.getCompany().getId()));
 			}
 
-			int resultat = state.executeUpdate();
-			if (resultat == 1) {
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			state.executeUpdate();
+			set = state.getGeneratedKeys();
+			set.next();
+			// retourn l'id du computer
+			idComputer = set.getLong(1);
+
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
 
 		} finally {
-			ConnectionBdd.closeConnection(connect, state, null);
+			ConnectionBdd.closeConnection(connect, state, set);
 		}
-		return false;
+		return idComputer;
 	}
 
 	@Override
@@ -71,7 +80,7 @@ public enum ComputerDAO implements IDAOComputer {
 			}
 			return true;
 		} catch (SQLException e) {
-			throw new DAOException("Connection Failed");
+			throw new DAOException("Connection Failed " + e);
 
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, null);
@@ -89,10 +98,10 @@ public enum ComputerDAO implements IDAOComputer {
 					.prepareStatement("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
 
 			state.setString(1, computer.getName());
-			state.setTimestamp(2, TimeConvertor
+			state.setTimestamp(2, TimeConvertorDAO
 					.convertLocalDateTimeToTimestamp(computer.getIntroduced()));
 			state.setTimestamp(3,
-					TimeConvertor.convertLocalDateTimeToTimestamp(computer
+					TimeConvertorDAO.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
 			if (computer.getCompany().getId() > 0) {
 				state.setInt(4, computer.getCompany().getId());
@@ -108,8 +117,8 @@ public enum ComputerDAO implements IDAOComputer {
 
 			int result = state.executeUpdate();
 
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, null);
 		}
@@ -135,10 +144,10 @@ public enum ComputerDAO implements IDAOComputer {
 			result = state.executeQuery();
 
 			if (result.first()) {
-				computer = Mapper.mapComputer(result);
+				computer = MapperDAO.mapComputer(result);
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, result);
 		}
@@ -161,13 +170,13 @@ public enum ComputerDAO implements IDAOComputer {
 
 			result = state.executeQuery();
 			while (result.next()) {
-				computer = Mapper.mapComputer(result);
+				computer = MapperDAO.mapComputer(result);
 				listComputer.add(computer);
 
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, result);
 		}
@@ -189,18 +198,38 @@ public enum ComputerDAO implements IDAOComputer {
 							+ nbr + " OFFSET " + debut);
 			result = state.executeQuery();
 			while (result.next()) {
-				computer = Mapper.mapComputer(result);
+				computer = MapperDAO.mapComputer(result);
 				list.add(computer);
 			}
 			compteur++;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, result);
 		}
 
 		return list;
+	}
+
+	@Override
+	public int getSizeTabCommputers() {
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+		ResultSet result = null;
+		int size = 0;
+		try {
+			state = connect.prepareStatement("select COUNT(*) from computer");
+			result = state.executeQuery();
+			if (result.next()) {
+				size = result.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, null);
+		}
+		return size;
 	}
 
 }

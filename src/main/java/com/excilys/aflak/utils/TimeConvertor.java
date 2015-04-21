@@ -1,26 +1,8 @@
 package com.excilys.aflak.utils;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class TimeConvertor {
-
-	public static LocalDateTime convertTimestampToLocalDateTime(
-			Timestamp timestamp) {
-		if (timestamp == null) {
-			return null;
-		} else {
-			return timestamp.toLocalDateTime();
-		}
-	}
-
-	public static Timestamp convertLocalDateTimeToTimestamp(LocalDateTime ldt) {
-		if (ldt == null) {
-			return null;
-		} else {
-			return Timestamp.valueOf(ldt);
-		}
-	}
 
 	// date format : dd-mm-yyyy
 	public static LocalDateTime convertStringToLocalDateTime(String date) {

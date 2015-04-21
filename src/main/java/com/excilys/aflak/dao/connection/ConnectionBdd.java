@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

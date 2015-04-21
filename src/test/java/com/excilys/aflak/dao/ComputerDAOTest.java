@@ -8,8 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.aflak.dao.ComputerDAO;
-import com.excilys.aflak.dao.ConnectionBdd;
+import com.excilys.aflak.dao.connection.ConnectionBdd;
+import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.utils.ExecuteScript;
