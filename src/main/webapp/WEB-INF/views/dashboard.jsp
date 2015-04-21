@@ -1,9 +1,5 @@
 <!DOCTYPE jsp>
-<%@page import="com.excilys.aflak.presentation.dto.ComputerDTO"%>
-<%@page import="com.excilys.aflak.utils.TimeConvertor"%>
-<%@page import="com.excilys.aflak.model.Computer"%>
-<%@page import="com.excilys.aflak.dao.ComputerDAO"%>
-<%@page import="java.util.List"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <html>
