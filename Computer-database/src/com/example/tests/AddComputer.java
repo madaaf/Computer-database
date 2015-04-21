@@ -38,7 +38,7 @@ public class AddComputer {
 	}
 
 	@Test
-	public void testAddComputerFull() throws Exception {
+	public void testAddComputerRightData() throws Exception {
 		driver.get(baseUrl + "/Computer-database/addComputer");
 		driver.findElement(By.id("computerName")).clear();
 		driver.findElement(By.id("computerName")).sendKeys("mada");
@@ -49,6 +49,18 @@ public class AddComputer {
 		driver.findElement(By.id("addComputer")).click();
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/index");
+	}
+
+	@Test
+	public void testAddFalseData() throws Exception {
+		driver.get(baseUrl + "/Computer-database/addComputer");
+		driver.findElement(By.id("introduced")).clear();
+		driver.findElement(By.id("introduced")).sendKeys("vrfef");
+		driver.findElement(By.id("discontinued")).clear();
+		driver.findElement(By.id("discontinued")).sendKeys("19-022-1332f");
+		driver.findElement(By.id("addComputer")).click();
+		Assert.assertEquals(driver.getCurrentUrl(),
+				"http://localhost:8080/Computer-database/addComputer");
 	}
 
 	@After
