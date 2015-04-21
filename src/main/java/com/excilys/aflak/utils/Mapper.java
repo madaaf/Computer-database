@@ -3,9 +3,9 @@ package com.excilys.aflak.utils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.presentation.dto.ComputerDTO;
 
 public class Mapper {
 

@@ -1,4 +1,4 @@
-package com.excilys.aflak.tests;
+package com.excilys.aflak.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.aflak.dao.CompanyDAO;
-import com.excilys.aflak.dao.ConnectionBdd;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.utils.ExecuteScript;
+//import com.excilys.aflak.dao.CompanyDAO;
 
 public class CompanyDAOTest {
 	List<Company> listCompanies = null;

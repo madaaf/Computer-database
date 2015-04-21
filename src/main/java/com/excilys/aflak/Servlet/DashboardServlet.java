@@ -1,4 +1,4 @@
-package com.excilys.aflak.presentation;
+package com.excilys.aflak.Servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.presentation.dto.ComputerDTO;
 import com.excilys.aflak.service.ServiceComputer;
 import com.excilys.aflak.utils.Mapper;
 

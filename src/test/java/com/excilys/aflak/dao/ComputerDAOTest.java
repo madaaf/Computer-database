@@ -1,4 +1,4 @@
-package com.excilys.aflak.tests;
+package com.excilys.aflak.dao;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.tests;
+package com.excilys.selenium;
 
 import static org.junit.Assert.fail;
 

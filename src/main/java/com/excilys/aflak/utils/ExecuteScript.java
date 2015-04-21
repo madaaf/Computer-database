@@ -10,7 +10,8 @@ public class ExecuteScript {
 		// --user=admincdb
 		try {
 			String line;
-			Process p = Runtime.getRuntime().exec("./refresh-db-test.sh");
+			Process p = Runtime.getRuntime().exec(
+					"./src/test/resources/refresh-db-test.sh");
 			BufferedReader input = new BufferedReader(new InputStreamReader(
 					p.getInputStream()));
 			while ((line = input.readLine()) != null) {

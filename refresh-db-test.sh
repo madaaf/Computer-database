@@ -1,1 +1,0 @@
-mysql -u root -proot -e "source ./refresh-db-test.sql"
