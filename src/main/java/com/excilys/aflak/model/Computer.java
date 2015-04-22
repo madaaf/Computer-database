@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Computer {
 
-	private int id;
+	private long id;
 	private String name;
 	private LocalDateTime introduced;
 	private LocalDateTime discontinued;
@@ -13,7 +13,7 @@ public class Computer {
 	public Computer() {
 	}
 
-	public Computer(int id, String name, LocalDateTime introduced,
+	public Computer(long id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company ccompagny) {
 		this.id = id;
 		this.name = name;
@@ -22,7 +22,7 @@ public class Computer {
 		this.company = ccompagny;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -60,20 +60,6 @@ public class Computer {
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((company == null) ? 0 : company.hashCode());
-		result = prime * result
-				+ ((discontinued == null) ? 0 : discontinued.hashCode());
-		result = prime * result + id;
-		result = prime * result
-				+ ((introduced == null) ? 0 : introduced.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
 	}
 
 	@Override

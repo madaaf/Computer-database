@@ -12,7 +12,7 @@ public enum ServiceCompany {
 		return CompanyDAO.INSTANCE.list();
 	}
 
-	public Company findCompany(int id) {
+	public Company findCompany(long id) {
 		return CompanyDAO.INSTANCE.find(id);
 	}
 }

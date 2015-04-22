@@ -21,7 +21,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                121 Computers found
+                ${nbrComputers} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -83,10 +83,10 @@
                     <tr>
                         <td class="editMode"> <input type="checkbox" name="cb" class="cb" value="0"> </td>
                         <td> <a href="editComputer?id=${computer.id} " onclick="">${computer.id} ${computer.name}</a> </td>
-                        <td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>        
-                        <td> <c:if test="${computer.discontinued}"> ${computer.discontined}</c:if></td>
-                        <td> <c:if test="${computer.companyName}">${computer.companyName}</c:if></td>
-
+                	 <td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>                	
+              		 <td> <c:if test="${computer.discontinued!=null}"> ${computer.discontinued}</c:if></td>
+              		  <td> <c:if test="${computer.companyName!=null}">${computer.companyName}</c:if></td>
+          
                     </tr>                    
                 </tbody>
              </c:forEach>

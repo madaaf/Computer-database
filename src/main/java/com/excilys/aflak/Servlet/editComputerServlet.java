@@ -2,6 +2,8 @@ package com.excilys.aflak.Servlet;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.aflak.dto.ComputerDTO;
+import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.service.ServiceCompany;
 import com.excilys.aflak.service.ServiceComputer;
 import com.excilys.aflak.utils.Mapper;
 import com.excilys.aflak.utils.TimeConvertor;
@@ -38,9 +42,14 @@ public class editComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int id = Integer.parseInt(request.getParameter("id"));
+		long id = Long.parseLong(request.getParameter("id"));
 		Computer computer = ServiceComputer.SERVICE.findComputer(id);
 		ComputerDTO dto = Mapper.computerToComputerDTO(computer);
+
+		List<Company> listCompanies = new ArrayList<Company>();
+		listCompanies = ServiceCompany.SERVICE.getAllCompanies();
+
+		request.setAttribute("listCompanies", listCompanies);
 		request.setAttribute("computer", dto);
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
@@ -55,12 +64,20 @@ public class editComputerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		long id = Long.parseLong(request.getParameter("computerId"));
 		String name = request.getParameter("editName");
 		LocalDateTime introduced = TimeConvertor
 				.convertStringToLocalDateTime(request
 						.getParameter("editIntroduced"));
-
+		LocalDateTime discontinued = TimeConvertor
+				.convertStringToLocalDateTime(request
+						.getParameter("editDiscontinued"));
+		long companyId = Long.parseLong(request.getParameter("editCompanyId"));
+		Company company = ServiceCompany.SERVICE.findCompany(companyId);
+		Computer computer = new Computer(id, name, introduced, discontinued,
+				company);
+		ServiceComputer.SERVICE.updateComputer(computer);
+		response.sendRedirect("index");
 	}
-
 }

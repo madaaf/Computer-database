@@ -65,7 +65,7 @@ public class AddComputerServlet extends HttpServlet {
 				.convertStringToLocalDateTime(request
 						.getParameter("discontinued"));
 
-		int companyId = Integer.parseInt(request.getParameter("companies"));
+		long companyId = Long.parseLong(request.getParameter("companies"));
 
 		Company company = ServiceCompany.SERVICE.findCompany(companyId);
 		Computer com = new Computer(-1, computerName, introduced, discontinued,

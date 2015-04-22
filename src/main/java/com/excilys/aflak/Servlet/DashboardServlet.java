@@ -43,10 +43,6 @@ public class DashboardServlet extends HttpServlet {
 		int debut = 0;
 		int fin = debut + 5;
 
-		int nbrComputers = ServiceComputer.SERVICE.getSizeTabComputers();
-		float nbrOfPagesF = (float) nbrComputers / (float) limit;
-		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
-
 		if (request.getParameter("limit") != null) {
 			limit = Integer.parseInt(request.getParameter("limit"));
 		}
@@ -62,11 +58,16 @@ public class DashboardServlet extends HttpServlet {
 			listComputers.add(Mapper.computerToComputerDTO(computer));
 		}
 
+		int nbrComputers = ServiceComputer.SERVICE.getSizeTabComputers();
+		float nbrOfPagesF = (float) nbrComputers / (float) limit;
+		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
+
 		request.setAttribute("debut", debut);
 		request.setAttribute("fin", fin);
 		request.setAttribute("listComputers", listComputers);
 		request.setAttribute("limit", limit);
 		request.setAttribute("nbrOfPages", nbrOfPages);
+		request.setAttribute("nbrComputers", nbrComputers);
 
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")

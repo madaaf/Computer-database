@@ -10,13 +10,13 @@
         <div class="container text-center">
          
             <ul class="pagination">
-             
+             <!-- bouton retour -->
                 <li>
                    <c:if test="${debut>0}">
                  	 <tags:link body="<span aria-hidden='true'>&laquo;</span>" page="${debut-1}"  limit="${limit}" > </tags:link>
                   </c:if>
               </li>
-             
+               <!-- bouton page -->
               <c:forEach var="i" begin="${debut}" end="${fin}">     
               	<c:if test="${i<nbrOfPages}" >	
              	 	<li> 
@@ -24,17 +24,18 @@
              	 	</li> 
                	</c:if> 
               </c:forEach>
-                           
+              <!-- bouton suivant -->          
               <li>
                <c:if test="${fin<nbrOfPages}" >
               		<tags:link body="<span aria-hidden='true'>&raquo;</span>" page="${fin+1}"  limit="${limit}" />
                 </c:if>
             </li>
-      
+      		
         </ul>
  	
  	
         <div class="btn-group btn-group-sm pull-right" role="group" >
+
       	 	<tags:link body="10" page="0" limit="10" />
       	 	<tags:link body="50" page="0" limit="50" />
       	 	<tags:link body="100" page="0" limit="100" />

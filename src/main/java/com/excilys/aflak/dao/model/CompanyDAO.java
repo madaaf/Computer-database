@@ -44,7 +44,7 @@ public enum CompanyDAO implements IDAOCompany {
 	}
 
 	@Override
-	public Company find(int id) {
+	public Company find(long id) {
 		Connection connect = ConnectionBdd.getConnection();
 		ResultSet result = null;
 		PreparedStatement state = null;
@@ -54,7 +54,7 @@ public enum CompanyDAO implements IDAOCompany {
 					.prepareStatement("SELECT * from company WHERE id = ?");
 
 			if (id > 0) {
-				state.setInt(1, id);
+				state.setLong(1, id);
 			} else {
 				state.setNull(1, Types.BIGINT);
 			}

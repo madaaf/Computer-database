@@ -42,7 +42,7 @@ public enum ComputerDAO implements IDAOComputer {
 			if (computer.getCompany().getId() == (-1)) {
 				state.setNull(4, Types.BIGINT);
 			} else {
-				state.setInt(4, (computer.getCompany().getId()));
+				state.setLong(4, (computer.getCompany().getId()));
 			}
 
 			state.executeUpdate();
@@ -61,7 +61,7 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(long id) {
 		// TODO Auto-generated method stub
 		int result = 0;
 		Connection connect = ConnectionBdd.getConnection();
@@ -70,7 +70,7 @@ public enum ComputerDAO implements IDAOComputer {
 			state = connect
 					.prepareStatement("DELETE FROM computer WHERE id = ?");
 			if (id > 0) {
-				state.setInt(1, id);
+				state.setLong(1, id);
 			} else {
 				state.setNull(1, Types.BIGINT);
 			}
@@ -104,13 +104,13 @@ public enum ComputerDAO implements IDAOComputer {
 					TimeConvertorDAO.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
 			if (computer.getCompany().getId() > 0) {
-				state.setInt(4, computer.getCompany().getId());
+				state.setLong(4, computer.getCompany().getId());
 			} else {
 				state.setNull(4, Types.BIGINT);
 			}
 
 			if (computer.getId() > 0) {
-				state.setInt(5, computer.getId());
+				state.setLong(5, computer.getId());
 			} else {
 				state.setNull(5, Types.BIGINT);
 			}
@@ -126,7 +126,7 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public Computer find(int id) {
+	public Computer find(long id) {
 		Computer computer = new Computer();
 		Company company;
 		Connection connect = ConnectionBdd.getConnection();
@@ -136,7 +136,7 @@ public enum ComputerDAO implements IDAOComputer {
 			state = connect
 					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id = ?");
 			if (id > 0) {
-				state.setInt(1, id);
+				state.setLong(1, id);
 			} else {
 				state.setNull(1, Types.BIGINT);
 			}

@@ -23,7 +23,7 @@ public interface IDAOComputer {
 	 * @param id
 	 * @return boolean
 	 */
-	boolean delete(int id);
+	boolean delete(long id);
 
 	/**
 	 * Methode de mise a jour
@@ -41,7 +41,7 @@ public interface IDAOComputer {
 	 * @return Computer
 	 */
 
-	Computer find(int id);
+	Computer find(long id);
 
 	/**
 	 * Methode qui liste

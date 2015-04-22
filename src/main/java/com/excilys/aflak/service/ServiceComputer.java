@@ -17,7 +17,7 @@ public enum ServiceComputer {
 		return ComputerDAO.INSTANCE.create(computer);
 	}
 
-	public boolean deleteComputer(int id) {
+	public boolean deleteComputer(long id) {
 		return ComputerDAO.INSTANCE.delete(id);
 	}
 
@@ -25,7 +25,7 @@ public enum ServiceComputer {
 		return ComputerDAO.INSTANCE.update(computer);
 	}
 
-	public Computer findComputer(int id) {
+	public Computer findComputer(long id) {
 		return ComputerDAO.INSTANCE.find(id);
 	}
 

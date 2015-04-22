@@ -2,15 +2,15 @@ package com.excilys.aflak.model;
 
 public class Company {
 
-	private int id;
+	private long id;
 	private String name;
 
-	public Company(int id, String name) {
+	public Company(long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -31,15 +31,6 @@ public class Company {
 		return new StringBuilder("Id : ").append(id).append("\t|\t : ")
 				.append(name).toString();
 
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
 	}
 
 	@Override

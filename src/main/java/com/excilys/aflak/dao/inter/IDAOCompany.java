@@ -17,5 +17,5 @@ public interface IDAOCompany {
 	 * @return company
 	 */
 
-	Company find(int id);
+	Company find(long id);
 }
