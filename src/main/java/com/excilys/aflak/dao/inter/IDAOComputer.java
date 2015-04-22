@@ -62,4 +62,19 @@ public interface IDAOComputer {
 	 */
 
 	int getSizeTabCommputers();
+
+	/**
+	 * Filtred company or computer name
+	 * 
+	 * @return Table of Computer
+	 */
+	List<Computer> getSomeFiltredComputer(String filtre, int limit, int debut);
+
+	/**
+	 * Size of tab filtred
+	 * 
+	 * @return size of filtred computer
+	 */
+	int getSizeFiltredComputer(String filtre);
+
 }

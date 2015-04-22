@@ -191,7 +191,6 @@ public enum ComputerDAO implements IDAOComputer {
 		PreparedStatement state = null;
 		ResultSet result = null;
 		Computer computer = new Computer();
-		Company company;
 		try {
 			state = connect
 					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id LIMIT "
@@ -228,6 +227,59 @@ public enum ComputerDAO implements IDAOComputer {
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.closeConnection(connect, state, null);
+		}
+		return size;
+	}
+
+	@Override
+	public List<Computer> getSomeFiltredComputer(String filtre, int debut,
+			int limit) {
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+		ResultSet result = null;
+		List<Computer> list = new ArrayList<Computer>();
+		Computer computer = new Computer();
+		try {
+			state = connect
+					.prepareStatement("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? LIMIT ? OFFSET ?");
+			filtre = "%" + filtre + "%";
+			state.setString(1, filtre);
+			state.setString(2, filtre);
+			state.setInt(3, limit);
+			state.setInt(4, debut);
+			result = state.executeQuery();
+			while (result.next()) {
+				computer = MapperDAO.mapComputer(result);
+				list.add(computer);
+			}
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, result);
+		}
+		return list;
+	}
+
+	@Override
+	public int getSizeFiltredComputer(String filtre) {
+		Connection connect = ConnectionBdd.getConnection();
+		PreparedStatement state = null;
+		ResultSet result = null;
+		int size = 0;
+		try {
+			state = connect
+					.prepareStatement("SELECT  COUNT(*) from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ");
+			filtre = "%" + filtre + "%";
+			state.setString(1, filtre);
+			state.setString(2, filtre);
+			result = state.executeQuery();
+			while (result.next()) {
+				size = result.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException("Connection Failed " + e);
+		} finally {
+			ConnectionBdd.closeConnection(connect, state, result);
 		}
 		return size;
 	}

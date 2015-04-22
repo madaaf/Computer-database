@@ -18,15 +18,21 @@
             <a class="navbar-brand" href="index?page=0"> Application - Computer Database </a>
         </div>
     </header>
+    
+ 
     <section id="main">
         <div class="container">
+        <!-- when computers are deleted -->
+        <c:if test="${deletedSuccess!=null}">
+       	 <div class="alert alert-success" id="alertDeletedComputer"> You successfully delete your computers. </div>     
+        </c:if>
+            
             <h1 id="homeTitle">
                 ${nbrComputers} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
-
+                    <form id="searchForm" action="index" method="GET" class="form-inline">
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
@@ -39,7 +45,7 @@
             </div>
         </div>
 
-        <form id="deleteForm" action="#" method="POST">
+        <form id="deleteForm" action="deleteComputer" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -81,10 +87,10 @@
        
                 <tbody id="results">
                     <tr>
-                        <td class="editMode"> <input type="checkbox" name="cb" class="cb" value="0"> </td>
+                        <td class="editMode"> <input type="checkbox" name="cb" class="cb" value="${computer.id}"> </td>
                         <td> <a href="editComputer?id=${computer.id} " onclick="">${computer.id} ${computer.name}</a> </td>
-                	 <td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>                	
-              		 <td> <c:if test="${computer.discontinued!=null}"> ${computer.discontinued}</c:if></td>
+                		<td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>                	
+              		 	<td> <c:if test="${computer.discontinued!=null}"> ${computer.discontinued}</c:if></td>
               		  <td> <c:if test="${computer.companyName!=null}">${computer.companyName}</c:if></td>
           
                     </tr>                    
@@ -96,7 +102,7 @@
 
     <footer class="navbar-fixed-bottom">
 
-		<tags:page nbrOfPages="${nbrOfPages}" debut="${debut}" fin="${fin}" limit="${limit}"></tags:page>
+		<tags:page nbrOfPages="${nbrOfPages}" debut="${debut}" fin="${fin}" limit="${limit}" search="${search}"></tags:page>
 
     </footer>
 <script src="js/jquery.min.js"></script>

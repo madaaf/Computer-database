@@ -4,7 +4,8 @@
 <%@ attribute name="debut" required="true" type="java.lang.Integer" description=""%> 
 <%@ attribute name="fin" required="true" type="java.lang.Integer" description=""%>    
 <%@ attribute name="nbrOfPages" required="true" type="java.lang.Integer" description=""%>   
-<%@ attribute name="limit" required="true" type="java.lang.Integer" %>  
+<%@ attribute name="limit" required="true" type="java.lang.Integer" %> 
+<%@ attribute name="search" required="false" type="java.lang.String" %> 
   
       
         <div class="container text-center">
@@ -20,7 +21,7 @@
               <c:forEach var="i" begin="${debut}" end="${fin}">     
               	<c:if test="${i<nbrOfPages}" >	
              	 	<li> 
-             	 	<tags:link body="${i}" page="${i}"  limit="${limit}" > </tags:link>
+             	 	<tags:link body="${i}" page="${i}"  limit="${limit}" search="${search}" > </tags:link>
              	 	</li> 
                	</c:if> 
               </c:forEach>
@@ -36,9 +37,9 @@
  	
         <div class="btn-group btn-group-sm pull-right" role="group" >
 
-      	 	<tags:link body="10" page="0" limit="10" />
-      	 	<tags:link body="50" page="0" limit="50" />
-      	 	<tags:link body="100" page="0" limit="100" />
+      	 	<tags:link body="10" page="0" limit="10" search="${search}"/>
+      	 	<tags:link body="50" page="0" limit="50" search="${search}"/>
+      	 	<tags:link body="100" page="0" limit="100" search="${search}" />
       	 
         </div>
        </div>
