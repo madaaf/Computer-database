@@ -65,7 +65,7 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                       	 <a  href="index?page=${page}&limit=${limit}&search=${search}&colomn=computer.name"> Computer Name</a>                         
                         </th>
                         <th>
                             Introduced date
@@ -88,7 +88,7 @@
                 <tbody id="results">
                     <tr>
                         <td class="editMode"> <input type="checkbox" name="cb" class="cb" value="${computer.id}"> </td>
-                        <td> <a href="editComputer?id=${computer.id} " onclick="">${computer.id} ${computer.name}</a> </td>
+                        <td> <a href="editComputer?id=${computer.id} " onclick=""> ${computer.name}${computer.id}</a> </td>
                 		<td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>                	
               		 	<td> <c:if test="${computer.discontinued!=null}"> ${computer.discontinued}</c:if></td>
               		  <td> <c:if test="${computer.companyName!=null}">${computer.companyName}</c:if></td>

@@ -43,6 +43,7 @@ public class DashboardServlet extends HttpServlet {
 		int debut = 0;
 		int fin = debut + 5;
 		String search = null;
+		String colomn = null;
 
 		if (request.getParameter("deletedSuccess") != null) {
 			request.setAttribute("deletedSuccess", "deletedSuccess");
@@ -58,13 +59,20 @@ public class DashboardServlet extends HttpServlet {
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		int nbrComputers = 0;
-
+		if (request.getParameter("colomn") != null) {
+			colomn = request.getParameter("colomn");
+		} else {
+			colomn = "computer.id";
+		}
 		// si l'utilsateur tape une recherche
 		if (request.getParameter("search") != null) {
 			search = request.getParameter("search");
+			System.out.println(" search " + search + " colomn " + colomn
+					+ "  page " + limit * debut + " limit " + limit);
 			// remplir la liste de computer en fonction de la recherche
 			for (Computer computer : ServiceComputer.SERVICE
-					.getSomeFiltredComputer(search, limit * debut, limit)) {
+					.getSomeFiltredComputer(search, colomn, limit * debut,
+							limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
 			// initialiser le nbr de computer en fct de la recherche

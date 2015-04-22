@@ -232,8 +232,8 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public List<Computer> getSomeFiltredComputer(String filtre, int debut,
-			int limit) {
+	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
+			int debut, int limit) {
 		Connection connect = ConnectionBdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
@@ -241,15 +241,29 @@ public enum ComputerDAO implements IDAOComputer {
 		Computer computer = new Computer();
 		try {
 			state = connect
-					.prepareStatement("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? LIMIT ? OFFSET ?");
+					.prepareStatement("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ORDER BY "
+							+ colomn + " DESC LIMIT ? OFFSET ?");
 			filtre = "%" + filtre + "%";
 			state.setString(1, filtre);
 			state.setString(2, filtre);
 			state.setInt(3, limit);
 			state.setInt(4, debut);
+			System.out
+					.println("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like "
+							+ filtre
+							+ " or company.name like "
+							+ filtre
+							+ " ORDER BY "
+							+ colomn
+							+ " LIMIT "
+							+ limit
+							+ " OFFSET ?" + debut);
+			System.out.println(filtre + " " + colomn + " " + limit + " "
+					+ debut);
 			result = state.executeQuery();
 			while (result.next()) {
 				computer = MapperDAO.mapComputer(result);
+				System.out.println(computer.getName());
 				list.add(computer);
 			}
 		} catch (SQLException e) {

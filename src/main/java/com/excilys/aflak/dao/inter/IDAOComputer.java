@@ -66,9 +66,12 @@ public interface IDAOComputer {
 	/**
 	 * Filtred company or computer name
 	 * 
+	 * @param filtre
+	 *            , order by, limit, debut
 	 * @return Table of Computer
 	 */
-	List<Computer> getSomeFiltredComputer(String filtre, int limit, int debut);
+	List<Computer> getSomeFiltredComputer(String filtre, String colomun,
+			int limit, int debut);
 
 	/**
 	 * Size of tab filtred
@@ -76,5 +79,10 @@ public interface IDAOComputer {
 	 * @return size of filtred computer
 	 */
 	int getSizeFiltredComputer(String filtre);
+
+	/**
+	 * retrur list of computer oder by filtre
+	 * 
+	 */
 
 }
