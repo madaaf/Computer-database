@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.junit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class CompanyDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ConnectionBdd.POOLCONNECTIONS.TEST = true;
+		ConnectionBdd.POOLCONNECTIONS.setTest(true);
 		listCompanies = new ArrayList<Company>();
 		listCompanies.add(new Company(1, "Apple Inc."));
 		listCompanies.add(new Company(2, "Thinking Machines"));

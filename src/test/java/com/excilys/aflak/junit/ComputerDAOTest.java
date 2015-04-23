@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.junit;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class ComputerDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ConnectionBdd.POOLCONNECTIONS.TEST = true;
+		ConnectionBdd.POOLCONNECTIONS.setTest(true);
 		listComputersTest = new ArrayList<Computer>();
 
 		listComputersTest.add(new Computer(1, "MacBook Pro 15.4 inch", null,
@@ -36,7 +36,6 @@ public class ComputerDAOTest {
 		listComputersTest.add(new Computer(6, "MacBook Pro", LocalDateTime.of(
 				2006, 01, 10, 00, 00, 00), null, new Company(1, "Apple Inc.")));
 
-		ExecuteScript.execute();
 		ExecuteScript.execute();
 	}
 

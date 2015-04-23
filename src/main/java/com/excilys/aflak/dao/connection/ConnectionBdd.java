@@ -17,7 +17,7 @@ public enum ConnectionBdd {
 	private String urlTest = "jdbc:mysql://localhost:3306/computer-database-db-test?zeroDateTimeBehavior=convertToNull";
 	private String user = "admincdb";
 	private String password = "qwerty1234";
-	public boolean TEST = false;
+	private boolean TEST = false;
 	private BoneCP connectionPool;
 
 	static {
@@ -29,11 +29,20 @@ public enum ConnectionBdd {
 		}
 	}
 
-	private ConnectionBdd() {
+	public void setTest(boolean TEST) {
+		this.TEST = TEST;
+		changePool();
+	}
+
+	public void changePool() {
 		try {
 			BoneCPConfig config = new BoneCPConfig();
 			/* Mise en place de l'url, du nom et du mot de passe */
-			config.setJdbcUrl(url);
+			if (TEST) {
+				config.setJdbcUrl(urlTest);
+			} else {
+				config.setJdbcUrl(url);
+			}
 			config.setUsername(user);
 			config.setPassword(password);
 			// db started after the server
@@ -50,6 +59,10 @@ public enum ConnectionBdd {
 			throw new DAOConfigurationException(
 					"erreur de configuration du pool de connexions" + e);
 		}
+	}
+
+	private ConnectionBdd() {
+		changePool();
 	}
 
 	public Connection getConnection() {
