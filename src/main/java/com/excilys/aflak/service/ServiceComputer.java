@@ -41,9 +41,9 @@ public enum ServiceComputer {
 		return ComputerDAO.INSTANCE.getSizeTabCommputers();
 	}
 
-	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
+	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,String way,
 			int limit, int debut) {
-		return ComputerDAO.INSTANCE.getSomeFiltredComputer(filtre, colomn,
+		return ComputerDAO.INSTANCE.getSomeFiltredComputer(filtre, colomn,way,
 				limit, debut);
 	}
 

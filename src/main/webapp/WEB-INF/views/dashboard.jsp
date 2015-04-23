@@ -65,7 +65,7 @@
                             </span>
                         </th>
                         <th>
-                       	 <a  href="index?page=${page}&limit=${limit}&search=${search}&colomn=computer.name"> Computer Name</a>                         
+                       	 <a  href="index?page=0&limit=${limit}&search=${search}&colomn=computer.name&way=${way}"> Computer Name</a>                         
                         </th>
                         <th>
                             Introduced date

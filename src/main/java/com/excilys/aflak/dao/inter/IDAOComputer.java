@@ -70,7 +70,7 @@ public interface IDAOComputer {
 	 *            , order by, limit, debut
 	 * @return Table of Computer
 	 */
-	List<Computer> getSomeFiltredComputer(String filtre, String colomun,
+	List<Computer> getSomeFiltredComputer(String filtre, String colomun, String way,
 			int limit, int debut);
 
 	/**

@@ -17,6 +17,9 @@ import com.excilys.aflak.utils.Mapper;
 
 /**
  * Servlet implementation class DashboardServlet
+ * 
+ * MODIFICATION SINCE HOME
+ * 
  */
 @WebServlet("/index")
 public class DashboardServlet extends HttpServlet {
@@ -44,6 +47,7 @@ public class DashboardServlet extends HttpServlet {
 		int fin = debut + 5;
 		String search = null;
 		String colomn = null;
+		String way = null;;
 
 		if (request.getParameter("deletedSuccess") != null) {
 			request.setAttribute("deletedSuccess", "deletedSuccess");
@@ -56,14 +60,22 @@ public class DashboardServlet extends HttpServlet {
 			debut = Integer.parseInt(request.getParameter("page"));
 			fin = debut + 5;
 		}
+		
+		if(request.getParameter("way")!=null){
+			
+		}
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		int nbrComputers = 0;
-		if (request.getParameter("colomn") != null) {
-			colomn = request.getParameter("colomn");
-		} else {
-			colomn = "computer.id";
-		}
+		
+		colomn = request.getParameter("colomn");
+	
+		if (colomn != null) {
+			//compteur ++;
+			System.out.print(colomn);
+		} 
+
+		
 		// si l'utilsateur tape une recherche
 		if (request.getParameter("search") != null) {
 			search = request.getParameter("search");
@@ -71,7 +83,7 @@ public class DashboardServlet extends HttpServlet {
 					+ "  page " + limit * debut + " limit " + limit);
 			// remplir la liste de computer en fonction de la recherche
 			for (Computer computer : ServiceComputer.SERVICE
-					.getSomeFiltredComputer(search, colomn, limit * debut,
+					.getSomeFiltredComputer(search, colomn, way, limit * debut,
 							limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}

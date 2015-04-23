@@ -8,5 +8,5 @@
 
 
 
- <a  class="btn btn-default" href="index?page=${page}&limit=${limit}&search=${search}&colomn=${colomn}">${body}</a>
+ <a  class="btn btn-default" href="index?page=${page}&limit=${limit}&search=${search}">${body}</a>
  
