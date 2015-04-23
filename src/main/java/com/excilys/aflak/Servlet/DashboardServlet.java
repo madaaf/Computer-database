@@ -19,7 +19,7 @@ import com.excilys.aflak.utils.Mapper;
  * Servlet implementation class DashboardServlet
  * 
  * MODIFICATION SINCE HOME
- * 
+ * SAME BRANCHE 
  */
 @WebServlet("/index")
 public class DashboardServlet extends HttpServlet {
