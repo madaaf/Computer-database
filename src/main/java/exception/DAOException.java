@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao.connection;
+package exception;
 
 public class DAOException extends RuntimeException {
 	private String message;

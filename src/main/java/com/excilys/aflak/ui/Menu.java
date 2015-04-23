@@ -45,6 +45,7 @@ public class Menu {
 		System.out.println("4- Create a computer");
 		System.out.println("5- Update a computer");
 		System.out.println("6- Delete a computer");
+		System.out.println("7-Delete a company");
 		choice = sc.nextLine();
 	}
 
@@ -198,7 +199,20 @@ public class Menu {
 				System.err.println("\nYou have to enter a number");
 				break;
 			}
+		case "7":
+			System.out
+					.println("Enter the id of the company you want to delete :");
+			input = sc.nextLine();
+			isInteger = Regex.isInteger(input);
+			if (isInteger) {
+				idCompany = Integer.parseInt(input);
+				ServiceCompany.SERVICE.deleteCompany(idCompany);
+			} else {
+				System.err.println("\nYou have to enter a number");
+				break;
+			}
 
+			break;
 		default:
 			System.err.println("\nError : Try again");
 			break;

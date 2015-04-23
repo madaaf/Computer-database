@@ -70,8 +70,8 @@ public interface IDAOComputer {
 	 *            , order by, limit, debut
 	 * @return Table of Computer
 	 */
-	List<Computer> getSomeFiltredComputer(String filtre, String colomun, String way,
-			int limit, int debut);
+	List<Computer> getSomeFiltredComputer(String filtre, String colomun,
+			String way, int limit, int debut);
 
 	/**
 	 * Size of tab filtred
@@ -81,8 +81,9 @@ public interface IDAOComputer {
 	int getSizeFiltredComputer(String filtre);
 
 	/**
-	 * retrur list of computer oder by filtre
+	 * delete computer with Company id
 	 * 
 	 */
+	void deleteComputerFromCompany(long companyId, Connection connect);
 
 }

@@ -12,6 +12,7 @@ import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.model.CompanyDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.utils.ExecuteScript;
+
 //import com.excilys.aflak.dao.CompanyDAO;
 
 public class CompanyDAOTest {
@@ -19,7 +20,7 @@ public class CompanyDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ConnectionBdd.TEST = true;
+		ConnectionBdd.POOLCONNECTIONS.TEST = true;
 		listCompanies = new ArrayList<Company>();
 		listCompanies.add(new Company(1, "Apple Inc."));
 		listCompanies.add(new Company(2, "Thinking Machines"));

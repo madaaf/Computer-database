@@ -12,6 +12,8 @@ import com.excilys.aflak.dao.inter.IDAOCompany;
 import com.excilys.aflak.dao.mapper.MapperDAO;
 import com.excilys.aflak.model.Company;
 
+import exception.DAOException;
+
 public enum CompanyDAO implements IDAOCompany {
 	// toute les methode en static
 	// singleton
@@ -21,7 +23,7 @@ public enum CompanyDAO implements IDAOCompany {
 	public List<Company> list() {
 		List<Company> listCompany = new ArrayList<Company>();
 		Company company;
-		Connection connect = ConnectionBdd.getConnection();
+		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		try {
@@ -37,7 +39,8 @@ public enum CompanyDAO implements IDAOCompany {
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
-			ConnectionBdd.closeConnection(connect, state, result);
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, state,
+					result);
 		}
 
 		return listCompany;
@@ -45,7 +48,7 @@ public enum CompanyDAO implements IDAOCompany {
 
 	@Override
 	public Company find(long id) {
-		Connection connect = ConnectionBdd.getConnection();
+		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		ResultSet result = null;
 		PreparedStatement state = null;
 		Company company = null;
@@ -67,8 +70,41 @@ public enum CompanyDAO implements IDAOCompany {
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
-			ConnectionBdd.closeConnection(connect, state, result);
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, state,
+					result);
 		}
 		return company;
+	}
+
+	@Override
+	public void delete(long id, Connection connect) {
+		PreparedStatement state = null;
+		try {
+			state = connect
+					.prepareStatement("DELETE FROM company WHERE id = ?");
+			if (id > 0) {
+				state.setLong(1, id);
+			} else {
+				state.setNull(1, Types.BIGINT);
+			}
+			state.executeUpdate();
+
+		} catch (Exception e) {
+			throw new DAOException("Connection Failed " + e);
+		} finally {
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(null, state, null);
+		}
+	}
+
+	@Override
+	public void delete(long id) {
+		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		try {
+			delete(id, connect);
+		} catch (Exception e) {
+			throw new DAOException("Connection Failed " + e);
+		} finally {
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, null, null);
+		}
 	}
 }

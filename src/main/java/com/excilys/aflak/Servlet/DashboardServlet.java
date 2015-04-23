@@ -2,6 +2,7 @@ package com.excilys.aflak.Servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,14 +25,16 @@ import com.excilys.aflak.utils.Mapper;
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private static final List<String> listColomns = new ArrayList<String>(
+			Arrays.asList("computer.id", "computer.name",
+					"computer.introduced", "computer.discontinued",
+					"company.name"));
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DashboardServlet() {
 		super();
-		// this.limit = 10;
-		// this.debut = 0;
-		// this.fin = debut + 5;
 	}
 
 	/**
@@ -47,7 +50,6 @@ public class DashboardServlet extends HttpServlet {
 		String search = "";
 		String colomn = null;
 		String way = "ASC";
-		;
 
 		if (request.getParameter("deletedSuccess") != null) {
 			request.setAttribute("deletedSuccess", "deletedSuccess");
@@ -73,7 +75,7 @@ public class DashboardServlet extends HttpServlet {
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		int nbrComputers = 0;
 
-		if (request.getParameter("colomn") != null) {
+		if (listColomns.contains(request.getParameter("colomn"))) {
 			colomn = request.getParameter("colomn");
 		}
 

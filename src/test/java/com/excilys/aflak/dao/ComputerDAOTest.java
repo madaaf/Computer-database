@@ -19,7 +19,7 @@ public class ComputerDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ConnectionBdd.TEST = true;
+		ConnectionBdd.POOLCONNECTIONS.TEST = true;
 		listComputersTest = new ArrayList<Computer>();
 
 		listComputersTest.add(new Computer(1, "MacBook Pro 15.4 inch", null,
