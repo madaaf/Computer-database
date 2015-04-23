@@ -65,18 +65,20 @@
                             </span>
                         </th>
                         <th>
-                       	 <a  href="index?page=0&limit=${limit}&search=${search}&colomn=computer.name&way=${way}"> Computer Name</a>                         
+                        <tags:link body="Computer Name" page="0" limit="${limit}" search="${search}" colomn="computer.name" way="${way}" > </tags:link>                       
                         </th>
                         <th>
-                            Introduced date
+                         <tags:link body="Introduced date" page="0" limit="${limit}" search="${search}" colomn="computer.introduced" way="${way}" > </tags:link>                          
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                            <tags:link body="Discontinued date" page="0" limit="${limit}" search="${search}" colomn="computer.discontinued" way="${way}" > </tags:link> 
+                           
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                        	<tags:link body="Company" page="0" limit="${limit}" search="${search}" colomn="company.name" way="${way}" > </tags:link> 
+                            
                         </th>
 
                     </tr>
@@ -88,7 +90,7 @@
                 <tbody id="results">
                     <tr>
                         <td class="editMode"> <input type="checkbox" name="cb" class="cb" value="${computer.id}"> </td>
-                        <td> <a href="editComputer?id=${computer.id} " onclick=""> ${computer.name}${computer.id}</a> </td>
+                        <td> <a href="editComputer?id=${computer.id} " onclick="">${computer.id}  ${computer.name}</a> </td>
                 		<td> <c:if test="${computer.introduced!=null}"> ${computer.introduced}</c:if></td>                	
               		 	<td> <c:if test="${computer.discontinued!=null}"> ${computer.discontinued}</c:if></td>
               		  <td> <c:if test="${computer.companyName!=null}">${computer.companyName}</c:if></td>

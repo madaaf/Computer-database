@@ -1,13 +1,16 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
-<%@ attribute name="debut" required="true" type="java.lang.Integer" description=""%> 
-<%@ attribute name="fin" required="true" type="java.lang.Integer" description=""%>    
+
+    
 <%@ attribute name="nbrOfPages" required="true" type="java.lang.Integer" description=""%>   
 <%@ attribute name="limit" required="true" type="java.lang.Integer" %> 
 <%@ attribute name="search" required="false" type="java.lang.String" %> 
-  
-      
+ <%@ attribute name="debut" required="true" type="java.lang.Integer" description=""%> 
+<%@ attribute name="fin" required="true" type="java.lang.Integer" description=""%>
+
+
+
         <div class="container text-center">
          
             <ul class="pagination">
@@ -28,7 +31,7 @@
               <!-- bouton suivant -->          
               <li>
                <c:if test="${fin<nbrOfPages}" >
-              		<tags:link body="<span aria-hidden='true'>&raquo;</span>" page="${fin+1}"  limit="${limit}" />
+              		<tags:link body="<span aria-hidden='true'>&raquo;</span>" page="${fin+1}"  limit="${limit}"/>
                 </c:if>
             </li>
       		
@@ -37,9 +40,9 @@
  	
         <div class="btn-group btn-group-sm pull-right" role="group" >
 
-      	 	<tags:link body="10" page="0" limit="10" search="${search}"/>
-      	 	<tags:link body="50" page="0" limit="50" search="${search}"/>
-      	 	<tags:link body="100" page="0" limit="100" search="${search}" />
+      	 	<tags:link body="10" page="0" limit="10" search="${search}"   boostrapType="btn btn-default" />
+      	 	<tags:link body="50" page="0" limit="50" search="${search}" boostrapType="btn btn-default"/>
+      	 	<tags:link body="100" page="0" limit="100" search="${search}" boostrapType="btn btn-default"/>
       	 
         </div>
        </div>

@@ -18,8 +18,7 @@ import com.excilys.aflak.utils.Mapper;
 /**
  * Servlet implementation class DashboardServlet
  * 
- * MODIFICATION SINCE HOME
- * SAME BRANCHE 2
+ * MODIFICATION SINCE HOME SAME BRANCHE 2
  */
 @WebServlet("/index")
 public class DashboardServlet extends HttpServlet {
@@ -45,9 +44,10 @@ public class DashboardServlet extends HttpServlet {
 		int limit = 10;
 		int debut = 0;
 		int fin = debut + 5;
-		String search = null;
+		String search = "";
 		String colomn = null;
-		String way = null;;
+		String way = "ASC";
+		;
 
 		if (request.getParameter("deletedSuccess") != null) {
 			request.setAttribute("deletedSuccess", "deletedSuccess");
@@ -60,22 +60,23 @@ public class DashboardServlet extends HttpServlet {
 			debut = Integer.parseInt(request.getParameter("page"));
 			fin = debut + 5;
 		}
-		
-		if(request.getParameter("way")!=null){
-			
+
+		if (request.getParameter("way") != null) {
+			if (request.getParameter("way").equals("ASC")) {
+				way = "DESC";
+			} else {
+				way = "ASC";
+			}
+			request.setAttribute("way", way);
 		}
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		int nbrComputers = 0;
-		
-		colomn = request.getParameter("colomn");
-	
-		if (colomn != null) {
-			//compteur ++;
-			System.out.print(colomn);
-		} 
 
-		
+		if (request.getParameter("colomn") != null) {
+			colomn = request.getParameter("colomn");
+		}
+
 		// si l'utilsateur tape une recherche
 		if (request.getParameter("search") != null) {
 			search = request.getParameter("search");

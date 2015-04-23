@@ -5,8 +5,20 @@
 <%@ attribute name="limit" required="true" type="java.lang.Integer" %>  
 <%@ attribute name="search" required="false" type="java.lang.String" %>
 <%@ attribute name="colomn" required="false" type="java.lang.String" %>
+<%@ attribute name="way" required="false"  %>
+<%@ attribute name="boostrapType" required="false" %>
 
 
 
- <a  class="btn btn-default" href="index?page=${page}&limit=${limit}&search=${search}">${body}</a>
+
+
+
+<c:choose>
+  <c:when test="${colomn!=null}">
+   <a href="index?page=${page}&limit=${limit}&search=${search}&colomn=${colomn}&way=${way}" class="${boostrapType}" >${body}</a>
+  </c:when>
+  <c:otherwise>
+     <a href="index?page=${page}&limit=${limit}&search=${search}" class="${boostrapType}" >${body}</a>
+  </c:otherwise>
+</c:choose>
  
