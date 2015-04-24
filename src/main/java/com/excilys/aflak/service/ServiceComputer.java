@@ -45,9 +45,9 @@ public enum ServiceComputer {
 			String way, int debut, int limit) {
 
 		System.out
-				.println("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like "
+				.println("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like '%"
 						+ Validator.getFilter(filtre)
-						+ " or company.name like '%"
+						+ "%' or company.name like '%"
 						+ Validator.getFilter(filtre)
 						+ "%' ORDER BY "
 						+ Validator.getColomn(colomn)
@@ -56,10 +56,6 @@ public enum ServiceComputer {
 						+ " LIMIT "
 						+ limit
 						+ " OFFSET " + debut);
-
-		System.out.println("size :"
-				+ ComputerDAO.INSTANCE.getSomeFiltredComputer((filtre),
-						(colomn), (way), debut, limit).size());
 
 		return ComputerDAO.INSTANCE.getSomeFiltredComputer(
 				Validator.getFilter(filtre), Validator.getColomn(colomn),

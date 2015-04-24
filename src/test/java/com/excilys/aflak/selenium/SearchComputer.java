@@ -48,9 +48,10 @@ public class SearchComputer {
 		List<ComputerDTO> listFiltred = new ArrayList<ComputerDTO>();
 
 		for (Computer computer : ServiceComputer.SERVICE
-				.getSomeFiltredComputer("cm", null, null, 10, 0)) {
+				.getSomeFiltredComputer("cm", null, null, 0, 10)) {
 			listFiltred.add(Mapper.computerToComputerDTO(computer));
 		}
+
 		Assert.assertEquals(listFiltred.size(), 4);
 		Assert.assertEquals(listFiltred.get(0).getId(), 2);
 		Assert.assertEquals(listFiltred.get(1).getId(), 3);

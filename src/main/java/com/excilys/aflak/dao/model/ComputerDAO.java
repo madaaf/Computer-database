@@ -254,10 +254,10 @@ public enum ComputerDAO implements IDAOComputer {
 			result = state.executeQuery();
 			while (result.next()) {
 				computer = MapperDAO.mapComputer(result);
-				// System.out.println(computer.getName());
 				list.add(computer);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, state,
