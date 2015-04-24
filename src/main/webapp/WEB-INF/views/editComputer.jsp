@@ -26,26 +26,31 @@
                     </div>
                     <h1>Edit Computer</h1>
 				
-                    <form action="editComputer" name="computerForm" method="POST" onsubmit="return validateForm();" >
+                    <form action="editComputer" name="computerForm" method="POST"  onsubmit=" return checkForm()"  >
                         <input type="hidden" value="${computer.id}" name ="computerId"/>
                         <fieldset>
-                            <div class="form-group">
+                            <div class="form-group" id="divName" >
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="editName" value="${computer.name}" />
+                                <input type="text" class="form-control" id="computerName" name="name" value="${computer.name}" />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="divIntroduced">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="editIntroduced" value="${computer.introduced}"/>
+                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}"/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="divDiscontinued" >
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="editDiscontinued" value="${computer.discontinued}"/>
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}"/>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" name="editCompanyId">
+                                <select class="form-control" id="companyId" name="companies">
+                                <!-- Actual value -->
+                                 <c:if test="${computer.companyName != null}">
+								<option value="${computer.companyId}">${computer.companyName}</option>
+								</c:if>
+								<option value="0">--</option>
                                 <c:forEach items="${listCompanies}" var="company">
-                                     <option selected="selected" value="${company.id}" > ${company.name} </option>
+                                     <option value="${company.id}" > ${company.name} </option>
                                  </c:forEach>
                                 </select>
                             </div>            
@@ -60,6 +65,7 @@
             </div>
         </div>
     </section>
+     <script src="js/jquery.min.js"></script>
     <script src="js/editComputer.js"></script>
 </body>
 </html>

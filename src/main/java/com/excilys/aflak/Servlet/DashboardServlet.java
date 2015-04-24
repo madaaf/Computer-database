@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.Validator;
 import com.excilys.aflak.utils.Mapper;
 
 /**
@@ -24,11 +25,8 @@ import com.excilys.aflak.utils.Mapper;
 @WebServlet("/index")
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	private static final List<String> listColomns = new ArrayList<String>(
-			Arrays.asList("computer.id", "computer.name",
-					"computer.introduced", "computer.discontinued",
-					"company.name"));
+	private static final List<String> limits = new ArrayList<String>(
+			Arrays.asList("10", "50", "100"));
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -47,68 +45,68 @@ public class DashboardServlet extends HttpServlet {
 		int limit = 10;
 		int debut = 0;
 		int fin = debut + 5;
+
 		String search = "";
 		String colomn = null;
 		String way = "ASC";
+		int nbrComputers = 0;
+		String page;
+		// initialiser le nbr de computer en fct de la recherche
+		nbrComputers = ServiceComputer.SERVICE.getSizeFiltredComputer(search);
+		float nbrOfPagesF = (float) nbrComputers / (float) limit;
+		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
 
 		if (request.getParameter("deletedSuccess") != null) {
 			request.setAttribute("deletedSuccess", "deletedSuccess");
 		}
-		if (request.getParameter("limit") != null) {
+		if (request.getParameter("limit") != null
+				&& limits.contains(request.getParameter("limit"))) {
 			limit = Integer.parseInt(request.getParameter("limit"));
 		}
 
-		if (request.getParameter("page") != null) {
-			debut = Integer.parseInt(request.getParameter("page"));
-			fin = debut + 5;
+		page = request.getParameter("page");
+		if (page != null) {
+			if (Validator.isInteger(page)) {
+				if (Long.parseLong(page) < nbrOfPages) {
+					debut = Integer.parseInt(request.getParameter("page"));
+					fin = debut + 5;
+				}
+			}
 		}
 
+		if (request.getParameter("search") != null) {
+			search = request.getParameter("search");
+		}
 		if (request.getParameter("way") != null) {
-			if (request.getParameter("way").equals("ASC")) {
+			way = request.getParameter("way");
+			if (way.equals("ASC")) {
 				way = "DESC";
 			} else {
 				way = "ASC";
 			}
-			request.setAttribute("way", way);
 		}
-
-		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
-		int nbrComputers = 0;
-
-		if (listColomns.contains(request.getParameter("colomn"))) {
+		if (request.getParameter("colomn") != null) {
 			colomn = request.getParameter("colomn");
 		}
 
-		// si l'utilsateur tape une recherche
-		if (request.getParameter("search") != null) {
-			search = request.getParameter("search");
-			System.out.println(" search " + search + " colomn " + colomn
-					+ "  page " + limit * debut + " limit " + limit);
-			// remplir la liste de computer en fonction de la recherche
+		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+		// remplir la liste de computer en fonction de la recherche
+		if (limit * debut < nbrComputers) {
 			for (Computer computer : ServiceComputer.SERVICE
 					.getSomeFiltredComputer(search, colomn, way, limit * debut,
 							limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
-			// initialiser le nbr de computer en fct de la recherche
-			nbrComputers = ServiceComputer.SERVICE
-					.getSizeFiltredComputer(search);
 		} else {
-			// si l'utilisateur n'a rien rentrer dans la bar de recherche
-			for (Computer computer : ServiceComputer.SERVICE.getSomeComputers(
-					limit * debut, limit)) {
-				// remplir toute la liste de computer
+			for (Computer computer : ServiceComputer.SERVICE
+					.getSomeFiltredComputer(search, colomn, way, 0, limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
-			// retourne le nbr de computer
-			nbrComputers = ServiceComputer.SERVICE.getSizeTabComputers();
 		}
-
-		float nbrOfPagesF = (float) nbrComputers / (float) limit;
-		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
 
 		request.setAttribute("debut", debut);
 		request.setAttribute("search", search);
+		request.setAttribute("way", way);
 		request.setAttribute("fin", fin);
 		request.setAttribute("listComputers", listComputers);
 		request.setAttribute("limit", limit);

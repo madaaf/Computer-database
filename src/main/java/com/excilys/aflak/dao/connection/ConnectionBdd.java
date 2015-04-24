@@ -1,9 +1,13 @@
 package com.excilys.aflak.dao.connection;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
@@ -13,10 +17,10 @@ import exception.DAOConfigurationException;
 public enum ConnectionBdd {
 	POOLCONNECTIONS;
 
-	private String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
+	private String url;
 	private String urlTest = "jdbc:mysql://localhost:3306/computer-database-db-test?zeroDateTimeBehavior=convertToNull";
-	private String user = "admincdb";
-	private String password = "qwerty1234";
+	private String user;
+	private String password;
 	private boolean TEST = false;
 	private BoneCP connectionPool;
 
@@ -29,6 +33,26 @@ public enum ConnectionBdd {
 		}
 	}
 
+	public void readProperties() throws FileNotFoundException {
+		Properties properties = new Properties();
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
+		InputStream fichierProperties = classLoader
+				.getResourceAsStream("connection.properties");
+		if (fichierProperties == null) {
+			throw new FileNotFoundException("Fichier non trouvé");
+		}
+		try {
+			properties.load(fichierProperties);
+			url = properties.getProperty("url");
+			user = properties.getProperty("user");
+			password = properties.getProperty("password");
+
+		} catch (IOException e) {
+			throw new FileNotFoundException("Fichier non loader");
+		}
+	}
+
 	public void setTest(boolean TEST) {
 		this.TEST = TEST;
 		changePool();
@@ -36,6 +60,7 @@ public enum ConnectionBdd {
 
 	public void changePool() {
 		try {
+
 			BoneCPConfig config = new BoneCPConfig();
 			/* Mise en place de l'url, du nom et du mot de passe */
 			if (TEST) {
@@ -62,6 +87,11 @@ public enum ConnectionBdd {
 	}
 
 	private ConnectionBdd() {
+		try {
+			readProperties();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		changePool();
 	}
 

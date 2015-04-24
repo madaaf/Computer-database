@@ -66,14 +66,14 @@ public class editComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("computerId"));
-		String name = request.getParameter("editName");
+		String name = request.getParameter("name");
 		LocalDateTime introduced = TimeConvertor
 				.convertStringToLocalDateTime(request
-						.getParameter("editIntroduced"));
+						.getParameter("introduced"));
 		LocalDateTime discontinued = TimeConvertor
 				.convertStringToLocalDateTime(request
-						.getParameter("editDiscontinued"));
-		long companyId = Long.parseLong(request.getParameter("editCompanyId"));
+						.getParameter("discontinued"));
+		long companyId = Long.parseLong(request.getParameter("companies"));
 		Company company = ServiceCompany.SERVICE.findCompany(companyId);
 		Computer computer = new Computer(id, name, introduced, discontinued,
 				company);

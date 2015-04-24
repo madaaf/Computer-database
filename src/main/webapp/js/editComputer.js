@@ -18,16 +18,7 @@
   				return false;
   			}
 	};
-/*
-	var checkDateFormat = function(date){
 
-		//var date = "19-09-1992"
-		var introducedDate = $("#introduced").val().match(dateFrFormat)
-		var ok = date.match(dateFrFormat)
-			alert(ok)
-		
-	}
-*/
 
 	var verifyInputNotEmpty = function(divId,inputId){		
   			
@@ -60,7 +51,7 @@
 	  $(function() {
 			
 			checkForm()
-
+			console.log("ok");
 	  		$("#computerName").keyup(function(){
 	  		verifyInputNotEmpty("#divName","#computerName");
 	  		})

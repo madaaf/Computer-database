@@ -9,9 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
-import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.service.ServiceComputer;
 import com.excilys.aflak.utils.ExecuteScript;
 
 public class ComputerDAOTest {
@@ -42,7 +42,7 @@ public class ComputerDAOTest {
 	@Test
 	public void findOne() {
 
-		Computer computer = ComputerDAO.INSTANCE.find(2);
+		Computer computer = ServiceComputer.SERVICE.findComputer(2);
 		Assert.assertEquals(computer, listComputersTest.get(1));
 	}
 
@@ -50,7 +50,7 @@ public class ComputerDAOTest {
 	public void getAll() {
 
 		List<Computer> dbComputer = new ArrayList<Computer>();
-		dbComputer = ComputerDAO.INSTANCE.list();
+		dbComputer = ServiceComputer.SERVICE.getAllComputers();
 
 		Assert.assertArrayEquals(dbComputer.toArray(),
 				listComputersTest.toArray());
@@ -63,17 +63,28 @@ public class ComputerDAOTest {
 				new Company(1, "Apple Inc."));
 
 		// insert the computer in the bdd
-		ComputerDAO.INSTANCE.create(com);
+		ServiceComputer.SERVICE.createComputer(com);
 		// get the last computer in the bdd
-		Computer lastComputer = ComputerDAO.INSTANCE.find(7);
+		Computer lastComputer = ServiceComputer.SERVICE.findComputer(7);
 		com.setId(7);
 		Assert.assertEquals(com, lastComputer);
 	}
 
 	@Test
+	public void search() {
+		// Computer to add
+		Computer com = new Computer(-1, "MacBook Pro 15.4 inch", null, null,
+				new Company(1, "Apple Inc."));
+
+		// insert the computer in the bdd
+		ServiceComputer.SERVICE.getSomeFiltredComputer("cb", null, null, 0, 0);
+
+	}
+
+	@Test
 	public void delete() {
-		ComputerDAO.INSTANCE.delete(6);
-		Computer com = ComputerDAO.INSTANCE.find(6);
+		ServiceComputer.SERVICE.deleteComputer(6);
+		Computer com = ServiceComputer.SERVICE.findComputer(6);
 		Assert.assertEquals(0, com.getId());
 	}
 
@@ -81,8 +92,8 @@ public class ComputerDAOTest {
 	public void update() {
 		Computer com = new Computer(1, "Modified", null, null, new Company(1,
 				"Apple Inc."));
-		ComputerDAO.INSTANCE.update(com);
-		Computer com2 = ComputerDAO.INSTANCE.find(1);
+		ServiceComputer.SERVICE.updateComputer(com);
+		Computer com2 = ServiceComputer.SERVICE.findComputer(1);
 		Assert.assertEquals(com, com2);
 	}
 }

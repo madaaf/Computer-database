@@ -250,16 +250,6 @@ public enum ComputerDAO implements IDAOComputer {
 			state.setString(2, filtre);
 			state.setInt(3, limit);
 			state.setInt(4, debut);
-			System.out
-					.println("SELECT * from computer left join company WHERE computer.name like "
-							+ filtre
-							+ " or company.name like "
-							+ filtre
-							+ "ORDER BY "
-							+ colomn
-							+ " "
-							+ way
-							+ " LIMIT ? OFFSET ?");
 
 			result = state.executeQuery();
 			while (result.next()) {
