@@ -23,6 +23,7 @@ public enum ConnectionBdd {
 	private String password;
 	private boolean TEST = false;
 	private BoneCP connectionPool;
+	private final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>();
 
 	static {
 		try {
@@ -95,29 +96,109 @@ public enum ConnectionBdd {
 		changePool();
 	}
 
+	/*
+	 * public Connection getConnection() { try { return
+	 * connectionPool.getConnection(); } catch (SQLException e) {
+	 * e.printStackTrace(); return null; } }
+	 */
 	public Connection getConnection() {
 		try {
-			return connectionPool.getConnection();
+			if (CONNECTION.get() == null || CONNECTION.get().isClosed()) {
+				CONNECTION.set(connectionPool.getConnection());
+			}
+			return CONNECTION.get();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			e.getMessage();
+			throw new DAOConfigurationException("erreur de de connexion" + e);
 		}
 	}
 
-	public void closeConnection(Connection connect, PreparedStatement state,
-			ResultSet result) {
+	/*
+	 * public void closeConnection(Connection connect, PreparedStatement state,
+	 * ResultSet result) { try { if (result != null) result.close(); if (state
+	 * != null) state.close(); if (connect != null) connect.close(); } catch
+	 * (SQLException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * }
+	 */
+	public void closeConnection() {
+		Connection c = CONNECTION.get();
 		try {
-			if (result != null)
-				result.close();
-			if (state != null)
-				state.close();
-			if (connect != null)
-				connect.close();
+			if (c != null)
+				c.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DAOConfigurationException(
+					"erreur de fermeture de connexion" + e);
 		}
+		CONNECTION.remove();
+	}
 
+	public void startTransaction() {
+		Connection conn = CONNECTION.get();
+		try {
+			if (conn != null)
+				conn.setAutoCommit(false); // wait before commit
+		} catch (SQLException e) {
+			e.getMessage();
+			throw new DAOConfigurationException("Auto commit does't start" + e);
+		}
+	}
+
+	public void endTransaction() {
+		Connection conn = CONNECTION.get();
+		try {
+			if (conn != null)
+				conn.setAutoCommit(true);
+		} catch (SQLException e) {
+			e.getMessage();
+			throw new DAOConfigurationException("Auto commit does't stop" + e);
+		}
+	}
+
+	// @Overrload
+	public void closeConnection(PreparedStatement p) {
+		try {
+			if (p != null)
+				p.close();
+		} catch (SQLException e) {
+			throw new DAOConfigurationException(
+					"PreparedStatement doesn't close " + e);
+		}
+		closeConnection();
+	}
+
+	public void closeConnection(PreparedStatement p, ResultSet r) {
+		try {
+			if (r != null)
+				r.close();
+		} catch (SQLException e) {
+			throw new DAOConfigurationException(
+					"PreparedStatement or ResultSet doesn't close " + e);
+		}
+		closeConnection(p);
+	}
+
+	public void commit() {
+		Connection conn = CONNECTION.get();
+		try {
+			if (conn != null)
+				conn.commit();
+		} catch (SQLException e) {
+			e.getMessage();
+			throw new DAOConfigurationException("Commit doesn't work " + e);
+		}
+	}
+
+	public void rollback() {
+		Connection conn = CONNECTION.get();
+		try {
+			if (conn != null)
+				conn.rollback();
+		} catch (SQLException e) {
+			e.getMessage();
+			throw new DAOConfigurationException("rollback doesn't work " + e);
+		}
 	}
 
 }

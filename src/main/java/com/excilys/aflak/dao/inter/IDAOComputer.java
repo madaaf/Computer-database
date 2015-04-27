@@ -84,6 +84,6 @@ public interface IDAOComputer {
 	 * delete computer with Company id
 	 * 
 	 */
-	void deleteComputerFromCompany(long companyId, Connection connect);
+	void deleteComputerFromCompany(long companyId);
 
 }

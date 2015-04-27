@@ -39,8 +39,7 @@ public enum CompanyDAO implements IDAOCompany {
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, state,
-					result);
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 
 		return listCompany;
@@ -70,15 +69,28 @@ public enum CompanyDAO implements IDAOCompany {
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, state,
-					result);
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 		return company;
 	}
 
+	/*
+	 * @Override public void delete(long id, Connection connect) {
+	 * PreparedStatement state = null; try { state = connect
+	 * .prepareStatement("DELETE FROM company WHERE id = ?"); if (id > 0) {
+	 * state.setLong(1, id); } else { state.setNull(1, Types.BIGINT); }
+	 * state.executeUpdate();
+	 * 
+	 * } catch (Exception e) { throw new DAOException("Connection Failed " + e);
+	 * } finally { ConnectionBdd.POOLCONNECTIONS.closeConnection(state, null); }
+	 * }
+	 */
+
 	@Override
-	public void delete(long id, Connection connect) {
+	public boolean delete(long id) {
+		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
+		int result = 0;
 		try {
 			state = connect
 					.prepareStatement("DELETE FROM company WHERE id = ?");
@@ -87,24 +99,18 @@ public enum CompanyDAO implements IDAOCompany {
 			} else {
 				state.setNull(1, Types.BIGINT);
 			}
-			state.executeUpdate();
+			result = state.executeUpdate();
+			System.out.println(result);
 
 		} catch (Exception e) {
 			throw new DAOException("Connection Failed " + e);
 		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(null, state, null);
+			ConnectionBdd.POOLCONNECTIONS.endTransaction();
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(state);
 		}
+		if (result == 1)
+			return true;
+		return false;
 	}
 
-	@Override
-	public void delete(long id) {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
-		try {
-			delete(id, connect);
-		} catch (Exception e) {
-			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, null, null);
-		}
-	}
 }

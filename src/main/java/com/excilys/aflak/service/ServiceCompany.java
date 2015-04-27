@@ -1,7 +1,5 @@
 package com.excilys.aflak.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
@@ -23,25 +21,31 @@ public enum ServiceCompany {
 	}
 
 	public void deleteCompany(long companyId) {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Boolean isDeleted;
 		try {
-			connect.setAutoCommit(false);
-			ComputerDAO.INSTANCE.deleteComputerFromCompany(companyId, connect);
-			CompanyDAO.INSTANCE.delete(companyId, connect);
-			connect.commit();
 
-		} catch (DAOException | SQLException e) {
-			try {
-				// ne vas pas commiter
-				connect.rollback();
-				throw new DAOException("Delation Failed : Rollback" + e);
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				throw new DAOException("Rollback Failed " + e);
+			ConnectionBdd.POOLCONNECTIONS.startTransaction();
+			ComputerDAO.INSTANCE.deleteComputerFromCompany(companyId);
+			isDeleted = CompanyDAO.INSTANCE.delete(companyId);
+			ConnectionBdd.POOLCONNECTIONS.commit();
+			if (isDeleted) {
+				System.out.println("Votre companie a bien été supprimée");
+			} else {
+				System.out.println("Aucune companie n'a été supprimé");
 			}
 
+		} catch (DAOException e) {
+			// ne vas pas commiter
+			try {
+				ConnectionBdd.POOLCONNECTIONS.rollback();
+			} catch (Exception e2) {
+				e2.getStackTrace();
+			}
+
+			e.getStackTrace();
+
 		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(connect, null, null);
+			ConnectionBdd.POOLCONNECTIONS.closeConnection();
 		}
 
 	}
