@@ -19,7 +19,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.Mapper;
 
@@ -47,7 +47,7 @@ public class SearchComputer {
 				"http://localhost:8080/Computer-database/index?search=cm");
 		List<ComputerDTO> listFiltred = new ArrayList<ComputerDTO>();
 
-		for (Computer computer : ServiceComputer.SERVICE
+		for (Computer computer : ComputerService.SERVICE
 				.getSomeFiltredComputer("cm", null, null, 0, 10)) {
 			listFiltred.add(Mapper.computerToComputerDTO(computer));
 		}

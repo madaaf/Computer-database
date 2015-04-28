@@ -4,14 +4,11 @@ import java.time.LocalDateTime;
 
 public class Computer {
 
-	private long id;
+	private Long id;
 	private String name;
 	private LocalDateTime introduced;
 	private LocalDateTime discontinued;
 	private Company company;
-
-	public Computer() {
-	}
 
 	public Computer(long id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company ccompagny) {
@@ -26,7 +23,7 @@ public class Computer {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

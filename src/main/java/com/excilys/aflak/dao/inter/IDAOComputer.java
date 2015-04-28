@@ -23,7 +23,7 @@ public interface IDAOComputer {
 	 * @param id
 	 * @return boolean
 	 */
-	boolean delete(long id);
+	boolean delete(Long id);
 
 	/**
 	 * Methode de mise a jour
@@ -41,7 +41,7 @@ public interface IDAOComputer {
 	 * @return Computer
 	 */
 
-	Computer find(long id);
+	Computer find(Long id);
 
 	/**
 	 * Methode qui liste
@@ -61,7 +61,7 @@ public interface IDAOComputer {
 	 * @return size Table of Computer
 	 */
 
-	int getSizeTabCommputers();
+	int getSizeTabComputers();
 
 	/**
 	 * Filtred company or computer name
@@ -84,6 +84,6 @@ public interface IDAOComputer {
 	 * delete computer with Company id
 	 * 
 	 */
-	void deleteComputerFromCompany(long companyId);
+	void deleteComputerFromCompany(Long companyId);
 
 }

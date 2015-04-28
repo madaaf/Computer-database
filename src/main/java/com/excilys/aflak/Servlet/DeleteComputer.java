@@ -8,19 +8,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.ComputerService;
 
 /**
  * Servlet implementation class deleteComputer
  */
 @WebServlet("/deleteComputer")
-public class deleteComputer extends HttpServlet {
+public class DeleteComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public deleteComputer() {
+	public DeleteComputer() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -46,7 +46,7 @@ public class deleteComputer extends HttpServlet {
 		String computersId[] = request.getParameter("selection").split(",");
 
 		for (String computerId : computersId) {
-			ServiceComputer.SERVICE.deleteComputer(Long.parseLong(computerId));
+			ComputerService.SERVICE.deleteComputer(Long.parseLong(computerId));
 		}
 
 		response.sendRedirect("index?deletedSuccess");

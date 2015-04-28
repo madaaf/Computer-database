@@ -4,16 +4,21 @@ import java.util.List;
 
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.utils.Validator;
 
 // singeleton
 // variable service => instance de l'enum
 // toute les methode non static
 // on passe par SERVICE pour acceder au methode
 
-public enum ServiceComputer {
+public enum ComputerService {
 	SERVICE;
 
 	public long createComputer(Computer computer) {
+		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
+				.getIntroduced()));
+		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
+				.getDiscontinued()));
 		return ComputerDAO.INSTANCE.create(computer);
 	}
 
@@ -22,6 +27,10 @@ public enum ServiceComputer {
 	}
 
 	public Computer updateComputer(Computer computer) {
+		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
+				.getIntroduced()));
+		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
+				.getDiscontinued()));
 		return ComputerDAO.INSTANCE.update(computer);
 	}
 
@@ -38,25 +47,11 @@ public enum ServiceComputer {
 	}
 
 	public int getSizeTabComputers() {
-		return ComputerDAO.INSTANCE.getSizeTabCommputers();
+		return ComputerDAO.INSTANCE.getSizeTabComputers();
 	}
 
 	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
 			String way, int debut, int limit) {
-
-		System.out
-				.println("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like '%"
-						+ Validator.getFilter(filtre)
-						+ "%' or company.name like '%"
-						+ Validator.getFilter(filtre)
-						+ "%' ORDER BY "
-						+ Validator.getColomn(colomn)
-						+ " "
-						+ Validator.getWay(way)
-						+ " LIMIT "
-						+ limit
-						+ " OFFSET " + debut);
-
 		return ComputerDAO.INSTANCE.getSomeFiltredComputer(
 				Validator.getFilter(filtre), Validator.getColomn(colomn),
 				Validator.getWay(way), debut, limit);

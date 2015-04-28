@@ -9,7 +9,7 @@ import com.excilys.aflak.model.Company;
 
 import exception.DAOException;
 
-public enum ServiceCompany {
+public enum CompanyService {
 	SERVICE;
 
 	public List<Company> getAllCompanies() {

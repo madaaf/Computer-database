@@ -7,6 +7,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.inter.IDAOCompany;
 import com.excilys.aflak.dao.mapper.MapperDAO;
@@ -18,6 +21,7 @@ public enum CompanyDAO implements IDAOCompany {
 	// toute les methode en static
 	// singleton
 	INSTANCE; // static and final
+	private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
 	@Override
 	public List<Company> list() {
@@ -37,7 +41,8 @@ public enum CompanyDAO implements IDAOCompany {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error("gets list company failed");
+			throw new DAOException("get list company Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
@@ -46,7 +51,7 @@ public enum CompanyDAO implements IDAOCompany {
 	}
 
 	@Override
-	public Company find(long id) {
+	public Company find(Long id) {
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		ResultSet result = null;
 		PreparedStatement state = null;
@@ -67,27 +72,16 @@ public enum CompanyDAO implements IDAOCompany {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error("find company failed");
+			throw new DAOException("find company Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 		return company;
 	}
 
-	/*
-	 * @Override public void delete(long id, Connection connect) {
-	 * PreparedStatement state = null; try { state = connect
-	 * .prepareStatement("DELETE FROM company WHERE id = ?"); if (id > 0) {
-	 * state.setLong(1, id); } else { state.setNull(1, Types.BIGINT); }
-	 * state.executeUpdate();
-	 * 
-	 * } catch (Exception e) { throw new DAOException("Connection Failed " + e);
-	 * } finally { ConnectionBdd.POOLCONNECTIONS.closeConnection(state, null); }
-	 * }
-	 */
-
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(Long id) {
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		int result = 0;
@@ -103,9 +97,9 @@ public enum CompanyDAO implements IDAOCompany {
 			System.out.println(result);
 
 		} catch (Exception e) {
-			throw new DAOException("Connection Failed " + e);
+			logger.error("delete company failed");
+			throw new DAOException("delete company Failed " + e);
 		} finally {
-			ConnectionBdd.POOLCONNECTIONS.endTransaction();
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state);
 		}
 		if (result == 1)

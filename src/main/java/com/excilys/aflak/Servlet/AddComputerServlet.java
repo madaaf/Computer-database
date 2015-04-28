@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceCompany;
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.CompanyService;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.TimeConvertor;
 
 /**
@@ -39,7 +39,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<Company> listCompanies = ServiceCompany.SERVICE.getAllCompanies();
+		List<Company> listCompanies = CompanyService.SERVICE.getAllCompanies();
 		request.setAttribute("listCompanies", listCompanies);
 
 		request.getServletContext()
@@ -67,10 +67,10 @@ public class AddComputerServlet extends HttpServlet {
 
 		long companyId = Long.parseLong(request.getParameter("companies"));
 
-		Company company = ServiceCompany.SERVICE.findCompany(companyId);
+		Company company = CompanyService.SERVICE.findCompany(companyId);
 		Computer com = new Computer(-1, computerName, introduced, discontinued,
 				company);
-		ServiceComputer.SERVICE.createComputer(com);
+		ComputerService.SERVICE.createComputer(com);
 		// redirection vers une url ,recharger la page
 		// forward = > redirection jsp
 		response.sendRedirect("index");

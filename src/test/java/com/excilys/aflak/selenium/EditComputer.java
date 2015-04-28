@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
 public class EditComputer {
@@ -54,7 +54,7 @@ public class EditComputer {
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/index");
 
-		Computer comp = ServiceComputer.SERVICE.findComputer(1);
+		Computer comp = ComputerService.SERVICE.findComputer(1);
 		Computer ref = new Computer(1, "MacBook Pro 15.4", LocalDateTime.of(
 				1993, 10, 19, 00, 00, 00), LocalDateTime.of(2000, 10, 19, 00,
 				00, 00), new Company(3, "RCA"));
@@ -75,7 +75,7 @@ public class EditComputer {
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/editComputer?id=3");
 
-		Computer comp = ServiceComputer.SERVICE.findComputer(3);
+		Computer comp = ComputerService.SERVICE.findComputer(3);
 		Computer ref = new Computer(3, "CM-200", null, null, new Company(2,
 				"Thinking Machines"));
 		Assert.assertEquals(comp, ref);

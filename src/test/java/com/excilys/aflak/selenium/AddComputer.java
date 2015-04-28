@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
 public class AddComputer {
@@ -57,7 +57,7 @@ public class AddComputer {
 				00, 00, 00), LocalDateTime.of(2000, 10, 19, 00, 00, 00),
 				new Company(4, "Netronics"));
 
-		Computer com = ServiceComputer.SERVICE.findComputer(7);
+		Computer com = ComputerService.SERVICE.findComputer(7);
 
 		Assert.assertEquals(com, ref);
 	}
@@ -78,8 +78,8 @@ public class AddComputer {
 		driver.findElement(By.id("addComputer")).click();
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/addComputer");
-		Computer com = ServiceComputer.SERVICE.findComputer(7);
-		Assert.assertEquals(com.getId(), 0);
+		Computer com = ComputerService.SERVICE.findComputer(7);
+		Assert.assertNull(com);
 	}
 
 	@After

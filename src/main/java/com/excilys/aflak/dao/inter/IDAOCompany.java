@@ -17,12 +17,12 @@ public interface IDAOCompany {
 	 * @return company
 	 */
 
-	Company find(long id);
+	Company find(Long id);
 
 	/**
 	 * @param id
 	 * @return boolean
 	 */
 
-	boolean delete(long id);
+	boolean delete(Long id);
 }

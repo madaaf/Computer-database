@@ -1,4 +1,4 @@
-package com.excilys.aflak.junit;
+package com.excilys.aflak.junit.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
-import com.excilys.aflak.dao.model.CompanyDAO;
 import com.excilys.aflak.model.Company;
+import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.utils.ExecuteScript;
 
 //import com.excilys.aflak.dao.CompanyDAO;
 
-public class CompanyDAOTest {
+public class CompanyServiceTest {
 	List<Company> listCompanies = null;
 
 	@Before
@@ -36,7 +36,7 @@ public class CompanyDAOTest {
 	@Test
 	public void list() {
 		List<Company> bddCompany = new ArrayList<Company>();
-		bddCompany = CompanyDAO.INSTANCE.list();
+		bddCompany = CompanyService.SERVICE.getAllCompanies();
 		Assert.assertArrayEquals(bddCompany.toArray(), listCompanies.toArray());
 
 	}

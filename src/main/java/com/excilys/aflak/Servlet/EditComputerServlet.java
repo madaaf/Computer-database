@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceCompany;
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.CompanyService;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
 import com.excilys.aflak.utils.TimeConvertor;
 
@@ -23,13 +23,13 @@ import com.excilys.aflak.utils.TimeConvertor;
  * Servlet implementation class editComputerServlet
  */
 @WebServlet("/editComputer")
-public class editComputerServlet extends HttpServlet {
+public class EditComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public editComputerServlet() {
+	public EditComputerServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,11 +43,11 @@ public class editComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		long id = Long.parseLong(request.getParameter("id"));
-		Computer computer = ServiceComputer.SERVICE.findComputer(id);
+		Computer computer = ComputerService.SERVICE.findComputer(id);
 		ComputerDTO dto = Mapper.computerToComputerDTO(computer);
 
 		List<Company> listCompanies = new ArrayList<Company>();
-		listCompanies = ServiceCompany.SERVICE.getAllCompanies();
+		listCompanies = CompanyService.SERVICE.getAllCompanies();
 
 		request.setAttribute("listCompanies", listCompanies);
 		request.setAttribute("computer", dto);
@@ -74,10 +74,10 @@ public class editComputerServlet extends HttpServlet {
 				.convertStringToLocalDateTime(request
 						.getParameter("discontinued"));
 		long companyId = Long.parseLong(request.getParameter("companies"));
-		Company company = ServiceCompany.SERVICE.findCompany(companyId);
+		Company company = CompanyService.SERVICE.findCompany(companyId);
 		Computer computer = new Computer(id, name, introduced, discontinued,
 				company);
-		ServiceComputer.SERVICE.updateComputer(computer);
+		ComputerService.SERVICE.updateComputer(computer);
 		response.sendRedirect("index");
 	}
 }

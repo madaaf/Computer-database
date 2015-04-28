@@ -1,4 +1,4 @@
-package com.excilys.aflak.junit;
+package com.excilys.aflak.junit.DAO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,10 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
+import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceComputer;
 import com.excilys.aflak.utils.ExecuteScript;
+import com.excilys.aflak.utils.TimeConvertor;
 
 public class ComputerDAOTest {
 	private ArrayList<Computer> listComputersTest = null;
@@ -42,7 +43,7 @@ public class ComputerDAOTest {
 	@Test
 	public void findOne() {
 
-		Computer computer = ServiceComputer.SERVICE.findComputer(2);
+		Computer computer = ComputerDAO.INSTANCE.find(2L);
 		Assert.assertEquals(computer, listComputersTest.get(1));
 	}
 
@@ -50,24 +51,38 @@ public class ComputerDAOTest {
 	public void getAll() {
 
 		List<Computer> dbComputer = new ArrayList<Computer>();
-		dbComputer = ServiceComputer.SERVICE.getAllComputers();
-
+		dbComputer = ComputerDAO.INSTANCE.list();
 		Assert.assertArrayEquals(dbComputer.toArray(),
 				listComputersTest.toArray());
 	}
 
 	@Test
-	public void create() {
+	public void createWithNullDate() {
 		// Computer to add
 		Computer com = new Computer(-1, "MacBook Pro 15.4 inch", null, null,
 				new Company(1, "Apple Inc."));
 
 		// insert the computer in the bdd
-		ServiceComputer.SERVICE.createComputer(com);
+		ComputerDAO.INSTANCE.create(com);
 		// get the last computer in the bdd
-		Computer lastComputer = ServiceComputer.SERVICE.findComputer(7);
-		com.setId(7);
+		Computer lastComputer = ComputerDAO.INSTANCE.find(7L);
+		com.setId(7L);
 		Assert.assertEquals(com, lastComputer);
+	}
+
+	@Test
+	public void createWithFalseDate() {
+		// Computer to add
+		Computer com = new Computer(-1, "MacBook Pro 15.4 inch",
+				TimeConvertor.convertStringToLocalDateTime("19-ded-2000"),
+				TimeConvertor.convertStringToLocalDateTime("30-02-2000"),
+				new Company(1, "Apple Inc."));
+
+		// insert the computer in the bdd
+		ComputerDAO.INSTANCE.create(com);
+		// get the last computer in the bdd
+		Computer lastComputer = ComputerDAO.INSTANCE.find(7L);
+		Assert.assertNull(lastComputer);
 	}
 
 	@Test
@@ -77,23 +92,23 @@ public class ComputerDAOTest {
 				new Company(1, "Apple Inc."));
 
 		// insert the computer in the bdd
-		ServiceComputer.SERVICE.getSomeFiltredComputer("cb", null, null, 0, 0);
+		// ComputerDAO.INSTANCE.getSomeFiltredComputer("cb", null, null, 0, 0);
 
 	}
 
 	@Test
 	public void delete() {
-		ServiceComputer.SERVICE.deleteComputer(6);
-		Computer com = ServiceComputer.SERVICE.findComputer(6);
-		Assert.assertEquals(0, com.getId());
+		ComputerDAO.INSTANCE.delete(6L);
+		Computer com = ComputerDAO.INSTANCE.find(6L);
+		Assert.assertNull(com);
 	}
 
 	@Test
 	public void update() {
 		Computer com = new Computer(1, "Modified", null, null, new Company(1,
 				"Apple Inc."));
-		ServiceComputer.SERVICE.updateComputer(com);
-		Computer com2 = ServiceComputer.SERVICE.findComputer(1);
+		ComputerDAO.INSTANCE.update(com);
+		Computer com2 = ComputerDAO.INSTANCE.find(1L);
 		Assert.assertEquals(com, com2);
 	}
 }

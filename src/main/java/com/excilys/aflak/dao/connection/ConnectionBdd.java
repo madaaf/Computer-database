@@ -145,17 +145,6 @@ public enum ConnectionBdd {
 		}
 	}
 
-	public void endTransaction() {
-		Connection conn = CONNECTION.get();
-		try {
-			if (conn != null)
-				conn.setAutoCommit(true);
-		} catch (SQLException e) {
-			e.getMessage();
-			throw new DAOConfigurationException("Auto commit does't stop" + e);
-		}
-	}
-
 	// @Overrload
 	public void closeConnection(PreparedStatement p) {
 		try {

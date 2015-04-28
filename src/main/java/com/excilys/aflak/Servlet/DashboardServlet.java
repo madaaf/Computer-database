@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceComputer;
-import com.excilys.aflak.service.Validator;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
+import com.excilys.aflak.utils.Validator;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -52,7 +52,7 @@ public class DashboardServlet extends HttpServlet {
 		int nbrComputers = 0;
 		String page;
 		// initialiser le nbr de computer en fct de la recherche
-		nbrComputers = ServiceComputer.SERVICE.getSizeFiltredComputer(search);
+		nbrComputers = ComputerService.SERVICE.getSizeFiltredComputer(search);
 		float nbrOfPagesF = (float) nbrComputers / (float) limit;
 		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
 
@@ -92,13 +92,13 @@ public class DashboardServlet extends HttpServlet {
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		// remplir la liste de computer en fonction de la recherche
 		if (limit * debut < nbrComputers) {
-			for (Computer computer : ServiceComputer.SERVICE
+			for (Computer computer : ComputerService.SERVICE
 					.getSomeFiltredComputer(search, colomn, way, limit * debut,
 							limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
 		} else {
-			for (Computer computer : ServiceComputer.SERVICE
+			for (Computer computer : ComputerService.SERVICE
 					.getSomeFiltredComputer(search, colomn, way, 0, limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}

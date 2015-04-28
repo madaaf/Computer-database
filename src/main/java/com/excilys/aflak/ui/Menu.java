@@ -7,10 +7,10 @@ import java.util.Scanner;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceCompany;
-import com.excilys.aflak.service.ServiceComputer;
-import com.excilys.aflak.utils.Regex;
+import com.excilys.aflak.service.CompanyService;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.TimeConvertor;
+import com.excilys.aflak.utils.Validator;
 
 public class Menu {
 
@@ -61,7 +61,7 @@ public class Menu {
 		System.out.println("Enter the id of its company : ");
 		input = sc.nextLine();
 		// verifie si l'id correspond à un chiffre
-		isInteger = Regex.isInteger(input);
+		isInteger = Validator.isInteger(input);
 		Computer com = null;
 		if (isInteger) {
 			idCompany = Integer.parseInt(input);
@@ -82,7 +82,7 @@ public class Menu {
 			System.out.println(" Enter the date of " + name
 					+ " (dd-mm-yyyy)  : ");
 			input = sc.nextLine();
-			isDateFr = Regex.isDateFormatFr(input);
+			isDateFr = Validator.isValidFormat(input);
 
 			if (input.isEmpty()) {
 				dateFormated = null;
@@ -104,7 +104,7 @@ public class Menu {
 			int debut = 0;
 			int nbr = 10;
 			System.out.println("List of computers : ");
-			listComputer = ServiceComputer.SERVICE.getSomeComputers(debut, nbr);
+			listComputer = ComputerService.SERVICE.getSomeComputers(debut, nbr);
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
@@ -115,7 +115,7 @@ public class Menu {
 				switch (input) {
 				case "n":
 					debut++;
-					listComputer = ServiceComputer.SERVICE.getSomeComputers(
+					listComputer = ComputerService.SERVICE.getSomeComputers(
 							debut * nbr, nbr);
 					for (int i = 0; i < listComputer.size(); i++) {
 						System.out.println(listComputer.get(i).toString());
@@ -130,7 +130,7 @@ public class Menu {
 
 		case "2":
 			System.out.println("List of companies : ");
-			listCompany = ServiceCompany.SERVICE.getAllCompanies();
+			listCompany = CompanyService.SERVICE.getAllCompanies();
 			for (int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
@@ -139,10 +139,10 @@ public class Menu {
 		case "3":
 			System.out.println(" Enter the id of your computer :");
 			input = sc.nextLine();
-			isInteger = Regex.isInteger(input);
-			Computer computer = new Computer();
+			isInteger = Validator.isInteger(input);
+			Computer computer = null;
 			if (isInteger) {
-				computer = ServiceComputer.SERVICE.findComputer(Integer
+				computer = ComputerService.SERVICE.findComputer(Integer
 						.parseInt(input));
 			} else {
 				System.out.println("You have to enter a number");
@@ -153,7 +153,7 @@ public class Menu {
 		case "4":
 			Computer com = createAndUpdateComputer(-1);
 			if (com != null) {
-				ServiceComputer.SERVICE.createComputer(com);
+				ComputerService.SERVICE.createComputer(com);
 				System.out.println("Your computer is created : "
 						+ com.toString());
 			} else {
@@ -166,7 +166,7 @@ public class Menu {
 					.println(" Enter the id of the computer you want to update : ");
 			input = sc.nextLine();
 			if (!input.isEmpty()) {
-				isInteger = Regex.isInteger(input);
+				isInteger = Validator.isInteger(input);
 				if (isInteger) {
 					idComputer = Integer.parseInt(input);
 				} else {
@@ -177,7 +177,7 @@ public class Menu {
 
 			Computer comp = createAndUpdateComputer(idComputer);
 			if (comp != null) {
-				ServiceComputer.SERVICE.updateComputer(comp);
+				ComputerService.SERVICE.updateComputer(comp);
 			}
 
 			break;
@@ -186,10 +186,10 @@ public class Menu {
 			System.out
 					.println(" Enter the id of the computer you want to delete : ");
 			input = sc.nextLine();
-			isInteger = Regex.isInteger(input);
+			isInteger = Validator.isInteger(input);
 			if (isInteger) {
 				idComputer = Integer.parseInt(input);
-				boolean isDeleted = ServiceComputer.SERVICE
+				boolean isDeleted = ComputerService.SERVICE
 						.deleteComputer(idComputer);
 				if (isDeleted == true) {
 					System.out.println("your computer is deleted");
@@ -203,10 +203,10 @@ public class Menu {
 			System.out
 					.println("Enter the id of the company you want to delete :");
 			input = sc.nextLine();
-			isInteger = Regex.isInteger(input);
+			isInteger = Validator.isInteger(input);
 			if (isInteger) {
 				idCompany = Integer.parseInt(input);
-				ServiceCompany.SERVICE.deleteCompany(idCompany);
+				CompanyService.SERVICE.deleteCompany(idCompany);
 			} else {
 				System.err.println("\nYou have to enter a number");
 				break;

@@ -17,7 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.ServiceComputer;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
 public class DeleteComputer {
@@ -45,8 +45,8 @@ public class DeleteComputer {
 						"^Are you sure you want to delete the selected computers[\\s\\S]$"));
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/index?deletedSuccess");
-		Computer com = ServiceComputer.SERVICE.findComputer(6);
-		Assert.assertEquals(0, com.getId());
+		Computer com = ComputerService.SERVICE.findComputer(6);
+		Assert.assertNull(com);
 	}
 
 	@After

@@ -8,11 +8,13 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.inter.IDAOComputer;
 import com.excilys.aflak.dao.mapper.MapperDAO;
 import com.excilys.aflak.dao.utils.TimeConvertorDAO;
-import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 
 import exception.DAOException;
@@ -20,6 +22,7 @@ import exception.DAOException;
 public enum ComputerDAO implements IDAOComputer {
 
 	INSTANCE;
+	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	@Override
 	public long create(Computer computer) {
@@ -51,6 +54,7 @@ public enum ComputerDAO implements IDAOComputer {
 			idComputer = set.getLong(1);
 
 		} catch (SQLException e) {
+			logger.error("Creation of computer failed");
 			throw new DAOException("Connection Failed " + e);
 
 		} finally {
@@ -60,7 +64,7 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(Long id) {
 		// TODO Auto-generated method stub
 		int result = 0;
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
@@ -79,6 +83,7 @@ public enum ComputerDAO implements IDAOComputer {
 			}
 			return true;
 		} catch (SQLException e) {
+			logger.error("delete computer failed");
 			throw new DAOException("Connection Failed " + e);
 
 		} finally {
@@ -97,11 +102,13 @@ public enum ComputerDAO implements IDAOComputer {
 					.prepareStatement("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?");
 
 			state.setString(1, computer.getName());
+
 			state.setTimestamp(2, TimeConvertorDAO
 					.convertLocalDateTimeToTimestamp(computer.getIntroduced()));
 			state.setTimestamp(3,
 					TimeConvertorDAO.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
+
 			if (computer.getCompany().getId() > 0) {
 				state.setLong(4, computer.getCompany().getId());
 			} else {
@@ -117,17 +124,17 @@ public enum ComputerDAO implements IDAOComputer {
 			int result = state.executeUpdate();
 
 		} catch (SQLException e) {
+			logger.error("update computer failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, null);
+			ConnectionBdd.POOLCONNECTIONS.closeConnection(state);
 		}
 		return null;
 	}
 
 	@Override
-	public Computer find(long id) {
-		Computer computer = new Computer();
-		Company company;
+	public Computer find(Long id) {
+		Computer computer = null;
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
@@ -146,6 +153,7 @@ public enum ComputerDAO implements IDAOComputer {
 				computer = MapperDAO.mapComputer(result);
 			}
 		} catch (SQLException e) {
+			logger.error("find computer failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
@@ -157,8 +165,7 @@ public enum ComputerDAO implements IDAOComputer {
 	@Override
 	public List<Computer> list() {
 		List<Computer> listComputer = new ArrayList<Computer>();
-		Computer computer = new Computer();
-		Company company;
+		Computer computer = null;
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
@@ -175,6 +182,7 @@ public enum ComputerDAO implements IDAOComputer {
 			}
 
 		} catch (SQLException e) {
+			logger.error("list computers failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
@@ -189,7 +197,7 @@ public enum ComputerDAO implements IDAOComputer {
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
-		Computer computer = new Computer();
+		Computer computer = null;
 		try {
 			state = connect
 					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id LIMIT "
@@ -201,7 +209,7 @@ public enum ComputerDAO implements IDAOComputer {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("gets some computers computers failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
@@ -211,7 +219,7 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public int getSizeTabCommputers() {
+	public int getSizeTabComputers() {
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
@@ -223,6 +231,7 @@ public enum ComputerDAO implements IDAOComputer {
 				size = result.getInt(1);
 			}
 		} catch (SQLException e) {
+			logger.error("get size tab computers failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, null);
@@ -237,7 +246,7 @@ public enum ComputerDAO implements IDAOComputer {
 		PreparedStatement state = null;
 		ResultSet result = null;
 		List<Computer> list = new ArrayList<Computer>();
-		Computer computer = new Computer();
+		Computer computer = null;
 		try {
 			state = connect
 					.prepareStatement("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ORDER BY "
@@ -254,7 +263,7 @@ public enum ComputerDAO implements IDAOComputer {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("gets some filtred computers failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
@@ -279,6 +288,7 @@ public enum ComputerDAO implements IDAOComputer {
 				size = result.getInt(1);
 			}
 		} catch (SQLException e) {
+			logger.error("gets size filtred computers failed");
 			throw new DAOException("Connection Failed " + e);
 		} finally {
 			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
@@ -287,7 +297,7 @@ public enum ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public void deleteComputerFromCompany(long companyId) {
+	public void deleteComputerFromCompany(Long companyId) {
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		PreparedStatement state = null;
 		try {
@@ -296,6 +306,7 @@ public enum ComputerDAO implements IDAOComputer {
 			state.setLong(1, companyId);
 			int ok = state.executeUpdate();
 
+			logger.error("delete computer from company id failed");
 		} catch (SQLException e) {
 			throw new DAOException("Connection Failed " + e);
 		} finally {
