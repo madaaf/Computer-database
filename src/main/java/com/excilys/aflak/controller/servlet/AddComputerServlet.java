@@ -1,8 +1,7 @@
-package com.excilys.aflak.Servlet;
+package com.excilys.aflak.controller.servlet;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,26 +10,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
-import com.excilys.aflak.utils.Mapper;
 import com.excilys.aflak.utils.TimeConvertor;
 
 /**
- * Servlet implementation class editComputerServlet
+ * Servlet implementation class AddComputerServlet
  */
-@WebServlet("/editComputer")
-public class EditComputerServlet extends HttpServlet {
+@WebServlet("/addComputer")
+public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public EditComputerServlet() {
+	public AddComputerServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,17 +40,11 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		long id = Long.parseLong(request.getParameter("id"));
-		Computer computer = ComputerService.SERVICE.findComputer(id);
-		ComputerDTO dto = Mapper.computerToComputerDTO(computer);
-
-		List<Company> listCompanies = new ArrayList<Company>();
-		listCompanies = CompanyService.SERVICE.getAllCompanies();
-
+		List<Company> listCompanies = CompanyService.SERVICE.getAllCompanies();
 		request.setAttribute("listCompanies", listCompanies);
-		request.setAttribute("computer", dto);
+
 		request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
+				.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
 				.forward(request, response);
 
 	}
@@ -65,22 +56,29 @@ public class EditComputerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 
-		long id = Long.parseLong(request.getParameter("computerId"));
-		String name = request.getParameter("name");
+		String computerName = request.getParameter("name");
 		LocalDateTime introduced = TimeConvertor
 				.convertStringToLocalDateTime(request
 						.getParameter("introduced"));
 		LocalDateTime discontinued = TimeConvertor
 				.convertStringToLocalDateTime(request
 						.getParameter("discontinued"));
+
 		long companyId = Long.parseLong(request.getParameter("companies"));
+
 		Company company = CompanyService.SERVICE.findCompany(companyId);
-		Computer computer = ComputerBuilder.createDefaultComputer().withId(id)
-				.withName(name).withIntroduced(introduced)
+		System.out.println(company.getId() + " name " + company.getName());
+		Computer com = ComputerBuilder.createDefaultComputer()
+				.withName(computerName).withIntroduced(introduced)
 				.withDiscontinued(discontinued).withCompany(company).build();
-		// new Computer(id, name, introduced, discontinued,company);
-		ComputerService.SERVICE.updateComputer(computer);
+		System.out.println(com.getId() + " " + com.getName());
+		// new Computer(-1, computerName, introduced, discontinued, company);
+		ComputerService.SERVICE.createComputer(com);
+		// redirection vers une url ,recharger la page
+		// forward = > redirection jsp
 		response.sendRedirect("index");
+
 	}
 }

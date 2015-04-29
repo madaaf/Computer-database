@@ -74,10 +74,7 @@ public class Company {
 		}
 
 		public Company build() {
-			if (name == null) {
-				throw new IllegalArgumentException(
-						"you can't have a company without a name.");
-			}
+
 			return new Company(id, name);
 
 		}

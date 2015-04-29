@@ -104,7 +104,7 @@
 
     <footer class="navbar-fixed-bottom">
 
-		<tags:page nbrOfPages="${nbrOfPages}" debut="${debut}" fin="${fin}" limit="${limit}" search="${search}"></tags:page>
+		<tags:page nbrOfPages="${nbrOfPages}" start="${start}" fin="${fin}" limit="${limit}" search="${search}"></tags:page>
 
     </footer>
 <script src="js/jquery.min.js"></script>

@@ -1,4 +1,4 @@
-package com.excilys.aflak.Servlet;
+package com.excilys.aflak.controller.servlet;
 
 import java.io.IOException;
 

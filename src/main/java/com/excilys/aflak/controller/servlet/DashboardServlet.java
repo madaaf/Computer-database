@@ -1,4 +1,4 @@
-package com.excilys.aflak.Servlet;
+package com.excilys.aflak.controller.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.aflak.dto.ComputerDTO;
+import com.excilys.aflak.controller.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
@@ -43,14 +43,17 @@ public class DashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		int limit = 10;
-		int debut = 0;
-		int fin = debut + 5;
+		int start = 0;
+		int fin = start + 5;
 
 		String search = "";
 		String colomn = null;
 		String way = "ASC";
 		int nbrComputers = 0;
 		String page;
+		if (request.getParameter("search") != null) {
+			search = request.getParameter("search");
+		}
 		// initialiser le nbr de computer en fct de la recherche
 		nbrComputers = ComputerService.SERVICE.getSizeFiltredComputer(search);
 		float nbrOfPagesF = (float) nbrComputers / (float) limit;
@@ -68,15 +71,12 @@ public class DashboardServlet extends HttpServlet {
 		if (page != null) {
 			if (Validator.isInteger(page)) {
 				if (Long.parseLong(page) < nbrOfPages) {
-					debut = Integer.parseInt(request.getParameter("page"));
-					fin = debut + 5;
+					start = Integer.parseInt(request.getParameter("page"));
+					fin = start + 5;
 				}
 			}
 		}
 
-		if (request.getParameter("search") != null) {
-			search = request.getParameter("search");
-		}
 		if (request.getParameter("way") != null) {
 			way = request.getParameter("way");
 			if (way.equals("ASC")) {
@@ -91,9 +91,9 @@ public class DashboardServlet extends HttpServlet {
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		// remplir la liste de computer en fonction de la recherche
-		if (limit * debut < nbrComputers) {
+		if (limit * start < nbrComputers) {
 			for (Computer computer : ComputerService.SERVICE
-					.getSomeFiltredComputer(search, colomn, way, limit * debut,
+					.getSomeFiltredComputer(search, colomn, way, limit * start,
 							limit)) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
@@ -104,7 +104,7 @@ public class DashboardServlet extends HttpServlet {
 			}
 		}
 
-		request.setAttribute("debut", debut);
+		request.setAttribute("start", start);
 		request.setAttribute("search", search);
 		request.setAttribute("way", way);
 		request.setAttribute("fin", fin);

@@ -6,7 +6,7 @@
 <%@ attribute name="nbrOfPages" required="true" type="java.lang.Integer" description=""%>   
 <%@ attribute name="limit" required="true" type="java.lang.Integer" %> 
 <%@ attribute name="search" required="false" type="java.lang.String" %> 
- <%@ attribute name="debut" required="true" type="java.lang.Integer" description=""%> 
+ <%@ attribute name="start" required="true" type="java.lang.Integer" description=""%> 
 <%@ attribute name="fin" required="true" type="java.lang.Integer" description=""%>
 
 
@@ -16,12 +16,12 @@
             <ul class="pagination">
              <!-- bouton retour -->
                 <li>
-                   <c:if test="${debut>0}">
-                 	 <tags:link body="<span aria-hidden='true'>&laquo;</span>" page="${debut-1}"  limit="${limit}" > </tags:link>
+                   <c:if test="${start>0}">
+                 	 <tags:link body="<span aria-hidden='true'>&laquo;</span>" page="${start-1}"  limit="${limit}" > </tags:link>
                   </c:if>
               </li>
                <!-- bouton page -->
-              <c:forEach var="i" begin="${debut}" end="${fin}">     
+              <c:forEach var="i" begin="${start}" end="${fin}">     
               	<c:if test="${i<nbrOfPages}" >	
              	 	<li> 
              	 	<tags:link body="${i}" page="${i}"  limit="${limit}" search="${search}" > </tags:link>

@@ -17,7 +17,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.excilys.aflak.dto.ComputerDTO;
+import com.excilys.aflak.controller.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;

@@ -19,6 +19,11 @@ import com.excilys.aflak.utils.TimeConvertor;
 public class ComputerDAOTest {
 	private ArrayList<Computer> listComputersTest = null;
 
+	/*
+	 * 
+	 * For DAO test, right data are expected Otherwise, null value is return
+	 */
+
 	@Before
 	public void setUp() throws Exception {
 		ConnectionBdd.POOLCONNECTIONS.setTest(true);
@@ -102,9 +107,10 @@ public class ComputerDAOTest {
 				listComputersTest.toArray());
 	}
 
+	// Computer without Date
 	@Test
 	public void createWithNullDate() {
-		// Computer to add
+
 		Computer com = ComputerBuilder
 				.createDefaultComputer()
 				.withName("MacBook Pro 15.4 inch")

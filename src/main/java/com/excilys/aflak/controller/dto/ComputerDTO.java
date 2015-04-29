@@ -1,4 +1,4 @@
-package com.excilys.aflak.dto;
+package com.excilys.aflak.controller.dto;
 
 public class ComputerDTO {
 
