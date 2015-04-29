@@ -28,7 +28,7 @@
         </c:if>
             
             <h1 id="homeTitle">
-                ${nbrComputers} Computers found
+                ${pageS.nbrComputers} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -64,20 +64,20 @@
                                     </a>
                             </span>
                         </th>
-                        <th>
-                        <tags:link body="Computer Name" page="0" limit="${limit}" search="${search}" colomn="computer.name" way="${way}" > </tags:link>                       
+                        <th> 
+                        <tags:link body="Computer Name" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.name" way="${pageS.way}" > </tags:link>                       
                         </th>
                         <th>
-                         <tags:link body="Introduced date" page="0" limit="${limit}" search="${search}" colomn="computer.introduced" way="${way}" > </tags:link>                          
+                         <tags:link body="Introduced date" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.introduced" way="${pageS.way}" > </tags:link>                          
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            <tags:link body="Discontinued date" page="0" limit="${limit}" search="${search}" colomn="computer.discontinued" way="${way}" > </tags:link> 
+                            <tags:link body="Discontinued date" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.discontinued" way="${pageS.way}" > </tags:link> 
                            
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                        	<tags:link body="Company" page="0" limit="${limit}" search="${search}" colomn="company.name" way="${way}" > </tags:link> 
+                        	<tags:link body="Company" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="company.name" way="${pageS.way}" > </tags:link> 
                             
                         </th>
 
@@ -85,7 +85,7 @@
                 </thead>
 
                 <!-- Browse attribute computers -->
-                <c:forEach  items="${listComputers}" var="computer">
+                <c:forEach  items="${pageS.listComputers}" var="computer">
        
                 <tbody id="results">
                     <tr>
@@ -97,14 +97,14 @@
           
                     </tr>                    
                 </tbody>
-             </c:forEach>
+             </c:forEach> 
             </table>
         </div>
     </section>
 
     <footer class="navbar-fixed-bottom">
 
-		<tags:page nbrOfPages="${nbrOfPages}" start="${start}" fin="${fin}" limit="${limit}" search="${search}"></tags:page>
+		<tags:page nbrOfPages="${pageS.nbrOfPages}" start="${pageS.start}" end="${pageS.end}" limit="${pageS.limit}" search="${pageS.search}"></tags:page>
 
     </footer>
 <script src="js/jquery.min.js"></script>

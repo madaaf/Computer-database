@@ -12,10 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.aflak.controller.dto.ComputerDTO;
+import com.excilys.aflak.controller.dto.Page;
+import com.excilys.aflak.controller.dto.Page.PageBuilder;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
-import com.excilys.aflak.utils.Validator;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -42,76 +43,65 @@ public class DashboardServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int limit = 10;
-		int start = 0;
-		int fin = start + 5;
 
-		String search = "";
-		String colomn = null;
-		String way = "ASC";
-		int nbrComputers = 0;
-		String page;
-		if (request.getParameter("search") != null) {
-			search = request.getParameter("search");
-		}
-		// initialiser le nbr de computer en fct de la recherche
-		nbrComputers = ComputerService.SERVICE.getSizeFiltredComputer(search);
-		float nbrOfPagesF = (float) nbrComputers / (float) limit;
-		int nbrOfPages = (int) Math.ceil(nbrOfPagesF);
+		Page page = PageBuilder.getDefaultPage().build();
+
+		page.setSearch(request.getParameter("search"));
+		page.setNbrComputers(ComputerService.SERVICE
+				.getSizeFiltredComputer(page.getSearch()));
+
+		float nbrOfPagesF = (float) page.getNbrComputers()
+				/ (float) page.getLimit();
+
+		page.setNbrOfPages((int) Math.ceil(nbrOfPagesF));
 
 		if (request.getParameter("deletedSuccess") != null) {
 			request.setAttribute("deletedSuccess", "deletedSuccess");
 		}
 		if (request.getParameter("limit") != null
 				&& limits.contains(request.getParameter("limit"))) {
-			limit = Integer.parseInt(request.getParameter("limit"));
+			page.setLimit(Integer.parseInt(request.getParameter("limit")));
 		}
 
-		page = request.getParameter("page");
-		if (page != null) {
-			if (Validator.isInteger(page)) {
-				if (Long.parseLong(page) < nbrOfPages) {
-					start = Integer.parseInt(request.getParameter("page"));
-					fin = start + 5;
-				}
+		if (request.getParameter("pageNum") != null) {
+			page.setPageNum(Integer.parseInt(request.getParameter("pageNum")));
+			if (page.getPageNum() < page.getNbrOfPages()) {
+				page.setStart(Integer.parseInt(request.getParameter("pageNum")));
+				page.setEnd(page.getStart() + 5);
 			}
 		}
 
 		if (request.getParameter("way") != null) {
-			way = request.getParameter("way");
-			if (way.equals("ASC")) {
-				way = "DESC";
+			page.setWay(request.getParameter("way"));
+
+			if (page.getWay().equals("ASC")) {
+				page.setWay("DESC");
 			} else {
-				way = "ASC";
+				page.setWay("ASC");
 			}
 		}
-		if (request.getParameter("colomn") != null) {
-			colomn = request.getParameter("colomn");
-		}
+
+		page.setColomn(request.getParameter("colomn"));
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		// remplir la liste de computer en fonction de la recherche
-		if (limit * start < nbrComputers) {
+		if (page.getLimit() * page.getStart() < page.getNbrComputers()) {
 			for (Computer computer : ComputerService.SERVICE
-					.getSomeFiltredComputer(search, colomn, way, limit * start,
-							limit)) {
+					.getSomeFiltredComputer(page.getSearch(), page.getColomn(),
+							page.getWay(), page.getLimit() * page.getStart(),
+							page.getLimit())) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
 		} else {
 			for (Computer computer : ComputerService.SERVICE
-					.getSomeFiltredComputer(search, colomn, way, 0, limit)) {
+					.getSomeFiltredComputer(page.getSearch(), page.getColomn(),
+							page.getWay(), 0, page.getLimit())) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
 		}
+		page.setListComputers(listComputers);
 
-		request.setAttribute("start", start);
-		request.setAttribute("search", search);
-		request.setAttribute("way", way);
-		request.setAttribute("fin", fin);
-		request.setAttribute("listComputers", listComputers);
-		request.setAttribute("limit", limit);
-		request.setAttribute("nbrOfPages", nbrOfPages);
-		request.setAttribute("nbrComputers", nbrComputers);
+		request.setAttribute("pageS", page);
 
 		request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")

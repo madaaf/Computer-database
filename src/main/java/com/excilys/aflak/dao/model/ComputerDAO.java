@@ -109,7 +109,7 @@ public enum ComputerDAO implements IDAOComputer {
 					TimeConvertorDAO.convertLocalDateTimeToTimestamp(computer
 							.getDiscontinued()));
 
-			if (computer.getCompany().getId() > 0) {
+			if (computer.getCompany() != null) {
 				state.setLong(4, computer.getCompany().getId());
 			} else {
 				state.setNull(4, Types.BIGINT);

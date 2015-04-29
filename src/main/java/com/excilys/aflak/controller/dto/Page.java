@@ -1,22 +1,28 @@
 package com.excilys.aflak.controller.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Page {
 
 	private int limit = 10;
 	private int start = 0;
 	private int end = start + 5;
+	private int pageNum = 0;
 
 	private String search = "";
 	private String way = "ASC";
 	private String colomn = null;
 
-	private int listComputers;
+	private List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 	private int nbrOfPages;
 	private int nbrComputers;
 
-	public Page(int limit, int start, int end, String search, String way,
-			String colomn, int listComputers, int nbrOfPages, int nbrComputers) {
+	public Page(int pageNum, int limit, int start, int end, String search,
+			String way, String colomn, List<ComputerDTO> listComputers,
+			int nbrOfPages, int nbrComputers) {
 		super();
+		this.pageNum = pageNum;
 		this.limit = limit;
 		this.start = start;
 		this.end = end;
@@ -26,6 +32,14 @@ public class Page {
 		this.listComputers = listComputers;
 		this.nbrOfPages = nbrOfPages;
 		this.nbrComputers = nbrComputers;
+	}
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
 	}
 
 	public int getLimit() {
@@ -76,11 +90,11 @@ public class Page {
 		this.colomn = colomn;
 	}
 
-	public int getListComputers() {
+	public List<ComputerDTO> getListComputers() {
 		return listComputers;
 	}
 
-	public void setListComputers(int listComputers) {
+	public void setListComputers(List<ComputerDTO> listComputers) {
 		this.listComputers = listComputers;
 	}
 
@@ -105,12 +119,13 @@ public class Page {
 		private int limit = 10;
 		private int start = 0;
 		private int end = start + 5;
+		private int pageNum = 0;
 
 		private String search = "";
 		private String way = "ASC";
 		private String colomn = null;
 
-		private int listComputers;
+		private List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		private int nbrOfPages;
 		private int nbrComputers;
 
@@ -119,6 +134,11 @@ public class Page {
 
 		public static PageBuilder getDefaultPage() {
 			return new PageBuilder();
+		}
+
+		public PageBuilder getPageNum(final int pageNum) {
+			this.pageNum = pageNum;
+			return this;
 		}
 
 		public PageBuilder withLimit(final int limit) {
@@ -151,7 +171,8 @@ public class Page {
 			return this;
 		}
 
-		public PageBuilder withListComputers(final int listComputers) {
+		public PageBuilder withListComputers(
+				final List<ComputerDTO> listComputers) {
 			this.listComputers = listComputers;
 			return this;
 		}
@@ -167,16 +188,9 @@ public class Page {
 		}
 
 		public Page build() {
-			return new Page(limit, start, end, search, way, colomn,
+			return new Page(pageNum, limit, start, end, search, way, colomn,
 					listComputers, nbrOfPages, nbrComputers);
 		}
-
-	}
-
-	public static void main(String[] args) {
-		Page page = PageBuilder.getDefaultPage().build();
-		page.setStart(100);
-		System.out.println(page.getStart());
 
 	}
 
