@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
@@ -75,8 +76,10 @@ public class EditComputerServlet extends HttpServlet {
 						.getParameter("discontinued"));
 		long companyId = Long.parseLong(request.getParameter("companies"));
 		Company company = CompanyService.SERVICE.findCompany(companyId);
-		Computer computer = new Computer(id, name, introduced, discontinued,
-				company);
+		Computer computer = ComputerBuilder.createDefaultComputer().withId(id)
+				.withName(name).withIntroduced(introduced)
+				.withDiscontinued(discontinued).withCompany(company).build();
+		// new Computer(id, name, introduced, discontinued,company);
 		ComputerService.SERVICE.updateComputer(computer);
 		response.sendRedirect("index");
 	}

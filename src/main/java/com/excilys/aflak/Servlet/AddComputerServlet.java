@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.TimeConvertor;
@@ -68,8 +69,12 @@ public class AddComputerServlet extends HttpServlet {
 		long companyId = Long.parseLong(request.getParameter("companies"));
 
 		Company company = CompanyService.SERVICE.findCompany(companyId);
-		Computer com = new Computer(-1, computerName, introduced, discontinued,
-				company);
+		System.out.println(company.getId() + " name " + company.getName());
+		Computer com = ComputerBuilder.createDefaultComputer()
+				.withName(computerName).withIntroduced(introduced)
+				.withDiscontinued(discontinued).withCompany(company).build();
+		System.out.println(com.getId() + " " + com.getName());
+		// new Computer(-1, computerName, introduced, discontinued, company);
 		ComputerService.SERVICE.createComputer(com);
 		// redirection vers une url ,recharger la page
 		// forward = > redirection jsp

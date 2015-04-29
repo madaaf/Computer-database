@@ -17,8 +17,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
@@ -38,6 +39,7 @@ public class AddComputer {
 
 	@Test
 	public void testAddFullComputer() throws Exception {
+		ExecuteScript.execute();
 		driver.get(baseUrl
 				+ "/Computer-database/index?page=0&limit=10&search=a&colomn=computer.introduced&way=ASC");
 		driver.findElement(By.id("addComputer")).click();
@@ -53,11 +55,18 @@ public class AddComputer {
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/index");
 
-		Computer ref = new Computer(7, "soef", LocalDateTime.of(1992, 10, 19,
-				00, 00, 00), LocalDateTime.of(2000, 10, 19, 00, 00, 00),
-				new Company(4, "Netronics"));
+		Computer ref = ComputerBuilder
+				.createDefaultComputer()
+				.withId(7L)
+				.withName("soef")
+				.withIntroduced(LocalDateTime.of(1992, 10, 19, 00, 00, 00))
+				.withDiscontinued(LocalDateTime.of(2000, 10, 19, 00, 00, 00))
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(4L)
+								.withName("Netronics").build()).build();
 
 		Computer com = ComputerService.SERVICE.findComputer(7);
+		System.out.println(com.toString());
 
 		Assert.assertEquals(com, ref);
 	}

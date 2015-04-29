@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.model.CompanyDAO;
 import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.utils.ExecuteScript;
 
 public class CompanyDAOTest {
@@ -20,10 +21,18 @@ public class CompanyDAOTest {
 	public void setUp() throws Exception {
 		ConnectionBdd.POOLCONNECTIONS.setTest(true);
 		listCompanies = new ArrayList<Company>();
-		listCompanies.add(new Company(1, "Apple Inc."));
-		listCompanies.add(new Company(2, "Thinking Machines"));
-		listCompanies.add(new Company(3, "RCA"));
-		listCompanies.add(new Company(4, "Netronics"));
+		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(1L)
+				.withName("Apple Inc.").build());
+
+		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(2L)
+				.withName("Thinking Machines").build());
+
+		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(3L)
+				.withName("RCA").build());
+
+		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(4L)
+				.withName("Netronics").build());
+
 		ExecuteScript.execute();
 	}
 

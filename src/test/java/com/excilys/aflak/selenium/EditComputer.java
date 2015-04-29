@@ -17,8 +17,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
@@ -55,9 +56,15 @@ public class EditComputer {
 				"http://localhost:8080/Computer-database/index");
 
 		Computer comp = ComputerService.SERVICE.findComputer(1);
-		Computer ref = new Computer(1, "MacBook Pro 15.4", LocalDateTime.of(
-				1993, 10, 19, 00, 00, 00), LocalDateTime.of(2000, 10, 19, 00,
-				00, 00), new Company(3, "RCA"));
+		Computer ref = ComputerBuilder
+				.createDefaultComputer()
+				.withId(1L)
+				.withName("MacBook Pro 15.4")
+				.withIntroduced(LocalDateTime.of(1993, 10, 19, 00, 00, 00))
+				.withDiscontinued(LocalDateTime.of(2000, 10, 19, 00, 00, 00))
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(3L)
+								.withName("RCA").build()).build();
 
 		Assert.assertEquals(comp, ref);
 	}
@@ -76,8 +83,14 @@ public class EditComputer {
 				"http://localhost:8080/Computer-database/editComputer?id=3");
 
 		Computer comp = ComputerService.SERVICE.findComputer(3);
-		Computer ref = new Computer(3, "CM-200", null, null, new Company(2,
-				"Thinking Machines"));
+		Computer ref = ComputerBuilder
+				.createDefaultComputer()
+				.withId(3L)
+				.withName("CM-200")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(2L)
+								.withName("Thinking Machines").build()).build();
+
 		Assert.assertEquals(comp, ref);
 
 	}

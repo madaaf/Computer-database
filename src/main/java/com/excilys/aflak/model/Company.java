@@ -2,10 +2,10 @@ package com.excilys.aflak.model;
 
 public class Company {
 
-	private long id;
+	private Long id;
 	private String name;
 
-	public Company(long id, String name) {
+	private Company(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -14,7 +14,7 @@ public class Company {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -50,5 +50,36 @@ public class Company {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public static class CompanyBuilder {
+		private Long id = null;
+		private String name = null;
+
+		private CompanyBuilder() {
+		}
+
+		public static CompanyBuilder crateDefaultCompany() {
+			return new CompanyBuilder();
+		}
+
+		public CompanyBuilder withId(final Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public CompanyBuilder withName(final String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Company build() {
+			if (name == null) {
+				throw new IllegalArgumentException(
+						"you can't have a company without a name.");
+			}
+			return new Company(id, name);
+
+		}
 	}
 }

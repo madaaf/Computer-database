@@ -9,8 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
-import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.TimeConvertor;
@@ -23,20 +24,64 @@ public class ComputerServiceTest {
 		ConnectionBdd.POOLCONNECTIONS.setTest(true);
 		listComputersTest = new ArrayList<Computer>();
 
-		listComputersTest.add(new Computer(1, "MacBook Pro 15.4 inch", null,
-				null, new Company(1, "Apple Inc.")));
-		listComputersTest.add(new Computer(2, "CM-2a", null, null, new Company(
-				2, "Thinking Machines")));
-		listComputersTest.add(new Computer(3, "CM-200", null, null,
-				new Company(2, "Thinking Machines")));
-		listComputersTest.add(new Computer(4, "CM-5e", null, null, new Company(
-				2, "Thinking Machines")));
-		listComputersTest
-				.add(new Computer(5, "CM-5", LocalDateTime.of(1991, 01, 01, 00,
-						00, 00), null, new Company(2, "Thinking Machines")));
-		listComputersTest.add(new Computer(6, "MacBook Pro", LocalDateTime.of(
-				2006, 01, 10, 00, 00, 00), null, new Company(1, "Apple Inc.")));
+		listComputersTest.add(ComputerBuilder
+				.createDefaultComputer()
+				.withId(1L)
+				.withName("MacBook Pro 15.4 inch")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build());
 
+		listComputersTest
+				.add(ComputerBuilder
+						.createDefaultComputer()
+						.withId(2L)
+						.withName("CM-2a")
+						.withCompany(
+								CompanyBuilder.crateDefaultCompany().withId(2L)
+										.withName("Thinking Machines").build())
+						.build());
+
+		listComputersTest
+				.add(ComputerBuilder
+						.createDefaultComputer()
+						.withId(3L)
+						.withName("CM-200")
+						.withCompany(
+								CompanyBuilder.crateDefaultCompany().withId(2L)
+										.withName("Thinking Machines").build())
+						.build());
+
+		listComputersTest
+				.add(ComputerBuilder
+						.createDefaultComputer()
+						.withId(4L)
+						.withName("CM-5e")
+						.withCompany(
+								CompanyBuilder.crateDefaultCompany().withId(2L)
+										.withName("Thinking Machines").build())
+						.build());
+
+		listComputersTest
+				.add(ComputerBuilder
+						.createDefaultComputer()
+						.withId(5L)
+						.withName("CM-5")
+						.withIntroduced(
+								LocalDateTime.of(1991, 01, 01, 00, 00, 00))
+						.withCompany(
+								CompanyBuilder.crateDefaultCompany().withId(2L)
+										.withName("Thinking Machines").build())
+						.build());
+
+		listComputersTest.add(ComputerBuilder
+				.createDefaultComputer()
+				.withId(6L)
+				.withName("MacBook Pro")
+				.withIntroduced(LocalDateTime.of(2006, 01, 10, 00, 00, 00))
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build());
 		ExecuteScript.execute();
 	}
 
@@ -60,8 +105,12 @@ public class ComputerServiceTest {
 	@Test
 	public void createWithNullDate() {
 		// Computer to add
-		Computer com = new Computer(-1, "MacBook Pro 15.4 inch", null, null,
-				new Company(1, "Apple Inc."));
+		Computer com = ComputerBuilder
+				.createDefaultComputer()
+				.withName("MacBook Pro 15.4 inch")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
 		ComputerService.SERVICE.createComputer(com);
@@ -74,10 +123,18 @@ public class ComputerServiceTest {
 	@Test
 	public void createWithFalseDate() {
 		// Computer to add
-		Computer com = new Computer(-1, "MacBook Pro 15.4 inch",
-				TimeConvertor.convertStringToLocalDateTime("19-ded-2000"),
-				TimeConvertor.convertStringToLocalDateTime("30-02-2000"),
-				new Company(1, "Apple Inc."));
+		Computer com = ComputerBuilder
+				.createDefaultComputer()
+				.withName("MacBook Pro 15.4 inch")
+				.withIntroduced(
+						TimeConvertor
+								.convertStringToLocalDateTime("19-ded-2000"))
+				.withDiscontinued(
+						TimeConvertor
+								.convertStringToLocalDateTime("30-02-2000"))
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
 		ComputerService.SERVICE.createComputer(com);
@@ -89,8 +146,13 @@ public class ComputerServiceTest {
 	@Test
 	public void search() {
 		// Computer to add
-		Computer com = new Computer(-1, "MacBook Pro 15.4 inch", null, null,
-				new Company(1, "Apple Inc."));
+		// Computer to add
+		Computer com = ComputerBuilder
+				.createDefaultComputer()
+				.withName("MacBook Pro 15.4 inch")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
 		ComputerService.SERVICE.getSomeFiltredComputer("cb", null, null, 0, 0);
@@ -106,8 +168,13 @@ public class ComputerServiceTest {
 
 	@Test
 	public void update() {
-		Computer com = new Computer(1, "Modified", null, null, new Company(1,
-				"Apple Inc."));
+		Computer com = ComputerBuilder
+				.createDefaultComputer()
+				.withId(1L)
+				.withName("Modified")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build();
 		ComputerService.SERVICE.updateComputer(com);
 		Computer com2 = ComputerService.SERVICE.findComputer(1);
 		Assert.assertEquals(com, com2);

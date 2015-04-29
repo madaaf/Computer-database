@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.TimeConvertor;
@@ -27,8 +29,8 @@ public class Menu {
 	private static LocalDateTime introduced = null;
 	private static LocalDateTime discontinued = null;
 
-	private static int idCompany = -1;
-	private static int idComputer = -1;
+	private static Long idCompany = -1L;
+	private static Long idComputer = -1L;
 
 	private static boolean isInteger;
 	private static boolean isDateFr;
@@ -49,7 +51,7 @@ public class Menu {
 		choice = sc.nextLine();
 	}
 
-	public static Computer createAndUpdateComputer(int computerId) {
+	public static Computer createAndUpdateComputer(Long computerId) {
 		// demande le nom de l'ordinateur
 		System.out.println(" Enter the name of your computer : ");
 		name = sc.nextLine();
@@ -64,10 +66,15 @@ public class Menu {
 		isInteger = Validator.isInteger(input);
 		Computer com = null;
 		if (isInteger) {
-			idCompany = Integer.parseInt(input);
+			idCompany = Long.parseLong(input);
 
-			Company c = new Company(2, null);
-			com = new Computer(computerId, name, introduced, discontinued, c);
+			Company c = CompanyBuilder.crateDefaultCompany().withId(2L).build();
+			// new Company(2, null);
+			com = ComputerBuilder.createDefaultComputer().withId(computerId)
+					.withName(name).withIntroduced(introduced)
+					.withDiscontinued(discontinued).withCompany(c).build();
+
+			// new Computer(computerId, name, introduced, discontinued, c);
 		}
 		return com;
 	}
@@ -151,7 +158,7 @@ public class Menu {
 			System.out.println("Details : \n " + computer.toString());
 			break;
 		case "4":
-			Computer com = createAndUpdateComputer(-1);
+			Computer com = createAndUpdateComputer((-1L));
 			if (com != null) {
 				ComputerService.SERVICE.createComputer(com);
 				System.out.println("Your computer is created : "
@@ -168,7 +175,7 @@ public class Menu {
 			if (!input.isEmpty()) {
 				isInteger = Validator.isInteger(input);
 				if (isInteger) {
-					idComputer = Integer.parseInt(input);
+					idComputer = Long.parseLong(input);
 				} else {
 					System.err.println("\nEnter a number");
 					break;
@@ -188,7 +195,7 @@ public class Menu {
 			input = sc.nextLine();
 			isInteger = Validator.isInteger(input);
 			if (isInteger) {
-				idComputer = Integer.parseInt(input);
+				idComputer = Long.parseLong(input);
 				boolean isDeleted = ComputerService.SERVICE
 						.deleteComputer(idComputer);
 				if (isDeleted == true) {
@@ -205,7 +212,7 @@ public class Menu {
 			input = sc.nextLine();
 			isInteger = Validator.isInteger(input);
 			if (isInteger) {
-				idCompany = Integer.parseInt(input);
+				idCompany = Long.parseLong(input);
 				CompanyService.SERVICE.deleteCompany(idCompany);
 			} else {
 				System.err.println("\nYou have to enter a number");

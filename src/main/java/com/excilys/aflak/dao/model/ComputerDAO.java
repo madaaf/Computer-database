@@ -25,7 +25,7 @@ public enum ComputerDAO implements IDAOComputer {
 	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	@Override
-	public long create(Computer computer) {
+	public Long create(Computer computer) {
 		PreparedStatement state = null;
 		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
 		ResultSet set = null;

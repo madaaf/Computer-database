@@ -5,50 +5,16 @@ import java.util.List;
 
 import com.excilys.aflak.model.Computer;
 
-public interface IDAOComputer {
+public interface IDAOComputer extends IDAOCrud<Computer> {
 
 	Connection connect = null;
 
 	/**
-	 * Methode de creation
+	 * READ - list object
 	 * 
-	 * @param obj
-	 * @return id computer created
+	 * @return List object created
 	 */
-	long create(Computer obj);
-
-	/**
-	 * Methode pour effacer
-	 * 
-	 * @param id
-	 * @return boolean
-	 */
-	boolean delete(Long id);
-
-	/**
-	 * Methode de mise a jour
-	 * 
-	 * @param obj
-	 * @return boolean
-	 */
-
-	Computer update(Computer obj);
-
-	/**
-	 * Methode de recherche d('informations
-	 * 
-	 * @param id
-	 * @return Computer
-	 */
-
-	Computer find(Long id);
-
-	/**
-	 * Methode qui liste
-	 * 
-	 * @return List<Computer>
-	 */
-	List<Computer> list();
+	public List<Computer> list();
 
 	/**
 	 * 

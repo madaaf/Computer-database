@@ -66,4 +66,59 @@ public class ComputerDTO {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+
+	public static class ComputerBuilderDTO {
+		private long id;
+		private String name;
+		private String introduced;
+		private String discontinued;
+		private long companyId;
+		private String companyName;
+
+		private ComputerBuilderDTO() {
+		}
+
+		public static ComputerBuilderDTO createDefaultComputer() {
+			return new ComputerBuilderDTO();
+		}
+
+		public ComputerBuilderDTO withId(final long id) {
+			this.id = id;
+			return this;
+		}
+
+		public ComputerBuilderDTO withName(final String name) {
+			this.name = name;
+			return this;
+		}
+
+		public ComputerBuilderDTO withIntroduced(final String introduced) {
+			this.introduced = introduced;
+			return this;
+		}
+
+		public ComputerBuilderDTO withDiscontinued(final String discontinued) {
+			this.discontinued = discontinued;
+			return this;
+		}
+
+		public ComputerBuilderDTO withCompanyId(final long companyId) {
+			this.companyId = companyId;
+			return this;
+		}
+
+		public ComputerBuilderDTO withCompanyName(final String companyName) {
+			this.companyName = companyName;
+			return this;
+		}
+
+		public ComputerDTO build() {
+			if (name == null) {
+				throw new IllegalArgumentException(
+						"You can't create a computer without a name ");
+			}
+			return new ComputerDTO(id, name, introduced, discontinued,
+					companyId, companyName);
+		}
+	}
 }

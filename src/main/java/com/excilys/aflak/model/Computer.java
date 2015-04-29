@@ -10,7 +10,7 @@ public class Computer {
 	private LocalDateTime discontinued;
 	private Company company;
 
-	public Computer(long id, String name, LocalDateTime introduced,
+	private Computer(long id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company ccompagny) {
 		this.id = id;
 		this.name = name;
@@ -100,5 +100,53 @@ public class Computer {
 				.append("\t|\t ").append(introduced).append("\t|\t")
 				.append(discontinued).append("\t|\t").append(company)
 				.toString();
+	}
+
+	public static class ComputerBuilder {
+		private Long id = -1L;
+		private String name;
+		private LocalDateTime introduced;
+		private LocalDateTime discontinued;
+		private Company company;
+
+		private ComputerBuilder() {
+		}
+
+		public static ComputerBuilder createDefaultComputer() {
+			return new ComputerBuilder();
+		}
+
+		public ComputerBuilder withId(final Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public ComputerBuilder withName(final String name) {
+			this.name = name;
+			return this;
+		}
+
+		public ComputerBuilder withIntroduced(final LocalDateTime introduced) {
+			this.introduced = introduced;
+			return this;
+		}
+
+		public ComputerBuilder withDiscontinued(final LocalDateTime discontinued) {
+			this.discontinued = discontinued;
+			return this;
+		}
+
+		public ComputerBuilder withCompany(final Company company) {
+			this.company = company;
+			return this;
+		}
+
+		public Computer build() {
+			if (name == null) {
+				throw new IllegalArgumentException(
+						"You can't create a computer without a name ");
+			}
+			return new Computer(id, name, introduced, discontinued, company);
+		}
 	}
 }
