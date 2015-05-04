@@ -10,12 +10,16 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.controller.dto.ComputerDTO;
 import com.excilys.aflak.model.Computer;
@@ -23,11 +27,15 @@ import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.Mapper;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class SearchComputer {
 	private WebDriver driver;
 	private String baseUrl;
 	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
+	@Autowired
+	private ComputerService serviceComputer;
 
 	@Before
 	public void setUp() throws Exception {
@@ -47,8 +55,8 @@ public class SearchComputer {
 				"http://localhost:8080/Computer-database/index?search=cm");
 		List<ComputerDTO> listFiltred = new ArrayList<ComputerDTO>();
 
-		for (Computer computer : ComputerService.SERVICE
-				.getSomeFiltredComputer("cm", null, null, 0, 10)) {
+		for (Computer computer : serviceComputer.getSomeFiltredComputer("cm",
+				null, null, 0, 10)) {
 			listFiltred.add(Mapper.computerToComputerDTO(computer));
 		}
 

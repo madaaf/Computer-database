@@ -7,6 +7,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.model.ComputerDAO;
@@ -16,6 +20,8 @@ import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.TimeConvertor;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class ComputerDAOTest {
 	private ArrayList<Computer> listComputersTest = null;
 
@@ -23,6 +29,8 @@ public class ComputerDAOTest {
 	 * 
 	 * For DAO test, right data are expected Otherwise, null value is return
 	 */
+	@Autowired
+	private ComputerDAO dao;
 
 	@Before
 	public void setUp() throws Exception {
@@ -94,7 +102,7 @@ public class ComputerDAOTest {
 	@Test
 	public void findOne() {
 
-		Computer computer = ComputerDAO.INSTANCE.find(2L);
+		Computer computer = dao.find(2L);
 		Assert.assertEquals(computer, listComputersTest.get(1));
 	}
 
@@ -102,7 +110,7 @@ public class ComputerDAOTest {
 	public void getAll() {
 
 		List<Computer> dbComputer = new ArrayList<Computer>();
-		dbComputer = ComputerDAO.INSTANCE.list();
+		dbComputer = dao.list();
 		Assert.assertArrayEquals(dbComputer.toArray(),
 				listComputersTest.toArray());
 	}
@@ -119,9 +127,9 @@ public class ComputerDAOTest {
 								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
-		ComputerDAO.INSTANCE.create(com);
+		dao.create(com);
 		// get the last computer in the bdd
-		Computer lastComputer = ComputerDAO.INSTANCE.find(7L);
+		Computer lastComputer = dao.find(7L);
 		com.setId(7L);
 		Assert.assertEquals(com, lastComputer);
 	}
@@ -144,10 +152,10 @@ public class ComputerDAOTest {
 								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
-		ComputerDAO.INSTANCE.create(com);
+		dao.create(com);
 		com.setIntroduced(null);
 		// get the last computer in the bdd
-		Computer lastComputer = ComputerDAO.INSTANCE.find(7L);
+		Computer lastComputer = dao.find(7L);
 		Assert.assertEquals(com, lastComputer);
 	}
 
@@ -168,8 +176,8 @@ public class ComputerDAOTest {
 
 	@Test
 	public void delete() {
-		ComputerDAO.INSTANCE.delete(6L);
-		Computer com = ComputerDAO.INSTANCE.find(6L);
+		dao.delete(6L);
+		Computer com = dao.find(6L);
 		Assert.assertNull(com);
 	}
 
@@ -183,8 +191,8 @@ public class ComputerDAOTest {
 						CompanyBuilder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build();
 
-		ComputerDAO.INSTANCE.update(com);
-		Computer com2 = ComputerDAO.INSTANCE.find(1L);
+		dao.update(com);
+		Computer com2 = dao.find(1L);
 		Assert.assertEquals(com, com2);
 	}
 }

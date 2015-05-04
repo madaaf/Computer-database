@@ -11,10 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.aflak.controller.dto.ComputerDTO;
 import com.excilys.aflak.controller.dto.Page;
 import com.excilys.aflak.controller.dto.Page.PageBuilder;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
 
@@ -28,12 +32,19 @@ public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final List<String> limits = new ArrayList<String>(
 			Arrays.asList("10", "50", "100"));
+	private CompanyService serviceCompany;
+	private ComputerService serviceComputer;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DashboardServlet() {
 		super();
+
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"/applicationContext.xml", DashboardServlet.class);
+
+		serviceComputer = applicationContext.getBean(ComputerService.class);
 	}
 
 	/**
@@ -47,8 +58,8 @@ public class DashboardServlet extends HttpServlet {
 		Page page = PageBuilder.getDefaultPage().build();
 
 		page.setSearch(request.getParameter("search"));
-		page.setNbrComputers(ComputerService.SERVICE
-				.getSizeFiltredComputer(page.getSearch()));
+		page.setNbrComputers(serviceComputer.getSizeFiltredComputer(page
+				.getSearch()));
 
 		float nbrOfPagesF = (float) page.getNbrComputers()
 				/ (float) page.getLimit();
@@ -86,16 +97,15 @@ public class DashboardServlet extends HttpServlet {
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		// remplir la liste de computer en fonction de la recherche
 		if (page.getLimit() * page.getStart() < page.getNbrComputers()) {
-			for (Computer computer : ComputerService.SERVICE
-					.getSomeFiltredComputer(page.getSearch(), page.getColomn(),
-							page.getWay(), page.getLimit() * page.getStart(),
-							page.getLimit())) {
+			for (Computer computer : serviceComputer.getSomeFiltredComputer(
+					page.getSearch(), page.getColomn(), page.getWay(),
+					page.getLimit() * page.getStart(), page.getLimit())) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
 		} else {
-			for (Computer computer : ComputerService.SERVICE
-					.getSomeFiltredComputer(page.getSearch(), page.getColomn(),
-							page.getWay(), 0, page.getLimit())) {
+			for (Computer computer : serviceComputer.getSomeFiltredComputer(
+					page.getSearch(), page.getColomn(), page.getWay(), 0,
+					page.getLimit())) {
 				listComputers.add(Mapper.computerToComputerDTO(computer));
 			}
 		}

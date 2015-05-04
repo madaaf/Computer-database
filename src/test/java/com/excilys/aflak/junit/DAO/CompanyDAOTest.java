@@ -7,6 +7,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.model.CompanyDAO;
@@ -14,8 +18,13 @@ import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.utils.ExecuteScript;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class CompanyDAOTest {
 	List<Company> listCompanies = null;
+
+	@Autowired
+	private CompanyDAO dao;
 
 	@Before
 	public void setUp() throws Exception {
@@ -43,7 +52,7 @@ public class CompanyDAOTest {
 	@Test
 	public void list() {
 		List<Company> bddCompany = new ArrayList<Company>();
-		bddCompany = CompanyDAO.INSTANCE.list();
+		bddCompany = dao.list();
 		Assert.assertArrayEquals(bddCompany.toArray(), listCompanies.toArray());
 
 	}

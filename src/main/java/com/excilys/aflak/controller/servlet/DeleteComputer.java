@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.aflak.service.ComputerService;
 
 /**
@@ -16,13 +19,17 @@ import com.excilys.aflak.service.ComputerService;
 @WebServlet("/deleteComputer")
 public class DeleteComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ComputerService serviceComputer;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DeleteComputer() {
 		super();
-		// TODO Auto-generated constructor stub
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"/applicationContext.xml", DeleteComputer.class);
+
+		serviceComputer = applicationContext.getBean(ComputerService.class);
 	}
 
 	/**
@@ -46,7 +53,7 @@ public class DeleteComputer extends HttpServlet {
 		String computersId[] = request.getParameter("selection").split(",");
 
 		for (String computerId : computersId) {
-			ComputerService.SERVICE.deleteComputer(Long.parseLong(computerId));
+			serviceComputer.deleteComputer(Long.parseLong(computerId));
 		}
 
 		response.sendRedirect("index?deletedSuccess");

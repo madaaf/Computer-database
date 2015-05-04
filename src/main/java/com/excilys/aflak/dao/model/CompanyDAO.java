@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.inter.IDAOCompany;
@@ -17,10 +18,12 @@ import com.excilys.aflak.model.Company;
 
 import exception.DAOException;
 
-public enum CompanyDAO implements IDAOCompany {
+@Repository
+public class CompanyDAO implements IDAOCompany {
 	// toute les methode en static
 	// singleton
-	INSTANCE; // static and final
+	// INSTANCE; // static and final
+
 	private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
 	@Override

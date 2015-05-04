@@ -2,6 +2,9 @@ package com.excilys.aflak.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.utils.Validator;
@@ -10,20 +13,22 @@ import com.excilys.aflak.utils.Validator;
 // variable service => instance de l'enum
 // toute les methode non static
 // on passe par SERVICE pour acceder au methode
-
-public enum ComputerService {
-	SERVICE;
+@Repository
+public class ComputerService {
+	// SERVICE;
+	@Autowired
+	private ComputerDAO dao;
 
 	public long createComputer(Computer computer) {
 		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
 				.getIntroduced()));
 		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
 				.getDiscontinued()));
-		return ComputerDAO.INSTANCE.create(computer);
+		return dao.create(computer);
 	}
 
-	public boolean deleteComputer(long id) {
-		return ComputerDAO.INSTANCE.delete(id);
+	public boolean deleteComputer(Long id) {
+		return dao.delete(id);
 	}
 
 	public Computer updateComputer(Computer computer) {
@@ -31,34 +36,33 @@ public enum ComputerService {
 				.getIntroduced()));
 		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
 				.getDiscontinued()));
-		return ComputerDAO.INSTANCE.update(computer);
+		return dao.update(computer);
 	}
 
 	public Computer findComputer(long id) {
-		return ComputerDAO.INSTANCE.find(id);
+		return dao.find(id);
 	}
 
 	public List<Computer> getAllComputers() {
-		return ComputerDAO.INSTANCE.list();
+		return dao.list();
 	}
 
 	public List<Computer> getSomeComputers(int debut, int nbr) {
-		return ComputerDAO.INSTANCE.getSomeComputers(debut, nbr);
+		return dao.getSomeComputers(debut, nbr);
 	}
 
 	public int getSizeTabComputers() {
-		return ComputerDAO.INSTANCE.getSizeTabComputers();
+		return dao.getSizeTabComputers();
 	}
 
 	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
 			String way, int debut, int limit) {
-		return ComputerDAO.INSTANCE.getSomeFiltredComputer(
-				Validator.getFilter(filtre), Validator.getColomn(colomn),
-				Validator.getWay(way), debut, limit);
+		return dao.getSomeFiltredComputer(Validator.getFilter(filtre),
+				Validator.getColomn(colomn), Validator.getWay(way), debut,
+				limit);
 	}
 
 	public int getSizeFiltredComputer(String filtre) {
-		return ComputerDAO.INSTANCE.getSizeFiltredComputer(Validator
-				.getFilter(filtre));
+		return dao.getSizeFiltredComputer(Validator.getFilter(filtre));
 	}
 }

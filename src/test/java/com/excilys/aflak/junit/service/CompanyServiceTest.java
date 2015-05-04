@@ -7,17 +7,29 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.CompanyBuilder;
+import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
+import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
 //import com.excilys.aflak.dao.CompanyDAO;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class CompanyServiceTest {
 	List<Company> listCompanies = null;
+
+	@Autowired
+	private CompanyService service;
+	@Autowired
+	private ComputerService computerService;
 
 	@Before
 	public void setUp() throws Exception {
@@ -45,9 +57,21 @@ public class CompanyServiceTest {
 	@Test
 	public void list() {
 		List<Company> bddCompany = new ArrayList<Company>();
-		bddCompany = CompanyService.SERVICE.getAllCompanies();
+		bddCompany = service.getAllCompanies();
 		Assert.assertArrayEquals(bddCompany.toArray(), listCompanies.toArray());
-
 	}
 
+	@Test
+	public void deleteCompany() {
+		// checked if the company is removed
+		service.deleteCompany(1);
+		Company company = service.findCompany(1);
+		Assert.assertNull(company);
+		// checked if the transaction works
+		// and the computers associated with the company id are removed
+		Computer comp1 = computerService.findComputer(1);
+		Assert.assertNull(comp1);
+		Computer comp2 = computerService.findComputer(6);
+		Assert.assertNull(comp2);
+	}
 }

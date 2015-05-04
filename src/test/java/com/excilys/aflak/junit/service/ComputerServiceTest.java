@@ -7,6 +7,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.model.Company.CompanyBuilder;
@@ -16,7 +20,12 @@ import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.TimeConvertor;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class ComputerServiceTest {
+	@Autowired
+	private ComputerService service;
+
 	private ArrayList<Computer> listComputersTest = null;
 
 	@Before
@@ -88,7 +97,7 @@ public class ComputerServiceTest {
 	@Test
 	public void findOne() {
 
-		Computer computer = ComputerService.SERVICE.findComputer(2);
+		Computer computer = service.findComputer(2);
 		Assert.assertEquals(computer, listComputersTest.get(1));
 	}
 
@@ -96,7 +105,7 @@ public class ComputerServiceTest {
 	public void getAll() {
 
 		List<Computer> dbComputer = new ArrayList<Computer>();
-		dbComputer = ComputerService.SERVICE.getAllComputers();
+		dbComputer = service.getAllComputers();
 
 		Assert.assertArrayEquals(dbComputer.toArray(),
 				listComputersTest.toArray());
@@ -113,9 +122,9 @@ public class ComputerServiceTest {
 								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
-		ComputerService.SERVICE.createComputer(com);
+		service.createComputer(com);
 		// get the last computer in the bdd
-		Computer lastComputer = ComputerService.SERVICE.findComputer(7);
+		Computer lastComputer = service.findComputer(7);
 		com.setId(7L);
 		Assert.assertEquals(com, lastComputer);
 	}
@@ -137,9 +146,9 @@ public class ComputerServiceTest {
 								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
-		ComputerService.SERVICE.createComputer(com);
+		service.createComputer(com);
 		// get the last computer in the bdd
-		Computer lastComputer = ComputerService.SERVICE.findComputer(7);
+		Computer lastComputer = service.findComputer(7);
 		// Assert.assertNull(lastComputer);
 	}
 
@@ -155,14 +164,14 @@ public class ComputerServiceTest {
 								.withName("Apple Inc.").build()).build();
 
 		// insert the computer in the bdd
-		ComputerService.SERVICE.getSomeFiltredComputer("cb", null, null, 0, 0);
+		service.getSomeFiltredComputer("cb", null, null, 0, 0);
 
 	}
 
 	@Test
 	public void delete() {
-		ComputerService.SERVICE.deleteComputer(6);
-		Computer com = ComputerService.SERVICE.findComputer(6);
+		service.deleteComputer(6L);
+		Computer com = service.findComputer(6);
 		Assert.assertNull(com);
 	}
 
@@ -175,8 +184,8 @@ public class ComputerServiceTest {
 				.withCompany(
 						CompanyBuilder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build();
-		ComputerService.SERVICE.updateComputer(com);
-		Computer com2 = ComputerService.SERVICE.findComputer(1);
+		service.updateComputer(com);
+		Computer com2 = service.findComputer(1L);
 		Assert.assertEquals(com, com2);
 	}
 }

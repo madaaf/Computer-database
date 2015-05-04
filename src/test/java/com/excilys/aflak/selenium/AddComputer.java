@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
@@ -16,6 +17,9 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
@@ -23,11 +27,16 @@ import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class AddComputer {
 	private WebDriver driver;
 	private String baseUrl;
 	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
+
+	@Autowired
+	private ComputerService serviceComputer;
 
 	@Before
 	public void setUp() throws Exception {
@@ -65,8 +74,7 @@ public class AddComputer {
 						CompanyBuilder.crateDefaultCompany().withId(4L)
 								.withName("Netronics").build()).build();
 
-		Computer com = ComputerService.SERVICE.findComputer(7);
-		System.out.println(com.toString());
+		Computer com = serviceComputer.findComputer(7);
 
 		Assert.assertEquals(com, ref);
 	}
@@ -87,7 +95,7 @@ public class AddComputer {
 		driver.findElement(By.id("addComputer")).click();
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://localhost:8080/Computer-database/addComputer");
-		Computer com = ComputerService.SERVICE.findComputer(7);
+		Computer com = serviceComputer.findComputer(7);
 		Assert.assertNull(com);
 	}
 

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.model.Computer.ComputerBuilder;
@@ -23,13 +26,20 @@ import com.excilys.aflak.utils.TimeConvertor;
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private CompanyService serviceCompany;
+	private ComputerService serviceComputer;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public AddComputerServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"/applicationContext.xml", AddComputerServlet.class);
+
+		serviceCompany = applicationContext.getBean(CompanyService.class);
+		serviceComputer = applicationContext.getBean(ComputerService.class);
+
 	}
 
 	/**
@@ -40,7 +50,8 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<Company> listCompanies = CompanyService.SERVICE.getAllCompanies();
+
+		List<Company> listCompanies = serviceCompany.getAllCompanies();
 		request.setAttribute("listCompanies", listCompanies);
 
 		request.getServletContext()
@@ -68,14 +79,14 @@ public class AddComputerServlet extends HttpServlet {
 
 		long companyId = Long.parseLong(request.getParameter("companies"));
 
-		Company company = CompanyService.SERVICE.findCompany(companyId);
+		Company company = serviceCompany.findCompany(companyId);
 		System.out.println(company.getId() + " name " + company.getName());
 		Computer com = ComputerBuilder.createDefaultComputer()
 				.withName(computerName).withIntroduced(introduced)
 				.withDiscontinued(discontinued).withCompany(company).build();
 		System.out.println(com.getId() + " " + com.getName());
 		// new Computer(-1, computerName, introduced, discontinued, company);
-		ComputerService.SERVICE.createComputer(com);
+		serviceComputer.createComputer(com);
 		// redirection vers une url ,recharger la page
 		// forward = > redirection jsp
 		response.sendRedirect("index");

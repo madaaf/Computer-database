@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.inter.IDAOComputer;
@@ -19,9 +20,10 @@ import com.excilys.aflak.model.Computer;
 
 import exception.DAOException;
 
-public enum ComputerDAO implements IDAOComputer {
+@Repository
+public class ComputerDAO implements IDAOComputer {
 
-	INSTANCE;
+	// INSTANCE;
 	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	@Override
