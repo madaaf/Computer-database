@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.aflak.controller.dto.ComputerDTO;
 import com.excilys.aflak.model.Company;
@@ -27,9 +26,11 @@ import com.excilys.aflak.utils.TimeConvertor;
  * Servlet implementation class editComputerServlet
  */
 @WebServlet("/editComputer")
-public class EditComputerServlet extends HttpServlet {
+public class EditComputerServlet extends InitServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private ComputerService serviceComputer;
+	@Autowired
 	private CompanyService serviceCompany;
 
 	/**
@@ -37,11 +38,6 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	public EditComputerServlet() {
 		super();
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"/applicationContext.xml", EditComputerServlet.class);
-
-		serviceComputer = applicationContext.getBean(ComputerService.class);
-		serviceCompany = applicationContext.getBean(CompanyService.class);
 	}
 
 	/**

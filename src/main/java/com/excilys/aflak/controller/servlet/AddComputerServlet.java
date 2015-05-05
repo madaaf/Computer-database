@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
@@ -23,10 +22,13 @@ import com.excilys.aflak.utils.TimeConvertor;
 /**
  * Servlet implementation class AddComputerServlet
  */
+
 @WebServlet("/addComputer")
-public class AddComputerServlet extends HttpServlet {
+public class AddComputerServlet extends InitServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private CompanyService serviceCompany;
+	@Autowired
 	private ComputerService serviceComputer;
 
 	/**
@@ -34,12 +36,6 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	public AddComputerServlet() {
 		super();
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"/applicationContext.xml", AddComputerServlet.class);
-
-		serviceCompany = applicationContext.getBean(CompanyService.class);
-		serviceComputer = applicationContext.getBean(ComputerService.class);
-
 	}
 
 	/**

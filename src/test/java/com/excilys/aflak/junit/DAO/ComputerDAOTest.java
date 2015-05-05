@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
@@ -34,7 +33,6 @@ public class ComputerDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ConnectionBdd.POOLCONNECTIONS.setTest(true);
 		listComputersTest = new ArrayList<Computer>();
 
 		listComputersTest.add(ComputerBuilder
@@ -168,9 +166,6 @@ public class ComputerDAOTest {
 				.withCompany(
 						CompanyBuilder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build();
-
-		// insert the computer in the bdd
-		// ComputerDAO.INSTANCE.getSomeFiltredComputer("cb", null, null, 0, 0);
 
 	}
 

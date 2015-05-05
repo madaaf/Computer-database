@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.aflak.service.ComputerService;
 
@@ -17,8 +16,9 @@ import com.excilys.aflak.service.ComputerService;
  * Servlet implementation class deleteComputer
  */
 @WebServlet("/deleteComputer")
-public class DeleteComputer extends HttpServlet {
+public class DeleteComputer extends InitServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
 	private ComputerService serviceComputer;
 
 	/**
@@ -26,10 +26,7 @@ public class DeleteComputer extends HttpServlet {
 	 */
 	public DeleteComputer() {
 		super();
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"/applicationContext.xml", DeleteComputer.class);
 
-		serviceComputer = applicationContext.getBean(ComputerService.class);
 	}
 
 	/**

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
@@ -33,7 +32,7 @@ public class CompanyServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ConnectionBdd.POOLCONNECTIONS.setTest(true);
+
 		listCompanies = new ArrayList<Company>();
 		listCompanies = new ArrayList<Company>();
 		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(1L)

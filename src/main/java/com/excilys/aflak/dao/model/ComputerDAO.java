@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.dao.connection.ConnectionBdd;
@@ -22,14 +23,15 @@ import exception.DAOException;
 
 @Repository
 public class ComputerDAO implements IDAOComputer {
-
+	@Autowired
+	private ConnectionBdd bdd;
 	// INSTANCE;
 	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	@Override
 	public Long create(Computer computer) {
 		PreparedStatement state = null;
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		ResultSet set = null;
 		long idComputer;
 		try {
@@ -59,8 +61,6 @@ public class ComputerDAO implements IDAOComputer {
 			logger.error("Creation of computer failed");
 			throw new DAOException("Connection Failed " + e);
 
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, set);
 		}
 		return idComputer;
 	}
@@ -69,7 +69,7 @@ public class ComputerDAO implements IDAOComputer {
 	public boolean delete(Long id) {
 		// TODO Auto-generated method stub
 		int result = 0;
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		try {
 			state = connect
@@ -88,15 +88,13 @@ public class ComputerDAO implements IDAOComputer {
 			logger.error("delete computer failed");
 			throw new DAOException("Connection Failed " + e);
 
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, null);
 		}
 
 	}
 
 	@Override
 	public Computer update(Computer computer) {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 
 		try {
@@ -128,8 +126,6 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("update computer failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state);
 		}
 		return null;
 	}
@@ -137,7 +133,7 @@ public class ComputerDAO implements IDAOComputer {
 	@Override
 	public Computer find(Long id) {
 		Computer computer = null;
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		try {
@@ -157,8 +153,6 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("find computer failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 		// TODO Auto-generated method stub
 		return computer;
@@ -168,7 +162,7 @@ public class ComputerDAO implements IDAOComputer {
 	public List<Computer> list() {
 		List<Computer> listComputer = new ArrayList<Computer>();
 		Computer computer = null;
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		try {
@@ -186,8 +180,6 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("list computers failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 
 		return listComputer;
@@ -196,7 +188,7 @@ public class ComputerDAO implements IDAOComputer {
 	@Override
 	public List<Computer> getSomeComputers(int debut, int nbr) {
 		List<Computer> list = new ArrayList<Computer>();
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		Computer computer = null;
@@ -213,8 +205,6 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("gets some computers computers failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 
 		return list;
@@ -222,7 +212,7 @@ public class ComputerDAO implements IDAOComputer {
 
 	@Override
 	public int getSizeTabComputers() {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		int size = 0;
@@ -235,8 +225,6 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("get size tab computers failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, null);
 		}
 		return size;
 	}
@@ -244,7 +232,7 @@ public class ComputerDAO implements IDAOComputer {
 	@Override
 	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
 			String way, int debut, int limit) {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		List<Computer> list = new ArrayList<Computer>();
@@ -267,15 +255,13 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("gets some filtred computers failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 		return list;
 	}
 
 	@Override
 	public int getSizeFiltredComputer(String filtre) {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		ResultSet result = null;
 		int size = 0;
@@ -292,27 +278,22 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("gets size filtred computers failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state, result);
 		}
 		return size;
 	}
 
 	@Override
 	public void deleteComputerFromCompany(Long companyId) {
-		Connection connect = ConnectionBdd.POOLCONNECTIONS.getConnection();
+		Connection connect = bdd.getConnection();
 		PreparedStatement state = null;
 		try {
 			state = connect
 					.prepareStatement("DELETE from computer WHERE company_id = ?");
 			state.setLong(1, companyId);
 			int ok = state.executeUpdate();
-
-			logger.error("delete computer from company id failed");
 		} catch (SQLException e) {
+			logger.error("delete computer from company id failed");
 			throw new DAOException("Connection Failed " + e);
-		} finally {
-			ConnectionBdd.POOLCONNECTIONS.closeConnection(state);
 		}
 	}
 }

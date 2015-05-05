@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
@@ -35,7 +37,16 @@ public class Menu {
 	private static boolean isInteger;
 	private static boolean isDateFr;
 
+	private static ComputerService computerService;
+	private static CompanyService companyService;
+
 	public static void main(String[] args) {
+
+		ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext(
+				"/applicationContext.xml");
+		computerService = springContext.getBean(ComputerService.class);
+		companyService = springContext.getBean(CompanyService.class);
+
 		printMenu();
 		selectMenu();
 	}
@@ -111,7 +122,7 @@ public class Menu {
 			int debut = 0;
 			int nbr = 10;
 			System.out.println("List of computers : ");
-			listComputer = ComputerService.SERVICE.getSomeComputers(debut, nbr);
+			listComputer = computerService.getSomeComputers(debut, nbr);
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
@@ -122,7 +133,7 @@ public class Menu {
 				switch (input) {
 				case "n":
 					debut++;
-					listComputer = ComputerService.SERVICE.getSomeComputers(
+					listComputer = computerService.getSomeComputers(
 							debut * nbr, nbr);
 					for (int i = 0; i < listComputer.size(); i++) {
 						System.out.println(listComputer.get(i).toString());
@@ -137,7 +148,7 @@ public class Menu {
 
 		case "2":
 			System.out.println("List of companies : ");
-			listCompany = CompanyService.SERVICE.getAllCompanies();
+			listCompany = companyService.getAllCompanies();
 			for (int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
@@ -149,8 +160,8 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			Computer computer = null;
 			if (isInteger) {
-				computer = ComputerService.SERVICE.findComputer(Integer
-						.parseInt(input));
+				computer = computerService
+						.findComputer(Integer.parseInt(input));
 			} else {
 				System.out.println("You have to enter a number");
 				break;
@@ -160,7 +171,7 @@ public class Menu {
 		case "4":
 			Computer com = createAndUpdateComputer((-1L));
 			if (com != null) {
-				ComputerService.SERVICE.createComputer(com);
+				computerService.createComputer(com);
 				System.out.println("Your computer is created : "
 						+ com.toString());
 			} else {
@@ -184,7 +195,7 @@ public class Menu {
 
 			Computer comp = createAndUpdateComputer(idComputer);
 			if (comp != null) {
-				ComputerService.SERVICE.updateComputer(comp);
+				computerService.updateComputer(comp);
 			}
 
 			break;
@@ -196,8 +207,7 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			if (isInteger) {
 				idComputer = Long.parseLong(input);
-				boolean isDeleted = ComputerService.SERVICE
-						.deleteComputer(idComputer);
+				boolean isDeleted = computerService.deleteComputer(idComputer);
 				if (isDeleted == true) {
 					System.out.println("your computer is deleted");
 				}
@@ -213,7 +223,7 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			if (isInteger) {
 				idCompany = Long.parseLong(input);
-				CompanyService.SERVICE.deleteCompany(idCompany);
+				companyService.deleteCompany(idCompany);
 			} else {
 				System.err.println("\nYou have to enter a number");
 				break;

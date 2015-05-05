@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.aflak.controller.dto.ComputerDTO;
 import com.excilys.aflak.controller.dto.Page;
@@ -27,12 +26,16 @@ import com.excilys.aflak.utils.Mapper;
  * 
  * MODIFICATION SINCE HOME SAME BRANCHE 2
  */
+
 @WebServlet("/index")
-public class DashboardServlet extends HttpServlet {
+public class DashboardServlet extends InitServlet {
 	private static final long serialVersionUID = 1L;
 	private static final List<String> limits = new ArrayList<String>(
 			Arrays.asList("10", "50", "100"));
+
+	@Autowired
 	private CompanyService serviceCompany;
+	@Autowired
 	private ComputerService serviceComputer;
 
 	/**
@@ -41,10 +44,6 @@ public class DashboardServlet extends HttpServlet {
 	public DashboardServlet() {
 		super();
 
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"/applicationContext.xml", DashboardServlet.class);
-
-		serviceComputer = applicationContext.getBean(ComputerService.class);
 	}
 
 	/**
@@ -126,7 +125,6 @@ public class DashboardServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
 	}
 }

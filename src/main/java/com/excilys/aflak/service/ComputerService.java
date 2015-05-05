@@ -3,7 +3,7 @@ package com.excilys.aflak.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Computer;
@@ -13,7 +13,7 @@ import com.excilys.aflak.utils.Validator;
 // variable service => instance de l'enum
 // toute les methode non static
 // on passe par SERVICE pour acceder au methode
-@Repository
+@Service
 public class ComputerService {
 	// SERVICE;
 	@Autowired
