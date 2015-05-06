@@ -56,4 +56,11 @@ public class CompanyDAOTest {
 
 	}
 
+	@Test
+	public void find() {
+		Company comp = dao.find(1L);
+		Assert.assertEquals(comp, listCompanies.get(0));
+
+	}
+
 }

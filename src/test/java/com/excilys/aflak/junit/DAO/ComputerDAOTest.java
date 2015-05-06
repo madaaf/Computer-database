@@ -190,4 +190,66 @@ public class ComputerDAOTest {
 		Computer com2 = dao.find(1L);
 		Assert.assertEquals(com, com2);
 	}
+
+	@Test
+	public void getSomeComputers() {
+		listComputersTest = new ArrayList<Computer>();
+
+		listComputersTest.add(ComputerBuilder
+				.createDefaultComputer()
+				.withId(1L)
+				.withName("MacBook Pro 15.4 inch")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build());
+
+		listComputersTest
+				.add(ComputerBuilder
+						.createDefaultComputer()
+						.withId(2L)
+						.withName("CM-2a")
+						.withCompany(
+								CompanyBuilder.crateDefaultCompany().withId(2L)
+										.withName("Thinking Machines").build())
+						.build());
+
+		Assert.assertArrayEquals(dao.getSomeComputers(0, 2).toArray(),
+				listComputersTest.toArray());
+	}
+
+	@Test
+	public void getSizeTabComputers() {
+		Assert.assertEquals(dao.getSizeTabComputers(), 6);
+	}
+
+	@Test
+	public void getSomeFiltredComputer() {
+		listComputersTest = new ArrayList<Computer>();
+
+		listComputersTest.add(ComputerBuilder
+				.createDefaultComputer()
+				.withId(1L)
+				.withName("MacBook Pro 15.4 inch")
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build());
+
+		listComputersTest.add(ComputerBuilder
+				.createDefaultComputer()
+				.withId(6L)
+				.withName("MacBook Pro")
+				.withIntroduced(LocalDateTime.of(2006, 01, 10, 00, 00, 00))
+				.withCompany(
+						CompanyBuilder.crateDefaultCompany().withId(1L)
+								.withName("Apple Inc.").build()).build());
+
+		Assert.assertArrayEquals(
+				dao.getSomeFiltredComputer("MacBook", "computer.name", "DESC",
+						0, 2).toArray(), listComputersTest.toArray());
+	}
+
+	@Test
+	public void getSizeFiltredComputer() {
+		Assert.assertEquals(dao.getSizeFiltredComputer("Apple"), 2);
+	}
 }

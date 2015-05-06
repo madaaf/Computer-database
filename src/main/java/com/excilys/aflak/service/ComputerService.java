@@ -31,7 +31,7 @@ public class ComputerService {
 		return dao.delete(id);
 	}
 
-	public Computer updateComputer(Computer computer) {
+	public boolean updateComputer(Computer computer) {
 		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
 				.getIntroduced()));
 		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer

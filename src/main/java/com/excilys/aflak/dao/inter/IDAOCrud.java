@@ -28,7 +28,7 @@ public interface IDAOCrud<T> {
 	 * @param obj
 	 * @return object updated
 	 */
-	default public T update(T obj) {
+	default public boolean update(T obj) {
 		throw new IllegalAccessError("error implementation update");
 	}
 
