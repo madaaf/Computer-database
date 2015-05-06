@@ -157,8 +157,7 @@ public class ComputerDAO implements IDAOComputer {
 
 	@Override
 	public void deleteComputerFromCompany(Long companyId) {
-		int row = this.jdbcTemplate.update(
-				"DELETE from computer WHERE company_id = ?",
+		this.jdbcTemplate.update("DELETE from computer WHERE company_id = ?",
 				new Object[] { companyId });
 
 	}
