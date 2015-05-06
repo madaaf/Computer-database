@@ -60,7 +60,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("Creation of computer failed");
 			throw new DAOException("Connection Failed " + e);
-
+		} finally {
+			bdd.closeResultAndStatement(state, set);
 		}
 		return idComputer;
 	}
@@ -87,7 +88,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("delete computer failed");
 			throw new DAOException("Connection Failed " + e);
-
+		} finally {
+			bdd.closeResultAndStatement(state, null);
 		}
 
 	}
@@ -126,6 +128,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("update computer failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, null);
 		}
 		return null;
 	}
@@ -153,8 +157,9 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("find computer failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
-		// TODO Auto-generated method stub
 		return computer;
 	}
 
@@ -166,7 +171,6 @@ public class ComputerDAO implements IDAOComputer {
 		PreparedStatement state = null;
 		ResultSet result = null;
 		try {
-
 			state = connect
 					.prepareStatement("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id");
 
@@ -174,12 +178,12 @@ public class ComputerDAO implements IDAOComputer {
 			while (result.next()) {
 				computer = MapperDAO.mapComputer(result);
 				listComputer.add(computer);
-
 			}
-
 		} catch (SQLException e) {
 			logger.error("list computers failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
 
 		return listComputer;
@@ -205,6 +209,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("gets some computers computers failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
 
 		return list;
@@ -225,6 +231,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("get size tab computers failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
 		return size;
 	}
@@ -255,6 +263,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("gets some filtred computers failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
 		return list;
 	}
@@ -278,6 +288,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("gets size filtred computers failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
 		return size;
 	}
@@ -294,6 +306,8 @@ public class ComputerDAO implements IDAOComputer {
 		} catch (SQLException e) {
 			logger.error("delete computer from company id failed");
 			throw new DAOException("Connection Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, null);
 		}
 	}
 }

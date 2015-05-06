@@ -49,6 +49,8 @@ public class CompanyDAO implements IDAOCompany {
 		} catch (Exception e) {
 			logger.error("gets list company failed");
 			throw new DAOException("get list company Failed " + e);
+		} finally {
+			bdd.closeResultAndStatement(state, result);
 		}
 
 		return listCompany;
