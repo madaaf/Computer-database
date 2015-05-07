@@ -64,11 +64,6 @@
 		</dependency>
 
 
-		<dependency> <!-- connection pool -->
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>${bonecp.version}</version>
-		</dependency>
 
 
 		<!-- Servlet -->
@@ -120,7 +115,7 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.1.6.RELEASE</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>4.1.6.RELEASE</version>
@@ -130,7 +125,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>4.1.6.RELEASE</version>
 		</dependency>
-		
+
 		<!--Spring TEST -->
 		<dependency>
 			<groupId>org.springframework</groupId>
