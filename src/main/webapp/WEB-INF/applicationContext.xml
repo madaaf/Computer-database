@@ -12,8 +12,8 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd
     ">
 	<context:component-scan base-package="com.excilys.aflak" />
-	<context:component-scan base-package="org.springframework.samples.petclinic.web"/>
-	  <mvc:annotation-driven enable-matrix-variables="true"></mvc:annotation-driven>
+	<mvc:annotation-driven enable-matrix-variables="true"/>
+	<mvc:resources mapping="/**" location="/"></mvc:resources>
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -31,7 +31,7 @@
     <property name="suffix" value=".jsp"/>
 </bean>
 
-	<mvc:default-servlet-handler/>
+
 	<!-- <bean id="companyDao" class="com.excilys.aflak.dao.model.CompanyDAO" 
 		scope="singleton" > </bean> -->
 
