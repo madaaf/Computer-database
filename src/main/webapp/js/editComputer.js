@@ -39,7 +39,7 @@
 		var introducedDate = $("#introduced").val().match(dateFrFormat)
 	  	var discontinuedDate = $("#discontinued").val().match(dateFrFormat)
 	  	
-	  	var nameFull = verifyInputNotEmpty("#divName","#computerName")
+	  	var nameFull = verifyInputNotEmpty("#divName","#name")
 	  	var expectedIntroduced2 = verifInput("#divIntroduced","#introduced",introducedDate)
 		var expectedDiscontinued2 = verifInput("#divDiscontinued","#discontinued",discontinuedDate)
 

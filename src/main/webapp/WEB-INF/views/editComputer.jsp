@@ -27,11 +27,11 @@
                     <h1>Edit Computer</h1>
 				
                     <form action="editComputer" name="computerForm" method="POST"  onsubmit=" return checkForm()"  >
-                        <input type="hidden" value="${computer.id}" name ="computerId"/>
+                        <input type="hidden" value="${computer.id}" id="id" name ="id"/>
                         <fieldset>
                             <div class="form-group" id="divName" >
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="name" value="${computer.name}" />
+                                <input type="text" class="form-control" id="name" name="name" value="${computer.name}" />
                             </div>
                             <div class="form-group" id="divIntroduced">
                                 <label for="introduced">Introduced date</label>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" name="companies">
+                                <select class="form-control" id="companyId" name="companyId">
                                 <!-- Actual value -->
                                  <c:if test="${computer.companyName != null}">
 								<option value="${computer.companyId}">${computer.companyName}</option>

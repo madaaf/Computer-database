@@ -1,7 +1,12 @@
 package com.excilys.aflak.controller.dto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.service.ComputerService;
+import com.excilys.aflak.utils.Mapper;
 
 public class Page {
 
@@ -12,11 +17,18 @@ public class Page {
 
 	private String search = "";
 	private String way = "ASC";
-	private String colomn = null;
+	private String colomn = "computer.id";
 
 	private List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+	private static final List<String> limits = new ArrayList<String>(
+			Arrays.asList("10", "50", "100"));
+
 	private int nbrOfPages;
 	private int nbrComputers;
+	private String deletedSuccess = null;
+
+	public Page() {
+	}
 
 	public Page(int pageNum, int limit, int start, int end, String search,
 			String way, String colomn, List<ComputerDTO> listComputers,
@@ -32,6 +44,14 @@ public class Page {
 		this.listComputers = listComputers;
 		this.nbrOfPages = nbrOfPages;
 		this.nbrComputers = nbrComputers;
+	}
+
+	public String getDeletedSuccess() {
+		return deletedSuccess;
+	}
+
+	public void setDeletedSuccess(String deletedSuccess) {
+		this.deletedSuccess = deletedSuccess;
 	}
 
 	public int getPageNum() {
@@ -114,90 +134,56 @@ public class Page {
 		this.nbrComputers = nbrComputers;
 	}
 
-	public static class PageBuilder {
+	public void validate(ComputerService serviceComputer) {
 
-		private int limit = 10;
-		private int start = 0;
-		private int end = start + 5;
-		private int pageNum = 0;
-
-		private String search = "";
-		private String way = "ASC";
-		private String colomn = null;
-
-		private List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
-		private int nbrOfPages;
-		private int nbrComputers;
-
-		private PageBuilder() {
+		setNbrComputers(serviceComputer.getSizeFiltredComputer(getSearch()));
+		if (limits.contains(getLimit())) {
+			setLimit(getLimit());
 		}
 
-		public static PageBuilder getDefaultPage() {
-			return new PageBuilder();
+		float nbrOfPagesF = (float) getNbrComputers() / (float) getLimit();
+		setNbrOfPages((int) Math.ceil(nbrOfPagesF));
+
+		if (getPageNum() < getNbrOfPages()) {
+			setStart(getPageNum());
+			setEnd(getStart() + 5);
 		}
 
-		public PageBuilder getPageNum(final int pageNum) {
-			this.pageNum = pageNum;
-			return this;
+		if (getWay().equals("ASC")) {
+			setWay("DESC");
+		} else {
+			setWay("ASC");
 		}
 
-		public PageBuilder withLimit(final int limit) {
-			this.limit = limit;
-			return this;
+		if (getDeletedSuccess() != null) {
+			setDeletedSuccess("deletedSuccess");
 		}
 
-		public PageBuilder withStart(final int start) {
-			this.start = start;
-			return this;
+		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+		// remplir la liste de computer en fonction de la recherche
+		if (getLimit() * getStart() < getNbrComputers()) {
+			for (Computer computer : serviceComputer.getSomeFiltredComputer(
+					getSearch(), getColomn(), getWay(),
+					getLimit() * getStart(), getLimit())) {
+				listComputers.add(Mapper.computerToComputerDTO(computer));
+			}
+		} else {
+			for (Computer computer : serviceComputer.getSomeFiltredComputer(
+					getSearch(), getColomn(), getWay(), 0, getLimit())) {
+				listComputers.add(Mapper.computerToComputerDTO(computer));
+			}
 		}
-
-		public PageBuilder withEnd(final int end) {
-			this.end = end;
-			return this;
-		}
-
-		public PageBuilder withSearch(final String search) {
-			this.search = search;
-			return this;
-		}
-
-		public PageBuilder withWay(final String way) {
-			this.way = way;
-			return this;
-		}
-
-		public PageBuilder withColomn(final String colomn) {
-			this.colomn = colomn;
-			return this;
-		}
-
-		public PageBuilder withListComputers(
-				final List<ComputerDTO> listComputers) {
-			this.listComputers = listComputers;
-			return this;
-		}
-
-		public PageBuilder withNbrOfPages(final int nbrOfPages) {
-			this.nbrOfPages = nbrOfPages;
-			return this;
-		}
-
-		public PageBuilder withNbrComputers(final int nbrComputers) {
-			this.nbrComputers = nbrComputers;
-			return this;
-		}
-
-		public Page build() {
-			return new Page(pageNum, limit, start, end, search, way, colomn,
-					listComputers, nbrOfPages, nbrComputers);
-		}
+		setListComputers(listComputers);
 
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "Page [limit=" + limit + ", start=" + start + ", end=" + end
+				+ ", pageNum=" + pageNum + ", search=" + search + ", way="
+				+ way + ", colomn=" + colomn + ", listComputers="
+				+ listComputers + ", nbrOfPages=" + nbrOfPages
+				+ ", nbrComputers=" + nbrComputers + "]";
 	}
 
 }

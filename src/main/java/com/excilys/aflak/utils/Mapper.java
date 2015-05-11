@@ -10,8 +10,12 @@ public class Mapper {
 
 	public static Computer computerDTOToComputer(ComputerDTO cdto) {
 
-		Company company = CompanyBuilder.crateDefaultCompany()
-				.withId(cdto.getCompanyId()).withName(cdto.getName()).build();
+		Company company = null;
+		if (cdto.getCompanyId() != 0) {
+			company = CompanyBuilder.crateDefaultCompany()
+					.withId(cdto.getCompanyId())
+					.withName(cdto.getCompanyName()).build();
+		}
 		Computer computer = ComputerBuilder
 				.createDefaultComputer()
 				.withId(cdto.getId())

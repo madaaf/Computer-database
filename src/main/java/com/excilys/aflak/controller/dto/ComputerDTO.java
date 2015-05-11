@@ -9,6 +9,9 @@ public class ComputerDTO {
 	private long companyId;
 	private String companyName;
 
+	public ComputerDTO() {
+	}
+
 	public ComputerDTO(long id, String name, String introduced,
 			String discontinued, long companyId, String companyName) {
 		this.id = id;
@@ -65,6 +68,14 @@ public class ComputerDTO {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	@Override
+	public String toString() {
+		return "ComputerBuilderDTO [id=" + id + ", name=" + name
+				+ ", introduced=" + introduced + ", discontinued="
+				+ discontinued + ", companyId=" + companyId + ", companyName="
+				+ companyName + "]";
 	}
 
 	public static class ComputerBuilderDTO {

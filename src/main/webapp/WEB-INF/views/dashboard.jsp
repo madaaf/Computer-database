@@ -103,10 +103,9 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
-
 		<tags:page nbrOfPages="${pageS.nbrOfPages}" start="${pageS.start}" end="${pageS.end}" limit="${pageS.limit}" search="${pageS.search}"></tags:page>
-
     </footer>
+    
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/dashboard.js"></script>

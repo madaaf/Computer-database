@@ -55,7 +55,6 @@ public class ComputerDAO implements IDAOComputer {
 				ps.setTimestamp(3, TimeConvertorDAO
 						.convertLocalDateTimeToTimestamp(computer
 								.getDiscontinued()));
-				System.err.println(computer.toString());
 				if (computer.getCompany() == null) {
 					ps.setNull(4, Types.BIGINT);
 				} else {
@@ -64,7 +63,7 @@ public class ComputerDAO implements IDAOComputer {
 				return ps;
 			}
 		}, keyHolder);
-
+		System.err.print(keyHolder.getKey());
 		return (Long) keyHolder.getKey();
 	}
 
@@ -77,8 +76,8 @@ public class ComputerDAO implements IDAOComputer {
 
 	@Override
 	public boolean update(Computer computer) {
-		long idCompany = Types.BIGINT;
-		long idComputer = Types.BIGINT;
+		Long idCompany = null;
+		Long idComputer = null;
 
 		if (computer.getCompany() != null) {
 			idCompany = computer.getCompany().getId();
@@ -95,6 +94,7 @@ public class ComputerDAO implements IDAOComputer {
 								.convertLocalDateTimeToTimestamp(computer
 										.getDiscontinued()), idCompany,
 						idComputer);
+		System.err.println(row);
 		return (row == 1);
 	}
 
