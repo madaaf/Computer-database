@@ -1,5 +1,6 @@
 package com.excilys.aflak.dao.inter;
 
+
 public interface IDAOCrud<T> {
 
 	/**

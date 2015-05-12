@@ -26,6 +26,7 @@ import com.excilys.aflak.model.Computer;
 
 @Repository
 public class ComputerDAO implements IDAOComputer {
+
 	@Autowired
 	private ConnectionBdd bdd;
 	// INSTANCE;
@@ -135,7 +136,7 @@ public class ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
+	public List<Computer> getSomeFilteredComputer(String filtre, String colomn,
 			String way, int debut, int limit) {
 		filtre = "%" + filtre + "%";
 		String sql = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ORDER BY "
@@ -147,7 +148,7 @@ public class ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public int getSizeFiltredComputer(String filtre) {
+	public int getSizeFilteredComputer(String filtre) {
 		String ok = "SELECT  COUNT(*) from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ";
 		filtre = "%" + filtre + "%";
 		return this.jdbcTemplate.queryForObject(ok, new Object[] { filtre,

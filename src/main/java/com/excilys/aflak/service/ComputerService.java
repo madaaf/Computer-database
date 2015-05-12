@@ -57,12 +57,12 @@ public class ComputerService {
 
 	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
 			String way, int debut, int limit) {
-		return dao.getSomeFiltredComputer(Validator.getFilter(filtre),
+		return dao.getSomeFilteredComputer(Validator.getFilter(filtre),
 				Validator.getColomn(colomn), Validator.getWay(way), debut,
 				limit);
 	}
 
 	public int getSizeFiltredComputer(String filtre) {
-		return dao.getSizeFiltredComputer(Validator.getFilter(filtre));
+		return dao.getSizeFilteredComputer(Validator.getFilter(filtre));
 	}
 }

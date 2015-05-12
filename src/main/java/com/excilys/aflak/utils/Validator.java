@@ -12,7 +12,6 @@ import org.apache.commons.validator.routines.DateValidator;
 
 public class Validator {
 	private final static String regExInteger = "[0-9]+";
-	private final static String dateFrFormat = "(O?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((19|20)[0-9][0-9])";
 	private static Pattern pattern;
 	private static Matcher matcher;
 	private static final List<String> listColomns = new ArrayList<String>(
@@ -39,9 +38,9 @@ public class Validator {
 		return filter;
 	}
 
-	public static String getColomn(String colomn) {
-		if (listColomns.contains(colomn)) {
-			return colomn;
+	public static String getColomn(String column) {
+		if (listColomns.contains(column)) {
+			return column;
 		} else {
 			return "computer.id";
 		}

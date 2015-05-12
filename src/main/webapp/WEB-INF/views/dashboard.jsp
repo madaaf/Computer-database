@@ -23,9 +23,14 @@
     <section id="main">
         <div class="container">
         <!-- when computers are deleted -->
-        <c:if test="${deletedSuccess!=null}">
+        <c:if test="${pageS.deletedSuccess!=null}">
        	 <div class="alert alert-success" id="alertDeletedComputer"> You successfully delete your computers. </div>     
         </c:if>
+        <!-- when invalid argument -->
+        <c:if test="${pageS.invalidArgument!=null}">
+       	 <div class="alert alert-danger" id="alertDeletedComputer"> invalidArgument. </div>     
+        </c:if>
+      
             
             <h1 id="homeTitle">
                 ${pageS.nbrComputers} Computers found

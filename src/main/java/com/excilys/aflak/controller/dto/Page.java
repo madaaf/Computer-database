@@ -26,8 +26,20 @@ public class Page {
 	private int nbrOfPages;
 	private int nbrComputers;
 	private String deletedSuccess = null;
+	private String invalidArgument = null;
 
 	public Page() {
+
+	}
+
+	public void initialize() {
+		limit = 10;
+		start = 0;
+		end = start + 5;
+		pageNum = 0;
+		search = "";
+		way = "ASC";
+		colomn = "computer.id";
 	}
 
 	public Page(int pageNum, int limit, int start, int end, String search,
@@ -44,6 +56,14 @@ public class Page {
 		this.listComputers = listComputers;
 		this.nbrOfPages = nbrOfPages;
 		this.nbrComputers = nbrComputers;
+	}
+
+	public String getInvalidArgument() {
+		return invalidArgument;
+	}
+
+	public void setInvalidArgument(String invalidArgument) {
+		this.invalidArgument = invalidArgument;
 	}
 
 	public String getDeletedSuccess() {
@@ -134,8 +154,7 @@ public class Page {
 		this.nbrComputers = nbrComputers;
 	}
 
-	public void validate(ComputerService serviceComputer) {
-
+	public void populate(ComputerService serviceComputer) {
 		setNbrComputers(serviceComputer.getSizeFiltredComputer(getSearch()));
 		if (limits.contains(getLimit())) {
 			setLimit(getLimit());
@@ -159,6 +178,10 @@ public class Page {
 			setDeletedSuccess("deletedSuccess");
 		}
 
+		if (getInvalidArgument() != null) {
+			setInvalidArgument("setInvalidArgument");
+		}
+
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		// remplir la liste de computer en fonction de la recherche
 		if (getLimit() * getStart() < getNbrComputers()) {
@@ -174,7 +197,6 @@ public class Page {
 			}
 		}
 		setListComputers(listComputers);
-
 	}
 
 	@Override

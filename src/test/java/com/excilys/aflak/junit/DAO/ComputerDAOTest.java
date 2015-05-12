@@ -244,12 +244,12 @@ public class ComputerDAOTest {
 								.withName("Apple Inc.").build()).build());
 
 		Assert.assertArrayEquals(
-				dao.getSomeFiltredComputer("MacBook", "computer.name", "DESC",
+				dao.getSomeFilteredComputer("MacBook", "computer.name", "DESC",
 						0, 2).toArray(), listComputersTest.toArray());
 	}
 
 	@Test
 	public void getSizeFiltredComputer() {
-		Assert.assertEquals(dao.getSizeFiltredComputer("Apple"), 2);
+		Assert.assertEquals(dao.getSizeFilteredComputer("Apple"), 2);
 	}
 }
