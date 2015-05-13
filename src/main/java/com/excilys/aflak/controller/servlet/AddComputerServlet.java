@@ -49,6 +49,7 @@ public class AddComputerServlet {
 			ModelMap map) {
 		listCompanies = serviceCompany.getAllCompanies();
 		map.addAttribute("listCompanies", listCompanies);
+		map.addAttribute("ComputerDTO", new ComputerDTO());
 
 		return "addComputer";
 	}
@@ -57,7 +58,6 @@ public class AddComputerServlet {
 	public String doPost(
 			@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO)
 			throws IOException {
-
 		Computer com = Mapper.computerDTOToComputer(computerDTO);
 		serviceComputer.createComputer(com);
 		// redirection vers une url ,recharger la page

@@ -32,10 +32,10 @@ public class ComputerDTOValidator implements Validator {
 		ComputerDTO computerDTO = (ComputerDTO) o;
 		ValidationUtils.rejectIfEmpty(errors, "name", "name.empty");
 		logger.debug(Integer.toString(listCompany.size()));
-		if (!listCompany.contains(computerDTO.getCompanyId())
-				&& computerDTO.getCompanyId() != 0) {
-			errors.rejectValue("invalid Company Id", "invalid Company Id");
-		}
+		// if (!listCompany.contains(computerDTO.getCompanyId())
+		// && computerDTO.getCompanyId() != 0) {
+		// errors.rejectValue("invalid Company Id", "invalid Company Id");
+		// }
 		//
 		// System.err.print(computerDTO.getIntroduced());
 		// if (!computerDTO.getIntroduced().isEmpty()) {
