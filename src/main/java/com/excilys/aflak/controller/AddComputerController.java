@@ -1,4 +1,4 @@
-package com.excilys.aflak.controller.servlet;
+package com.excilys.aflak.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import com.excilys.aflak.validator.ComputerDTOValidator;
  */
 @Controller
 @RequestMapping("/addComputer")
-public class AddComputerServlet {
+public class AddComputerController {
 	private List<Company> listCompany = new ArrayList<Company>();
 
 	@Autowired

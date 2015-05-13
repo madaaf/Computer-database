@@ -1,7 +1,8 @@
 <!DOCTYPE jsp>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
 <%@ page session="false" pageEncoding="UTF-8"%>
 
 
@@ -15,60 +16,79 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-    <header class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index"> Application - Computer Database </a>
-        </div>
-    </header>
-    <section id="main">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-8 col-xs-offset-2 box">
-                    <div class="label label-default pull-right">
-                        id: ${computer.id}
-                    </div>
-                    <h1><spring:message code="label.editComputer" /></h1>
-				
-                    <form action="editComputer" name="computerForm" method="POST"  onsubmit=" return checkForm()"  >
-                        <input type="hidden" value="${computer.id}" id="id" name ="id"/>
-                        <fieldset>
-                            <div class="form-group" id="divName" >
-                                <label for="computerName"><spring:message code="label.name" /></label>
-                                <input type="text" class="form-control" id="name" name="name" value="${computer.name}" />
-                            </div>
-                            <div class="form-group" id="divIntroduced">
-                                <label for="introduced"><spring:message code="label.introduced" /></label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}"/>
-                            </div>
-                            <div class="form-group" id="divDiscontinued" >
-                                <label for="discontinued"><spring:message code="label.discontinued" /></label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="companyId"><spring:message code="label.company" /></label>
-                                <select class="form-control" id="companyId" name="companyId">
-                                <!-- Actual value -->
-                                 <c:if test="${computer.companyName != null}">
-								<option value="${computer.companyId}">${computer.companyName}</option>
-								</c:if>
-								<option value="0">--</option>
-                                <c:forEach items="${listCompanies}" var="company">
-                                     <option value="${company.id}" > ${company.name} </option>
-                                 </c:forEach>
-                                </select>
-                            </div>            
-                        </fieldset>
-                        <div class="actions pull-right">
-                            <input type="submit" value="Edit" class="btn btn-primary">
-                            or
-                            <a href="index" class="btn btn-default">Cancel</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-     <script src="js/jquery.min.js"></script>
-    <script src="js/editComputer.js"></script>
+	<header class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<a class="navbar-brand" href="index"> Application - Computer
+				Database </a>
+		</div>
+	</header>
+	<section id="main">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8 col-xs-offset-2 box">
+					<div class="label label-default pull-right">id:
+						${computer.id}</div>
+					<h1>
+						<spring:message code="label.editComputer" />
+					</h1>
+
+
+					<sf:form method="POST" modelAttribute="ComputerDTO"
+						action="editComputer" name="computerForm"
+						onsubmit=" return checkForm()">
+						<fieldset>
+							<table>
+								<input type="hidden" value="${computer.id}" id="id" name="id" />
+								<div class="form-group" id="divName">
+									<label for="computerName"><spring:message
+											code="label.name" /></label>
+									<sf:input type="text" class="form-control" id="name"
+										name="name" placeholder="Computer name" path="name"
+										value="${computer.name}" />
+								</div>
+								<div class="form-group" id="divIntroduced">
+									<label for="introduced"><spring:message
+											code="label.introduced" /></label>
+									<sf:input type="date" class="form-control" id="introduced"
+										name="introduced" placeholder="dd-mm-yyyy" path="introduced"
+										value="${computer.introduced}" />
+								</div>
+								<div class="form-group" id="divDiscontinued">
+									<label for="discontinued"><spring:message
+											code="label.discontinued" /></label>
+									<sf:input type="date" class="form-control" id="discontinued"
+										value="${computer.discontinued}" name="discontinued"
+										placeholder="dd-mm-yyyy" path="discontinued" />
+								</div>
+
+								<div class="form-group">
+									<label for="companyId"><spring:message
+											code="label.company" /></label>
+									<sf:select class="form-control" name="companies" id="companyId"
+										path="companyId">
+										<!-- Actual value -->
+										<c:if test="${computer.companyName != null}">
+											<option value="${computer.companyId}">${computer.companyName}</option>
+										</c:if>
+										<option value="0">--</option>
+										<c:forEach items="${listCompanies}" var="company">
+											<option value="${company.id}">${company.name}</option>
+										</c:forEach>
+									</sf:select>
+								</div>
+								<div class="actions pull-right">
+									<input type="submit" value="Add" class="btn btn-primary"
+										id="addComputer"> or <a href="index"
+										class="btn btn-default">Cancel</a>
+								</div>
+							</table>
+						</fieldset>
+					</sf:form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/editComputer.js"></script>
 </body>
 </html>

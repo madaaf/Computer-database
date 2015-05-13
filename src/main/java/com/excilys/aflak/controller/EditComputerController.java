@@ -1,4 +1,4 @@
-package com.excilys.aflak.controller.servlet;
+package com.excilys.aflak.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import com.excilys.aflak.utils.Mapper;
 
 @Controller
 @RequestMapping("/editComputer")
-public class EditComputerServlet {
+public class EditComputerController {
 
 	@Autowired
 	private ComputerService serviceComputer;
@@ -39,6 +39,7 @@ public class EditComputerServlet {
 
 		model.addAttribute("listCompanies", listCompanies);
 		model.addAttribute("computer", dto);
+		model.addAttribute("ComputerDTO", new ComputerDTO());
 
 		return "editComputer";
 	}

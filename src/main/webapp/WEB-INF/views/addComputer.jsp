@@ -74,41 +74,7 @@
 							</table>
 						</fieldset>
 					</sf:form>
-					<!--
-					<form action="addComputer" method="POST" name="computerForm"
-						onsubmit=" return checkForm()">
-						<fieldset>
-							<div class="form-group" id="divName">
-								<label for="computerName"><spring:message code="label.name" /></label> <input
-									type="text" class="form-control" id="name" name="name"
-									placeholder="Computer name">
-							</div>
-							<div class="form-group" id="divIntroduced">
-								<label for="introduced"><spring:message code="label.introduced" /></label> <input
-									type="date" class="form-control" id="introduced"
-									name="introduced" placeholder="dd-mm-yyyy">
-							</div>
-							<div class="form-group" id="divDiscontinued">
-								<label for="discontinued"><spring:message code="label.discontinued" /></label> <input
-									type="date" class="form-control" id="discontinued"
-									name="discontinued" placeholder="dd-mm-yyyy">
-							</div>
-							<div class="form-group">
-								<label for="companyId"><spring:message code="label.company" /></label> <select
-									class="form-control" name="companies" id="companyId">
-									<c:forEach items="${listCompanies}" var="company">
-										<option value="${company.id}">${company.name}</option>
-									</c:forEach>
-								</select>
-							</div>
-						</fieldset>
-						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary"
-								id="addComputer"> or <a href="index"
-								class="btn btn-default">Cancel</a>
-						</div>
-					</form>
-					  -->
+			
 				</div>
 			</div>
 		</div>

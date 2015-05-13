@@ -1,4 +1,4 @@
-package com.excilys.aflak.controller.servlet;
+package com.excilys.aflak.controller;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import com.excilys.aflak.service.ComputerService;
 
 @Controller
 @RequestMapping("/deleteComputer")
-public class DeleteComputer {
+public class DeleteComputerController {
 
 	@Autowired
 	private ComputerService serviceComputer;

@@ -1,4 +1,4 @@
-package com.excilys.aflak.controller.servlet;
+package com.excilys.aflak.controller;
 
 import javax.validation.Valid;
 
@@ -20,10 +20,10 @@ import com.excilys.aflak.validator.PageValidator;
 
 @Controller
 @RequestMapping({ "/index", "/" })
-public class DashboardServlet {
+public class DashboardController {
 
 	private static Logger logger = LoggerFactory
-			.getLogger(DashboardServlet.class);
+			.getLogger(DashboardController.class);
 
 	@Autowired
 	private ComputerService serviceComputer;
