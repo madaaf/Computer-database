@@ -28,4 +28,9 @@ input[type='checkbox'] {
     white-space: nowrap;
 }
 
+img#flag{
+	padding-top: 20px;
+	padding-right: 10px;
+}
+
 

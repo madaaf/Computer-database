@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -11,13 +10,14 @@
 	<context:component-scan base-package="com.excilys.aflak.service" />
 	<context:component-scan base-package="com.excilys.aflak.dao" />
 
-	
 
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources
+        in the /WEB-INF/views directory -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="prefix" value="WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
@@ -29,10 +29,10 @@
 		<property name="username" value="admincdb" />
 		<property name="password" value="qwerty1234" />
 	</bean>
-	
-	<bean id="validator"
-    class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
+
+
+    
 
 
 </beans>

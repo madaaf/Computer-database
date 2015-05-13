@@ -1,4 +1,4 @@
-package com.excilys.aflak.utils;
+package com.excilys.aflak.validator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,15 +30,6 @@ public class DateFormatter implements Formatter<Date> {
 		DateFormat dateFormat = new SimpleDateFormat(this.pattern, locale);
 		dateFormat.setLenient(false);
 		return dateFormat;
-	}
-
-	public static void main(String[] args) {
-		DateFormatter dt = new DateFormatter("dd-MM-yyyy");
-		try {
-			System.out.println(dt.parse("31-02-1992", Locale.FRENCH));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

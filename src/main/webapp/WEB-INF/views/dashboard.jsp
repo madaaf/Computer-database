@@ -1,21 +1,30 @@
 <!DOCTYPE jsp>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page session="false" pageEncoding="UTF-8"%>
+
+
 <html>
 <head>
-<title>Computer Database</title>
+<title> Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+
+
+
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index?page=0"> Application - Computer Database </a>
+            <a class="navbar-brand" href="index?page=0"><spring:message code="label.title" /> </a>
+            
+           	 <a href="?locale=fr"  class="pull-right" > <img id="flag" src="img/flagFr.png" /> </a>
+             <a href="?locale=en"  class="pull-right"> <img id="flag" src="img/flagEN.png" /> </a>
         </div>
     </header>
     
@@ -31,21 +40,23 @@
        	 <div class="alert alert-danger" id="alertDeletedComputer"> invalidArgument. </div>     
         </c:if>
       
-            
+            <spring:message code="label.find" var="springFind"/>
             <h1 id="homeTitle">
-                ${pageS.nbrComputers} Computers found
+                ${pageS.nbrComputers} ${springFind}
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="index" method="GET" class="form-inline">
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                    <spring:message code="label.search" var="springSearch"/>
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="${springSearch}" />
+                        <spring:message code="label.filter" var="springFilter"/>
+                        <input type="submit" id="searchsubmit" value="${springFilter}"
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="label.add" /></a> 
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="label.edit" /></a>
                 </div>
             </div>
         </div>
@@ -70,19 +81,24 @@
                             </span>
                         </th>
                         <th> 
-                        <tags:link body="Computer Name" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.name" way="${pageS.way}" > </tags:link>                       
+                  		<spring:message code="label.name" var="springName"/>
+                  		<spring:message code="label.introduced" var="springIntroduced"/>
+                  		<spring:message code="label.discontinued" var="springDiscontinued"/>
+                  		<spring:message code="label.company" var="springCompany"/>
+                  		
+                        <tags:link body="${springName}" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.name" way="${pageS.way}" > </tags:link>                       
                         </th>
                         <th>
-                         <tags:link body="Introduced date" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.introduced" way="${pageS.way}" > </tags:link>                          
+                         <tags:link body="${springIntroduced}" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.introduced" way="${pageS.way}" > </tags:link>                          
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            <tags:link body="Discontinued date" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.discontinued" way="${pageS.way}" > </tags:link> 
+                            <tags:link body="${springDiscontinued}" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="computer.discontinued" way="${pageS.way}" > </tags:link> 
                            
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                        	<tags:link body="Company" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="company.name" way="${pageS.way}" > </tags:link> 
+                        	<tags:link body="${springCompany}" pageNum="0" limit="${pageS.limit}" search="${pageS.search}" colomn="company.name" way="${pageS.way}" > </tags:link> 
                             
                         </th>
 

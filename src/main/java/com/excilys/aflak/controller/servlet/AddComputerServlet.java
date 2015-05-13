@@ -1,11 +1,16 @@
 package com.excilys.aflak.controller.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +22,7 @@ import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
+import com.excilys.aflak.validator.ComputerDTOValidator;
 
 /**
  * Servlet implementation class AddComputerServlet
@@ -24,11 +30,18 @@ import com.excilys.aflak.utils.Mapper;
 @Controller
 @RequestMapping("/addComputer")
 public class AddComputerServlet {
+	private List<Company> listCompany = new ArrayList<Company>();
 
 	@Autowired
 	private CompanyService serviceCompany;
 	@Autowired
 	private ComputerService serviceComputer;
+
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		listCompany = serviceCompany.getAllCompanies();
+		binder.setValidator(new ComputerDTOValidator(listCompany));
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String doGet(
@@ -41,7 +54,8 @@ public class AddComputerServlet {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@ModelAttribute("computerDTO") ComputerDTO computerDTO)
+	public String doPost(
+			@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO)
 			throws IOException {
 
 		Computer com = Mapper.computerDTOToComputer(computerDTO);

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.excilys.aflak.controller.dto.Page;
-import com.excilys.aflak.controller.dto.PageValidator;
 import com.excilys.aflak.service.ComputerService;
+import com.excilys.aflak.validator.PageValidator;
 
 @Controller
-@RequestMapping("/index")
+@RequestMapping({ "/index", "/" })
 public class DashboardServlet {
 
 	private static Logger logger = LoggerFactory
@@ -37,14 +37,10 @@ public class DashboardServlet {
 	public String doGet(@Valid @ModelAttribute("Page") Page page,
 			BindingResult result, ModelMap model) {
 
-		logger.debug("HAS RESULT " + result.hasErrors());
-
 		if (result.hasErrors()) {
-			logger.debug("HAS RESULT");
+			logger.debug("HAS RESULT ERRORS");
 			page.initialize();
 			page.setInvalidArgument("invalidArgument");
-
-			// page.setArgumentErrors("Argument Error");
 		}
 		page.populate(serviceComputer);
 

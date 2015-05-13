@@ -1,10 +1,11 @@
-package com.excilys.aflak.controller.dto;
+package com.excilys.aflak.validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.excilys.aflak.controller.dto.Page;
 import com.excilys.aflak.dao.inter.IDAOComputer;
 
 public class PageValidator implements Validator {
@@ -25,10 +26,7 @@ public class PageValidator implements Validator {
 		if (page.getLimit() < 0) {
 			errors.rejectValue("limit", "negativeLmit");
 		}
-		// if (page.getPageNum() > page.getNbrOfPages()) {
-		// errors.rejectValue("pageNum",
-		// "pageNum to big" + page.getNbrOfPages());
-		// }
+
 		if (!page.getColomn().equals(IDAOComputer.getColumn(page.getColomn()))) {
 			IDAOComputer.getColumn(page.getColomn());
 		}

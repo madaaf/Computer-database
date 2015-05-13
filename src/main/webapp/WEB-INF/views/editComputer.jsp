@@ -1,6 +1,9 @@
 <!DOCTYPE jsp>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page session="false" pageEncoding="UTF-8"%>
+
 
 <html>
 <head>
@@ -24,25 +27,25 @@
                     <div class="label label-default pull-right">
                         id: ${computer.id}
                     </div>
-                    <h1>Edit Computer</h1>
+                    <h1><spring:message code="label.editComputer" /></h1>
 				
                     <form action="editComputer" name="computerForm" method="POST"  onsubmit=" return checkForm()"  >
                         <input type="hidden" value="${computer.id}" id="id" name ="id"/>
                         <fieldset>
                             <div class="form-group" id="divName" >
-                                <label for="computerName">Computer name</label>
+                                <label for="computerName"><spring:message code="label.name" /></label>
                                 <input type="text" class="form-control" id="name" name="name" value="${computer.name}" />
                             </div>
                             <div class="form-group" id="divIntroduced">
-                                <label for="introduced">Introduced date</label>
+                                <label for="introduced"><spring:message code="label.introduced" /></label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}"/>
                             </div>
                             <div class="form-group" id="divDiscontinued" >
-                                <label for="discontinued">Discontinued date</label>
+                                <label for="discontinued"><spring:message code="label.discontinued" /></label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}"/>
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label>
+                                <label for="companyId"><spring:message code="label.company" /></label>
                                 <select class="form-control" id="companyId" name="companyId">
                                 <!-- Actual value -->
                                  <c:if test="${computer.companyName != null}">
