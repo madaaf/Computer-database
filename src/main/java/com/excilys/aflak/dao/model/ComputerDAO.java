@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.inter.IDAOComputer;
 import com.excilys.aflak.dao.mapper.MapperComputer;
 import com.excilys.aflak.dao.utils.TimeConvertorDAO;
@@ -27,16 +24,11 @@ import com.excilys.aflak.model.Computer;
 @Repository
 public class ComputerDAO implements IDAOComputer {
 
-	@Autowired
-	private ConnectionBdd bdd;
 	// INSTANCE;
 	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
+	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Long create(Computer computer) {

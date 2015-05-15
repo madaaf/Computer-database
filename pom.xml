@@ -7,7 +7,6 @@
 	<packaging>war</packaging>
 
 
-
 	<properties>
 		<plugin.version>3.1</plugin.version>
 		<mysql.version>5.1.35</mysql.version>
@@ -19,8 +18,10 @@
 		<logback.version>1.1.3</logback.version>
 		<bonecp.version>0.8.0.RELEASE</bonecp.version>
 		<validator.version>1.4.0</validator.version>
+		<hibernate.version>5.1.3.Final</hibernate.version>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<boncecp.version>0.8.0.RELEASE</boncecp.version>
 	</properties>
-
 
 
 	<build>
@@ -64,8 +65,6 @@
 		</dependency>
 
 
-
-
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -73,18 +72,19 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
 		
-		 <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 
 		<!-- Views -->
 		<dependency>
@@ -108,6 +108,7 @@
 			<version>${logback.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<!-- Validator for Date -->
 		<dependency>
 			<groupId>commons-validator</groupId>
@@ -119,39 +120,47 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
-		<!--Spring TEST -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
-
+		
+		<!-- JPA -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.3.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 
-
+		<!--  Bonecp : handle the pool of connection -->
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>${boncecp.version}</version>
+		</dependency>
+		
 
 
 	</dependencies>

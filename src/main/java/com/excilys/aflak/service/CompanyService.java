@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.aflak.dao.connection.ConnectionBdd;
 import com.excilys.aflak.dao.model.CompanyDAO;
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Company;
@@ -18,8 +17,6 @@ public class CompanyService {
 	private CompanyDAO dao;
 	@Autowired
 	private ComputerDAO daoComputer;
-	@Autowired
-	private ConnectionBdd bdd;
 
 	public List<Company> getAllCompanies() {
 		return dao.list();
@@ -33,5 +30,6 @@ public class CompanyService {
 	public void deleteCompany(long companyId) {
 		daoComputer.deleteComputerFromCompany(companyId);
 		dao.delete(companyId);
+		throw new RuntimeException();
 	}
 }

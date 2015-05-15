@@ -13,41 +13,54 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd
 ">
 
 	<context:component-scan base-package="com.excilys.aflak.controller" />
-	
+
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven/>
-	    <!-- Handles HTTP GET requests for /** by efficiently serving
-        up static resources in the ${webappRoot}/webapp directory -->
+	<mvc:annotation-driven />
+	<!-- Handles HTTP GET requests for /** by efficiently serving up static 
+		resources in the webapp directory -->
 	<mvc:resources mapping="/**" location="/"></mvc:resources>
 
 
-   <!-- INTERNALISATION -->
-	<!-- tell the Spring framework to look for file named messages.properties -->
-	<!-- the french string is requested, then messages_fr will be automatically picked  -->
-	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<!-- INTERNALISATION -->
+	<!-- tell the Spring framework to look for file named messages_en.properties -->
+	<!-- the french string is requested, then messages_fr will be automatically 
+		picked -->
+
 	<!-- enable i18n for our application. -->
-	<!--  resource bundles are located in the /ressources and follows name pattern as messages_{locale}.properties -->
+	<!-- resource bundles are located in the /ressources and follows name pattern 
+		as messages_{locale}.properties -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages"></property>
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
-	
-	<!-- set a cookie in the client request  -->
+
+	<!-- set a cookie in the client request -->
 	<bean id="localeResolver"
-        class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="en" />
-        <property name="cookieName" value="myAppLocaleCookie"></property>
-        <property name="cookieMaxAge" value="3600"></property>
-    </bean>
-    <!--  intercept the user request and identify the user locale -->
-    <!-- allow to change the user locale and send the response based on the new locale settings of the user. -->
-	 <mvc:interceptors>
-        <bean
-            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="locale" />
-        </bean>
-    </mvc:interceptors>
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en" />
+		<property name="cookieName" value="myAppLocaleCookie"></property>
+		<property name="cookieMaxAge" value="3600"></property>
+	</bean>
+	<!-- intercept the user request and identify the user locale with "?lang=fr" -->
+	<!-- allow to change the user locale and send the response based on the 
+		new locale settings of the user. -->
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="locale" />
+		</bean>
+	</mvc:interceptors>
 
 
 </beans>  
