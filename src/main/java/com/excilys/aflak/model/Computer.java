@@ -2,6 +2,9 @@ package com.excilys.aflak.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Computer {
 
 	private Long id;

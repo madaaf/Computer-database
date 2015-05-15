@@ -29,7 +29,7 @@ public class ComputerDTOValidator implements Validator {
 
 	@Override
 	public void validate(Object o, Errors errors) {
-		ComputerDTO computerDTO = (ComputerDTO) o;
+		// ComputerDTO computerDTO = (ComputerDTO) o;
 		ValidationUtils.rejectIfEmpty(errors, "name", "name.empty");
 		logger.debug(Integer.toString(listCompany.size()));
 		// if (!listCompany.contains(computerDTO.getCompanyId())
