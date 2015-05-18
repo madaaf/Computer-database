@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Computer;
@@ -19,6 +20,7 @@ public class ComputerService {
 	@Autowired
 	private ComputerDAO dao;
 
+	@Transactional
 	public long createComputer(Computer computer) {
 		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
 				.getIntroduced()));
@@ -27,10 +29,12 @@ public class ComputerService {
 		return dao.create(computer);
 	}
 
+	@Transactional
 	public boolean deleteComputer(Long id) {
 		return dao.delete(id);
 	}
 
+	@Transactional
 	public boolean updateComputer(Computer computer) {
 		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
 				.getIntroduced()));
@@ -39,22 +43,27 @@ public class ComputerService {
 		return dao.update(computer);
 	}
 
+	@Transactional(readOnly = true)
 	public Computer findComputer(long id) {
 		return dao.find(id);
 	}
 
+	@Transactional(readOnly = true)
 	public List<Computer> getAllComputers() {
 		return dao.list();
 	}
 
+	@Transactional(readOnly = true)
 	public List<Computer> getSomeComputers(int debut, int nbr) {
 		return dao.getSomeComputers(debut, nbr);
 	}
 
+	@Transactional(readOnly = true)
 	public int getSizeTabComputers() {
 		return dao.getSizeTabComputers();
 	}
 
+	@Transactional(readOnly = true)
 	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
 			String way, int debut, int limit) {
 		return dao.getSomeFilteredComputer(Validator.getFilter(filtre),
@@ -62,6 +71,7 @@ public class ComputerService {
 				limit);
 	}
 
+	@Transactional(readOnly = true)
 	public int getSizeFiltredComputer(String filtre) {
 		return dao.getSizeFilteredComputer(Validator.getFilter(filtre));
 	}

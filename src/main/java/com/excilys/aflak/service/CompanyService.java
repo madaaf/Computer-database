@@ -18,10 +18,12 @@ public class CompanyService {
 	@Autowired
 	private ComputerDAO daoComputer;
 
+	@Transactional(readOnly = true)
 	public List<Company> getAllCompanies() {
 		return dao.list();
 	}
 
+	@Transactional(readOnly = true)
 	public Company findCompany(long id) {
 		return dao.find(id);
 	}

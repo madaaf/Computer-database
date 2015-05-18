@@ -121,6 +121,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -168,6 +169,23 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+
+
+			<!-- will come with all needed Spring dependencies such as spring-core 
+				and spring-beans -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>4.1.6.RELEASE</version>
+		</dependency>
+
+
 
 		<!-- hibernate validator @Valid -->
 		<dependency>
@@ -181,6 +199,14 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>4.3.9.Final</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.9.Final</version>
+			<!-- will come with Hibernate core -->
+		</dependency>
+
 
 
 		<!-- Bonecp : handle the pool of connection -->
@@ -203,12 +229,12 @@
 			<version>${querydsl.version}</version>
 		</dependency>
 
+		<!-- to load applicationContext with hibernate -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.1</version>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
 		</dependency>
-
 
 	</dependencies>
 </project>

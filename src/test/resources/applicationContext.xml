@@ -1,20 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans  xmlns="http://www.springframework.org/schema/beans"
- 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- 	xmlns:context="http://www.springframework.org/schema/context"
- 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-   <context:component-scan base-package="com.excilys.aflak"/>
-  
-  
-  <bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    ">
+	<context:component-scan base-package="com.excilys.aflak" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- handle connection -->
+	<!-- handle the pool of connection with bonecp -->
+	<!-- allow to delete the ConnectionBdd class (if we use the spring tx transactional 
+		for keep the connection open) -->
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<!-- properties are the names of default attribute of class -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
 			value="jdbc:mysql://localhost:3306/computer-database-db-test?zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="admincdb" />
 		<property name="password" value="qwerty1234" />
 	</bean>
-  
-      
+
+	<!-- JDBC Template to connect to the database and execute SQL queries -->
+	<!-- handle connection, statement, closing resultset, connection etc -->
+
+	<!-- For have one jdcp template for all dao class -->
+	<!-- no need setter of dataSource for each dao class -->
+	<!-- just @Autowired jdbcTemplate -->
+	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="packagesToScan" value="com.excilys.aflak.model" />
+	</bean>
+
+
+	<!-- similarly, don't forget the PlatformTransactionManager -->
+
+	<!-- spring tx transactional -->
+	<!-- handle thread local : to not set the connection through parameter -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager"/>
+	
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory">
+	</bean>
+	
+
+
+
 </beans>

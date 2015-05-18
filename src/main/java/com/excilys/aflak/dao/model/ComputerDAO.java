@@ -7,8 +7,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -20,15 +19,37 @@ import com.excilys.aflak.dao.inter.IDAOComputer;
 import com.excilys.aflak.dao.mapper.MapperComputer;
 import com.excilys.aflak.dao.utils.TimeConvertorDAO;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.QComputer;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
 
 @Repository
 public class ComputerDAO implements IDAOComputer {
 
-	// INSTANCE;
-	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	@Autowired
+	SessionFactory sessionFactory;
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+	@Override
+	public Computer find(Long id) {
+
+		QComputer qComputer = QComputer.computer;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		Computer com = query.from(qComputer).where(qComputer.id.eq(id))
+				.uniqueResult(qComputer);
+		return com;
+		// // /*
+		// * try { return this.jdbcTemplate .queryForObject(
+		// *
+		// "select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id = ?"
+		// * , new Object[] { id }, new MapperComputer()); } catch (Exception e)
+		// {
+		// * return null; }
+		// */
+
+	}
 
 	@Override
 	public Long create(Computer computer) {
@@ -89,19 +110,6 @@ public class ComputerDAO implements IDAOComputer {
 						idComputer);
 		System.err.println(row);
 		return (row == 1);
-	}
-
-	@Override
-	public Computer find(Long id) {
-		try {
-			return this.jdbcTemplate
-					.queryForObject(
-							"select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id = ?",
-							new Object[] { id }, new MapperComputer());
-		} catch (Exception e) {
-			return null;
-		}
-
 	}
 
 	@Override

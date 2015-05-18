@@ -49,6 +49,7 @@ public class Menu {
 
 		printMenu();
 		selectMenu();
+		springContext.close();
 	}
 
 	public static void printMenu() {
