@@ -85,7 +85,6 @@ public class Menu {
 			com = ComputerBuilder.createDefaultComputer().withId(computerId)
 					.withName(name).withIntroduced(introduced)
 					.withDiscontinued(discontinued).withCompany(c).build();
-
 			// new Computer(computerId, name, introduced, discontinued, c);
 		}
 		return com;
@@ -208,10 +207,9 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			if (isInteger) {
 				idComputer = Long.parseLong(input);
-				boolean isDeleted = computerService.deleteComputer(idComputer);
-				if (isDeleted == true) {
-					System.out.println("your computer is deleted");
-				}
+
+				computerService.deleteComputer(idComputer);
+
 				break;
 			} else {
 				System.err.println("\nYou have to enter a number");

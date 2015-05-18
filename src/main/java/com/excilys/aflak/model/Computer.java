@@ -2,23 +2,39 @@ package com.excilys.aflak.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "computer")
 public class Computer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private Long id;
+
+	@Column(name = "name")
 	private String name;
+
+	@Column(name = "introduced")
+	@Type(type = "com.excilys.aflak.utils.LocalDateTimeUserType")
 	private LocalDateTime introduced;
+
+	@Type(type = "com.excilys.aflak.utils.LocalDateTimeUserType")
+	@Column(name = "discontinued")
 	private LocalDateTime discontinued;
-	@OneToOne
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@JoinColumn(name = "company_id", referencedColumnName = "id")
 	private Company company;
 
 	public Computer() {

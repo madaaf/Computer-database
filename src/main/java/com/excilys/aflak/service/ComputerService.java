@@ -21,26 +21,28 @@ public class ComputerService {
 	private ComputerDAO dao;
 
 	@Transactional
-	public long createComputer(Computer computer) {
+	public void createComputer(Computer computer) {
 		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
 				.getIntroduced()));
 		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
 				.getDiscontinued()));
-		return dao.create(computer);
+		System.err.println(computer.toString());
+		System.err.println(dao.toString());
+		dao.create(computer);
 	}
 
 	@Transactional
-	public boolean deleteComputer(Long id) {
-		return dao.delete(id);
+	public void deleteComputer(Long id) {
+		dao.delete(id);
 	}
 
 	@Transactional
-	public boolean updateComputer(Computer computer) {
+	public void updateComputer(Computer computer) {
 		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
 				.getIntroduced()));
 		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
 				.getDiscontinued()));
-		return dao.update(computer);
+		dao.update(computer);
 	}
 
 	@Transactional(readOnly = true)

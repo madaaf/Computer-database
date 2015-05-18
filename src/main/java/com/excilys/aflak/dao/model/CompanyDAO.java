@@ -32,10 +32,10 @@ public class CompanyDAO implements IDAOCompany {
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public void delete(Long id) {
 		int rowDeleted = this.jdbcTemplate.update(
 				"DELETE FROM company WHERE id = ?", id);
-		return (rowDeleted == 1);
+
 	}
 
 }

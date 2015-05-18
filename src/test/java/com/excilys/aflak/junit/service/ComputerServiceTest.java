@@ -151,22 +151,6 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	public void search() {
-		// Computer to add
-		// Computer to add
-		Computer com = ComputerBuilder
-				.createDefaultComputer()
-				.withName("MacBook Pro 15.4 inch")
-				.withCompany(
-						CompanyBuilder.crateDefaultCompany().withId(1L)
-								.withName("Apple Inc.").build()).build();
-
-		// insert the computer in the bdd
-		service.getSomeFiltredComputer("cb", null, null, 0, 0);
-
-	}
-
-	@Test
 	public void delete() {
 		service.deleteComputer(6L);
 		Computer com = service.findComputer(6);

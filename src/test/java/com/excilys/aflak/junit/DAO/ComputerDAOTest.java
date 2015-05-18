@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.aflak.dao.model.ComputerDAO;
 import com.excilys.aflak.model.Company.CompanyBuilder;
@@ -19,6 +20,7 @@ import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.TimeConvertor;
 
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
 public class ComputerDAOTest {
@@ -105,6 +107,13 @@ public class ComputerDAOTest {
 	}
 
 	@Test
+	public void delete() {
+		dao.delete(6L);
+		Computer com = dao.find(6L);
+		Assert.assertNull(com);
+	}
+
+	@Test
 	public void getAll() {
 
 		List<Computer> dbComputer = new ArrayList<Computer>();
@@ -155,25 +164,6 @@ public class ComputerDAOTest {
 		// get the last computer in the bdd
 		Computer lastComputer = dao.find(7L);
 		Assert.assertEquals(com, lastComputer);
-	}
-
-	@Test
-	public void search() {
-		// Computer to add
-		Computer com = ComputerBuilder
-				.createDefaultComputer()
-				.withName("MacBook Pro 15.4 inch")
-				.withCompany(
-						CompanyBuilder.crateDefaultCompany().withId(1L)
-								.withName("Apple Inc.").build()).build();
-
-	}
-
-	@Test
-	public void delete() {
-		dao.delete(6L);
-		Computer com = dao.find(6L);
-		Assert.assertNull(com);
 	}
 
 	@Test

@@ -1,6 +1,5 @@
 package com.excilys.aflak.dao.inter;
 
-
 public interface IDAOCrud<T> {
 
 	/**
@@ -9,7 +8,7 @@ public interface IDAOCrud<T> {
 	 * @param object
 	 * @return id object created
 	 */
-	default public Long create(T obj) {
+	default public void create(T obj) {
 		throw new IllegalAccessError("error implementation create");
 	}
 
@@ -29,7 +28,7 @@ public interface IDAOCrud<T> {
 	 * @param obj
 	 * @return object updated
 	 */
-	default public boolean update(T obj) {
+	default public void update(T obj) {
 		throw new IllegalAccessError("error implementation update");
 	}
 
@@ -39,7 +38,7 @@ public interface IDAOCrud<T> {
 	 * @param id
 	 * @return boolean
 	 */
-	default public boolean delete(Long id) {
+	default public void delete(Long id) {
 		throw new IllegalAccessError("error implementation delete");
 	}
 

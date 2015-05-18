@@ -1,27 +1,20 @@
 package com.excilys.aflak.dao.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.dao.inter.IDAOComputer;
-import com.excilys.aflak.dao.mapper.MapperComputer;
-import com.excilys.aflak.dao.utils.TimeConvertorDAO;
 import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.model.QCompany;
 import com.excilys.aflak.model.QComputer;
 import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
+import com.mysema.query.types.OrderSpecifier;
 
 @Repository
 public class ComputerDAO implements IDAOComputer {
@@ -34,132 +27,120 @@ public class ComputerDAO implements IDAOComputer {
 
 	@Override
 	public Computer find(Long id) {
-
 		QComputer qComputer = QComputer.computer;
 		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+
 		Computer com = query.from(qComputer).where(qComputer.id.eq(id))
 				.uniqueResult(qComputer);
 		return com;
-		// // /*
-		// * try { return this.jdbcTemplate .queryForObject(
-		// *
-		// "select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id WHERE computer.id = ?"
-		// * , new Object[] { id }, new MapperComputer()); } catch (Exception e)
-		// {
-		// * return null; }
-		// */
-
 	}
 
 	@Override
-	public Long create(Computer computer) {
-		String sql = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-
-		this.jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(
-					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql,
-						Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, computer.getName());
-				ps.setTimestamp(2, TimeConvertorDAO
-						.convertLocalDateTimeToTimestamp(computer
-								.getIntroduced()));
-				ps.setTimestamp(3, TimeConvertorDAO
-						.convertLocalDateTimeToTimestamp(computer
-								.getDiscontinued()));
-				if (computer.getCompany() == null) {
-					ps.setNull(4, Types.BIGINT);
-				} else {
-					ps.setLong(4, (computer.getCompany().getId()));
-				}
-				return ps;
-			}
-		}, keyHolder);
-		System.err.print(keyHolder.getKey());
-		return (Long) keyHolder.getKey();
+	public void create(Computer computer) {
+		sessionFactory.getCurrentSession().save(computer);
 	}
 
 	@Override
-	public boolean delete(Long id) {
-		int row = this.jdbcTemplate.update("DELETE FROM computer WHERE id = ?",
-				Long.valueOf(id));
-		return (row == 1);
+	public void delete(Long id) {
+		QComputer qComputer = QComputer.computer;
+		new HibernateDeleteClause(sessionFactory.getCurrentSession(), qComputer)
+				.where(qComputer.id.eq(id)).execute();
 	}
 
 	@Override
-	public boolean update(Computer computer) {
-		Long idCompany = null;
-		Long idComputer = null;
-
-		if (computer.getCompany() != null) {
-			idCompany = computer.getCompany().getId();
-		}
-		if (computer.getId() > 0) {
-			idComputer = computer.getId();
-		}
-
-		int row = this.jdbcTemplate
-				.update("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?",
-						computer.getName(), TimeConvertorDAO
-								.convertLocalDateTimeToTimestamp(computer
-										.getIntroduced()), TimeConvertorDAO
-								.convertLocalDateTimeToTimestamp(computer
-										.getDiscontinued()), idCompany,
-						idComputer);
-		System.err.println(row);
-		return (row == 1);
-	}
-
-	@Override
-	public List<Computer> list() {
-		return this.jdbcTemplate
-				.query("select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id",
-						new MapperComputer());
-
-	}
-
-	@Override
-	public List<Computer> getSomeComputers(int debut, int nbr) {
-		String sql = "select computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on  computer.company_id = company.id LIMIT "
-				+ nbr + " OFFSET " + debut;
-		return this.jdbcTemplate.query(sql, new MapperComputer());
-
+	public void update(Computer computer) {
+		sessionFactory.getCurrentSession().update(computer);
 	}
 
 	@Override
 	public int getSizeTabComputers() {
-		return this.jdbcTemplate.queryForObject(
-				"select COUNT(*) from computer", Integer.class);
-
-	}
-
-	@Override
-	public List<Computer> getSomeFilteredComputer(String filtre, String colomn,
-			String way, int debut, int limit) {
-		filtre = "%" + filtre + "%";
-		String sql = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name AS 'company_name' from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ORDER BY "
-				+ colomn + " " + way + " LIMIT ? OFFSET ?";
-
-		return this.jdbcTemplate.query(sql, new Object[] { filtre, filtre,
-				limit, debut }, new MapperComputer());
+		QComputer qComputer = QComputer.computer;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		long x = query.from(qComputer).count();
+		return (int) x;
 
 	}
 
 	@Override
 	public int getSizeFilteredComputer(String filtre) {
-		String ok = "SELECT  COUNT(*) from computer left join company on computer.company_id = company.id WHERE computer.name like ? or company.name like ? ";
+		QComputer qComputer = QComputer.computer;
+		QCompany qCompany = QCompany.company;
 		filtre = "%" + filtre + "%";
-		return this.jdbcTemplate.queryForObject(ok, new Object[] { filtre,
-				filtre }, Integer.class);
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		long x = query
+				.from(qComputer)
+				.leftJoin(qComputer.company, qCompany)
+				.where(qComputer.name.like(filtre).or(
+						qCompany.name.like(filtre))).count();
+		return (int) x;
+	}
+
+	@Override
+	public List<Computer> list() {
+		QComputer qComputer = QComputer.computer;
+		QCompany qCompany = QCompany.company;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		return query.from(qComputer).leftJoin(qComputer.company, qCompany)
+				.list(qComputer);
+
+	}
+
+	@Override
+	public List<Computer> getSomeComputers(int debut, int nbr) {
+		QComputer qComputer = QComputer.computer;
+		QCompany qCompany = QCompany.company;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		return query.from(qComputer).leftJoin(qComputer.company, qCompany)
+				.limit(nbr).offset(debut).list(qComputer);
+	}
+
+	@Override
+	public List<Computer> getSomeFilteredComputer(String filtre, String column,
+			String way, int debut, int limit) {
+		filtre = "%" + filtre + "%";
+
+		QComputer qComputer = QComputer.computer;
+		QCompany qCompany = QCompany.company;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+
+		OrderSpecifier<?> order;
+		switch (column) {
+		case "computer.name":
+			order = way == ("ASC") ? qComputer.name.asc() : qComputer.name
+					.desc();
+			break;
+		case "computer.introduced":
+			order = way == ("ASC") ? qComputer.introduced.asc()
+					: qComputer.introduced.desc();
+			break;
+		case "computer.discontinued":
+			order = way == ("ASC") ? qComputer.discontinued.asc()
+					: qComputer.discontinued.desc();
+			break;
+		case "computer.company":
+			order = way == ("ASC") ? qComputer.company.name.asc()
+					: qComputer.company.name.desc();
+			break;
+		default:
+			order = qComputer.name.asc();
+		}
+
+		return query
+				.from(qComputer)
+				.orderBy(order)
+				.leftJoin(qComputer.company, qCompany)
+				.where(qComputer.name.like(filtre).or(
+						qCompany.name.like(filtre))).limit(2).offset(debut)
+				.limit(limit).offset(debut).list(qComputer);
 
 	}
 
 	@Override
 	public void deleteComputerFromCompany(Long companyId) {
-		this.jdbcTemplate.update("DELETE from computer WHERE company_id = ?",
-				new Object[] { companyId });
+		QComputer qComputer = QComputer.computer;
+		new HibernateDeleteClause(sessionFactory.getCurrentSession(), qComputer)
+				.where(qComputer.id.eq(companyId)).execute();
 
 	}
+
 }
