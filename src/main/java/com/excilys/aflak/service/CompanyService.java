@@ -32,6 +32,6 @@ public class CompanyService {
 	public void deleteCompany(long companyId) {
 		daoComputer.deleteComputerFromCompany(companyId);
 		dao.delete(companyId);
-		throw new RuntimeException();
+
 	}
 }

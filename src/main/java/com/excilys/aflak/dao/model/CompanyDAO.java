@@ -2,39 +2,46 @@ package com.excilys.aflak.dao.model;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.dao.inter.IDAOCompany;
-import com.excilys.aflak.dao.mapper.MapperCompany;
 import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.QCompany;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
 
 @Repository
 public class CompanyDAO implements IDAOCompany {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
-	// private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	@Autowired
+	SessionFactory sessionFactory;
 
 	@Override
 	public List<Company> list() {
-		return this.jdbcTemplate.query("select * from company",
-				new MapperCompany());
+		QCompany qCompany = QCompany.company;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		return query.from(qCompany).list(qCompany);
 	}
 
 	@Override
 	public Company find(Long id) {
-		return this.jdbcTemplate.queryForObject(
-				"SELECT * from company WHERE id = ?", new Object[] { id },
-				new MapperCompany());
+		QCompany qCompany = QCompany.company;
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		return query.from(qCompany).where(qCompany.id.eq(id))
+				.uniqueResult(qCompany);
 	}
 
 	@Override
 	public void delete(Long id) {
-		int rowDeleted = this.jdbcTemplate.update(
-				"DELETE FROM company WHERE id = ?", id);
+		QCompany qCompany = QCompany.company;
+		new HibernateDeleteClause(sessionFactory.getCurrentSession(), qCompany)
+				.where(qCompany.id.eq(id)).execute();
 
 	}
 

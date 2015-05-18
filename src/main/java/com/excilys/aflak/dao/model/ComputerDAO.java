@@ -139,7 +139,7 @@ public class ComputerDAO implements IDAOComputer {
 	public void deleteComputerFromCompany(Long companyId) {
 		QComputer qComputer = QComputer.computer;
 		new HibernateDeleteClause(sessionFactory.getCurrentSession(), qComputer)
-				.where(qComputer.id.eq(companyId)).execute();
+				.where(qComputer.company.id.eq(companyId)).execute();
 
 	}
 

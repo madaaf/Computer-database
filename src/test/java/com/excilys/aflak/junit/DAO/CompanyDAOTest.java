@@ -11,12 +11,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.aflak.dao.model.CompanyDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.utils.ExecuteScript;
 
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
 public class CompanyDAOTest {
