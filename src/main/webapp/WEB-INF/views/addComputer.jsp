@@ -32,9 +32,8 @@
 						<spring:message code="label.add" />
 					</h1>
 
-					<sf:form method="POST" modelAttribute="ComputerDTO">
+					<sf:form method="POST" modelAttribute="computerDTO" >
 						<fieldset>
-							<table>
 
 								<div class="form-group" id="divName">
 									<label for="computerName"><spring:message
@@ -42,12 +41,18 @@
 									<sf:input type="text" class="form-control" id="name"
 										name="name" placeholder="Computer name" path="name" />
 								</div>
+								<!-- Handle errors from BindingResult -->
+								<div class="text-center form-group"><sf:errors class="alert alert-danger" path="name"/></div>
+								
 								<div class="form-group" id="divIntroduced">
 									<label for="introduced"><spring:message
 											code="label.introduced" /></label>
 									<sf:input type="date" class="form-control" id="introduced"
 										name="introduced" placeholder="dd-mm-yyyy" path="introduced" />
 								</div>
+								
+								<div class="text-center form-group"><sf:errors class="alert alert-danger" path="introduced"/></div>
+								
 								<div class="form-group" id="divDiscontinued">
 									<label for="discontinued"><spring:message
 											code="label.discontinued" /></label>
@@ -55,7 +60,7 @@
 										name="discontinued" placeholder="dd-mm-yyyy"
 										path="discontinued" />
 								</div>
-
+								<div class="text-center form-group"><sf:errors class="alert alert-danger" path="discontinued"/></div>
 								<div class="form-group">
 									<label for="companyId"><spring:message
 											code="label.company" /></label>
@@ -71,7 +76,7 @@
 										id="addComputer"> or <a href="index"
 										class="btn btn-default">Cancel</a>
 								</div>
-							</table>
+							<div class="text-center form-group"><sf:errors class="alert alert-danger" path="companyId"/></div>
 						</fieldset>
 					</sf:form>
 			

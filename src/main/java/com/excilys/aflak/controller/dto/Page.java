@@ -7,6 +7,7 @@ import java.util.List;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
+import com.excilys.aflak.validator.Date.Pattern;
 
 public class Page {
 
@@ -154,7 +155,7 @@ public class Page {
 		this.nbrComputers = nbrComputers;
 	}
 
-	public void populate(ComputerService serviceComputer) {
+	public void populate(ComputerService serviceComputer, Pattern pattern) {
 		setNbrComputers(serviceComputer.getSizeFiltredComputer(getSearch()));
 		if (limits.contains(getLimit())) {
 			setLimit(getLimit());
@@ -188,12 +189,14 @@ public class Page {
 			for (Computer computer : serviceComputer.getSomeFiltredComputer(
 					getSearch(), getColomn(), getWay(),
 					getLimit() * getStart(), getLimit())) {
-				listComputers.add(Mapper.computerToComputerDTO(computer));
+				listComputers.add(Mapper.computerToComputerDTO(computer,
+						pattern));
 			}
 		} else {
 			for (Computer computer : serviceComputer.getSomeFiltredComputer(
 					getSearch(), getColomn(), getWay(), 0, getLimit())) {
-				listComputers.add(Mapper.computerToComputerDTO(computer));
+				listComputers.add(Mapper.computerToComputerDTO(computer,
+						pattern));
 			}
 		}
 		setListComputers(listComputers);

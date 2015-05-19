@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.dao.inter.IDAOComputer;
@@ -21,9 +20,6 @@ public class ComputerDAO implements IDAOComputer {
 
 	@Autowired
 	SessionFactory sessionFactory;
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Computer find(Long id) {

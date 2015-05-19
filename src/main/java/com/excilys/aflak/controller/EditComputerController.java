@@ -2,10 +2,16 @@ package com.excilys.aflak.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +23,7 @@ import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.Mapper;
+import com.excilys.aflak.validator.Date.Pattern;
 
 @Controller
 @RequestMapping("/editComputer")
@@ -29,28 +36,42 @@ public class EditComputerController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String doGet(@RequestParam("id") String idCom, ModelMap model) {
+		Locale locale = LocaleContextHolder.getLocale();
+		Pattern language = Pattern.map(locale.getLanguage());
 
 		long id = Long.parseLong(idCom);
 		Computer computer = serviceComputer.findComputer(id);
-		ComputerDTO dto = Mapper.computerToComputerDTO(computer);
+		ComputerDTO dto = Mapper.computerToComputerDTO(computer, language);
 
 		List<Company> listCompanies = new ArrayList<Company>();
 		listCompanies = serviceCompany.getAllCompanies();
 
 		model.addAttribute("listCompanies", listCompanies);
 		model.addAttribute("computer", dto);
-		model.addAttribute("ComputerDTO", new ComputerDTO());
+		model.addAttribute("computerDTO", new ComputerDTO());
 
 		return "editComputer";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@ModelAttribute("ComputerDTO") ComputerDTO computerDTO) {
+	public String doPost(@Valid @ModelAttribute ComputerDTO computerDTO,
+			BindingResult result, Model model) {
+		Locale locale = LocaleContextHolder.getLocale();
+		Pattern language = Pattern.map(locale.getLanguage());
 
-		System.err.println(computerDTO.toString());
-		Computer computer = Mapper.computerDTOToComputer(computerDTO);
-		System.err.println(computer.toString());
-		serviceComputer.updateComputer(computer);
-		return "redirect:index";
+		if (result.hasErrors()) {
+			List<Company> listCompanies = new ArrayList<Company>();
+			listCompanies = serviceCompany.getAllCompanies();
+			model.addAttribute("listCompanies", listCompanies);
+			return "editComputer";
+		} else {
+			System.err.println(computerDTO.toString());
+			Computer computer = Mapper.computerDTOToComputer(computerDTO,
+					language);
+			System.err.println(computer.toString());
+			serviceComputer.updateComputer(computer);
+			return "redirect:index";
+		}
+
 	}
 }

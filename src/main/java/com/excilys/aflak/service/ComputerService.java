@@ -22,10 +22,8 @@ public class ComputerService {
 
 	@Transactional
 	public void createComputer(Computer computer) {
-		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
-				.getIntroduced()));
-		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
-				.getDiscontinued()));
+		computer.setIntroduced(computer.getIntroduced());
+		computer.setDiscontinued(computer.getDiscontinued());
 		System.err.println(computer.toString());
 		System.err.println(dao.toString());
 		dao.create(computer);
@@ -38,10 +36,8 @@ public class ComputerService {
 
 	@Transactional
 	public void updateComputer(Computer computer) {
-		computer.setIntroduced(Validator.localDateTimeValidFormat(computer
-				.getIntroduced()));
-		computer.setDiscontinued(Validator.localDateTimeValidFormat(computer
-				.getDiscontinued()));
+		computer.setIntroduced(computer.getIntroduced());
+		computer.setDiscontinued(computer.getDiscontinued());
 		dao.update(computer);
 	}
 

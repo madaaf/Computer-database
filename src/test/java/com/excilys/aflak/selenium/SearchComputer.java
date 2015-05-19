@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -18,6 +19,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -26,6 +28,7 @@ import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.Mapper;
+import com.excilys.aflak.validator.Date.Pattern;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
@@ -47,6 +50,9 @@ public class SearchComputer {
 
 	@Test
 	public void testSearchComputer() throws Exception {
+		Locale locale = LocaleContextHolder.getLocale();
+		Pattern language = Pattern.map(locale.getLanguage());
+
 		driver.get(baseUrl + "/Computer-database/index");
 		driver.findElement(By.id("searchbox")).clear();
 		driver.findElement(By.id("searchbox")).sendKeys("cm");
@@ -57,7 +63,7 @@ public class SearchComputer {
 
 		for (Computer computer : serviceComputer.getSomeFiltredComputer("cm",
 				null, null, 0, 10)) {
-			listFiltred.add(Mapper.computerToComputerDTO(computer));
+			listFiltred.add(Mapper.computerToComputerDTO(computer, language));
 		}
 
 		Assert.assertEquals(listFiltred.size(), 4);

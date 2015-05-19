@@ -3,12 +3,14 @@ package com.excilys.aflak.junit.DAO;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.utils.ExecuteScript;
 import com.excilys.aflak.utils.TimeConvertor;
+import com.excilys.aflak.validator.Date.Pattern;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -143,17 +146,19 @@ public class ComputerDAOTest {
 
 	@Test
 	public void createWithFalseDate() {
+		Locale locale = LocaleContextHolder.getLocale();
+		Pattern language = Pattern.map(locale.getLanguage());
 		// Computer to add
 		Computer com = ComputerBuilder
 				.createDefaultComputer()
 				.withId(7L)
 				.withName("MacBook Pro 15.4 inch")
 				.withIntroduced(
-						TimeConvertor
-								.convertStringToLocalDateTime("19-ded-2000"))
+						TimeConvertor.convertStringToLocalDateTime(
+								"19-ded-2000", language))
 				.withDiscontinued(
-						TimeConvertor
-								.convertStringToLocalDateTime("30-02-2000"))
+						TimeConvertor.convertStringToLocalDateTime(
+								"30-02-2000", language))
 				.withCompany(
 						CompanyBuilder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build();

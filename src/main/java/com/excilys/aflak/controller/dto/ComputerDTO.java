@@ -1,15 +1,28 @@
 package com.excilys.aflak.controller.dto;
 
-public class ComputerDTO {
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.excilys.aflak.validator.Date;
+
+public class ComputerDTO {
+	@NotNull
 	private long id;
+	@Length(max = 200)
 	private String name;
+	@Length(max = 10)
+	@Date
 	private String introduced;
+	@Length(max = 10)
+	@Date
 	private String discontinued;
 	private long companyId;
+	@Length(max = 200)
 	private String companyName;
 
 	public ComputerDTO() {
+		System.err.println("dans mon computerDTO");
 	}
 
 	public ComputerDTO(long id, String name, String introduced,

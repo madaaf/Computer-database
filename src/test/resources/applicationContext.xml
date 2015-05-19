@@ -35,9 +35,7 @@
 	<!-- For have one jdcp template for all dao class -->
 	<!-- no need setter of dataSource for each dao class -->
 	<!-- just @Autowired jdbcTemplate -->
-	<bean class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+
 
 	<!-- sessionFactory -->
 	<bean id="sessionFactory"

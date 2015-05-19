@@ -3,8 +3,10 @@ package com.excilys.aflak.ui;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.aflak.model.Company;
@@ -15,6 +17,7 @@ import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.TimeConvertor;
 import com.excilys.aflak.utils.Validator;
+import com.excilys.aflak.validator.Date.Pattern;
 
 public class Menu {
 
@@ -39,9 +42,11 @@ public class Menu {
 
 	private static ComputerService computerService;
 	private static CompanyService companyService;
+	private static Pattern language;
 
 	public static void main(String[] args) {
-
+		Locale locale = LocaleContextHolder.getLocale();
+		language = Pattern.map(locale.getLanguage());
 		ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext(
 				"/applicationContext.xml");
 		computerService = springContext.getBean(ComputerService.class);
@@ -100,13 +105,12 @@ public class Menu {
 			System.out.println(" Enter the date of " + name
 					+ " (dd-mm-yyyy)  : ");
 			input = sc.nextLine();
-			isDateFr = Validator.isValidFormat(input);
 
 			if (input.isEmpty()) {
 				dateFormated = null;
 			} else if (isDateFr) {
-				dateFormated = TimeConvertor
-						.convertStringToLocalDateTime(input);
+				dateFormated = TimeConvertor.convertStringToLocalDateTime(
+						input, language);
 			} else {
 				System.err.println(" You have to respect the format's date");
 			}
