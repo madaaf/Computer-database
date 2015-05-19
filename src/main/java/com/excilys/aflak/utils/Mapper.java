@@ -33,12 +33,18 @@ public class Mapper {
 	}
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
+		long idCompany = 0;
+		String nameCompany = null;
+		if (computer.getCompany() != null) {
+			idCompany = computer.getCompany().getId();
+			nameCompany = computer.getCompany().getName();
+		}
+
 		return new ComputerDTO(computer.getId(), computer.getName(),
 				TimeConvertor.convertLocalDateTimeToString(computer
 						.getIntroduced()),
 				TimeConvertor.convertLocalDateTimeToString(computer
-						.getDiscontinued()), computer.getCompany().getId(),
-				computer.getCompany().getName());
+						.getDiscontinued()), idCompany, nameCompany);
 
 	}
 }

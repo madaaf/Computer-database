@@ -28,6 +28,7 @@ public class TimeConvertor {
 		if (ldt == null) {
 			return null;
 		} else {
+			System.err.println("ldt " + ldt.toString());
 			int day = ldt.getDayOfMonth();
 			int month = ldt.getMonthValue();
 			int year = ldt.getYear();

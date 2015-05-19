@@ -20,6 +20,7 @@ public class PageValidator implements Validator {
 	// errors in BindingResult
 	@Override
 	public void validate(Object o, Errors errors) {
+
 		logger.error("VALIDATE");
 		Page page = (Page) o;
 
