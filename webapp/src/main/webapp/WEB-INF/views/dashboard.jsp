@@ -14,8 +14,7 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
-
-
+  <meta name="_csrf_parameter" content="_csrf" />
 
 </head>
 <body>

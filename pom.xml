@@ -125,7 +125,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -255,10 +254,21 @@
 			<version>${xml.api.version}</version>
 		</dependency>
 
+<dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>99-empty</version>
+    </dependency>
 
 
 	</dependencies>
-
+<repositories>
+  <repository>
+    <id>version99</id>
+    <!-- highly available repository serving empty artifacts -->
+    <url>http://version99.qos.ch/</url>
+  </repository>
+</repositories>
 
 
 </project>

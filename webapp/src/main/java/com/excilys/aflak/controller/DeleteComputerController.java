@@ -20,7 +20,7 @@ public class DeleteComputerController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String doPost(@RequestParam("selection") String selection)
 			throws IOException {
-
+		System.err.println("DELETE");
 		String computersId[] = selection.split(",");
 
 		for (String computerId : computersId) {
