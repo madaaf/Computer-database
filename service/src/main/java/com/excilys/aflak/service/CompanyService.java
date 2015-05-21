@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.aflak.dao.CompanyDAO;
+import com.excilys.aflak.dao.ComputerDAO;
 import com.excilys.aflak.model.Company;
-import com.excilys.aflak.model.CompanyDAO;
-import com.excilys.aflak.model.ComputerDAO;
 
 @Service
 public class CompanyService {

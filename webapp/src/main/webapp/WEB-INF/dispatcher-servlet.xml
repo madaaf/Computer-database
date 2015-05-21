@@ -12,8 +12,7 @@ http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc.xsd
 ">
 
-	<context:component-scan base-package="com.excilys.aflak.controller" />
-
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven />
 	<!-- Handles HTTP GET requests for /** by efficiently serving up static 
@@ -36,7 +35,6 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	<!-- tell the Spring framework to look for file named messages_en.properties -->
 	<!-- the french string is requested, then messages_fr will be automatically 
 		picked -->
-
 	<!-- enable i18n for our application. -->
 	<!-- resource bundles are located in the /ressources and follows name pattern 
 		as messages_{locale}.properties -->
@@ -61,7 +59,8 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd
 			<property name="paramName" value="locale" />
 		</bean>
 	</mvc:interceptors>
-
-
+	
+	<context:component-scan base-package="com.excilys.aflak.controller" />
+	
 </beans>  
 

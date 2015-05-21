@@ -1,4 +1,4 @@
-package com.excilys.aflak.model;
+package com.excilys.aflak.dao;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.aflak.inter.IDAOCompany;
+import com.excilys.aflak.model.Company;
+import com.excilys.aflak.model.QCompany;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
 import com.mysema.query.jpa.hibernate.HibernateQuery;

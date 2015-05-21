@@ -4,30 +4,13 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context 
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd
-    ">
-	<!-- Spring -->
-	<!-- To handle the life of our beans -->
-	<context:component-scan base-package="com.excilys.aflak" />
-	<tx:annotation-driven transaction-manager="transactionManager" />
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- handle connection -->
-	<!-- handle the pool of connection with bonecp -->
-	<!-- allow to delete the ConnectionBdd class (if we use the spring tx transactional 
-		for keep the connection open) -->
-	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
-		destroy-method="close">
-		<!-- properties are the names of default attribute of class -->
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl"
-			value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
-		<property name="username" value="admincdb" />
-		<property name="password" value="qwerty1234" />
-	</bean>
+	<import resource="datasource.xml" />
 
 	<!-- sessionFactory -->
 	<bean id="sessionFactory"
@@ -36,23 +19,23 @@
 		<property name="packagesToScan" value="com.excilys.aflak.model" />
 	</bean>
 
-	<!-- JDBC Template to connect to the database and execute SQL queries -->
-	<!-- handle connection, statement, closing resultset, connection etc -->
-
 	<!-- For have one jdcp template for all dao class -->
 	<!-- no need setter of dataSource for each dao class -->
 	<!-- just @Autowired jdbcTemplate -->
-
 	<!-- similarly, don't forget the PlatformTransactionManager -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
 	<!-- spring tx transactional -->
 	<!-- handle thread local : to not set the connection through parameter -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 	</tx:advice>
+
+
+	<context:component-scan base-package="com.excilys.aflak.dao" />
+	<context:component-scan base-package="com.excilys.aflak.service" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 
 </beans>
