@@ -21,9 +21,11 @@ public class Authority {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer userRoleId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "username", nullable = false)
 	private User user;
+
 	@Column(name = "authority", nullable = false, length = 45)
 	private String role;
 

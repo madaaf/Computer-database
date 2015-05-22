@@ -11,6 +11,7 @@ import com.mysema.query.jpa.hibernate.HibernateQuery;
 
 @Repository
 public class UserDAO {
+
 	@Autowired
 	SessionFactory sessionFactory;
 

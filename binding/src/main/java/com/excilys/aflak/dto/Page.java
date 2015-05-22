@@ -30,7 +30,7 @@ public class Page {
 	private String invalidArgument = null;
 
 	public Page() {
-
+		System.err.println(toString());
 	}
 
 	public void initialize() {
@@ -200,6 +200,7 @@ public class Page {
 			}
 		}
 		setListComputers(listComputers);
+
 	}
 
 	@Override

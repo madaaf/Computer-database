@@ -9,10 +9,6 @@
 <%@ attribute name="boostrapType" required="false" %>
 
 
-
-
-
-
 <c:choose>
   <c:when test="${colomn!=null}">
    <a href="index?pageNum=${pageNum}&limit=${limit}&search=${search}&colomn=${colomn}&way=${way}" class="${boostrapType}" >${body}</a>

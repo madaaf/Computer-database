@@ -56,6 +56,7 @@ public class DashboardController {
 		}
 		page.populate(serviceComputer, language);
 
+		System.err.println(page.toString());
 		model.addAttribute("pageS", page);
 
 		return "dashboard";
