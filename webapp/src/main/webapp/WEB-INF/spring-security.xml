@@ -7,19 +7,24 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<security:http auto-config="true" use-expressions="false">
-		<security:intercept-url pattern="/editComputer/**" access="ROLE_ADMIN"  />
-		<security:intercept-url pattern="/addComputer/**" access="ROLE_ADMIN" />
-		<security:intercept-url pattern="/deleteComputer/**" access="ROLE_ADMIN" />
-		<security:csrf disabled="true"/>
+		<security:intercept-url pattern="/editComputer/**"
+			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/addComputer/**"
+			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/deleteComputer/**"
+			access="ROLE_ADMIN" />
+		<security:csrf disabled="true" />
 	</security:http>
-	
-	<import resource="datasource.xml" />
+
+
 
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="UserService">
+		<security:authentication-provider
+			user-service-ref="UserService">
 		</security:authentication-provider>
 	</security:authentication-manager>
 
+	<import resource="classpath*:/datasource.xml" />
 
 
 </beans>

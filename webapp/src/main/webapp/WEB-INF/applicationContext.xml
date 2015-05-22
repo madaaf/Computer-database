@@ -3,39 +3,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
-	http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context 
-    http://www.springframework.org/schema/context/spring-context.xsd
-    http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-	<import resource="datasource.xml" />
-
-	<!-- Hibernate sessionFactory -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="packagesToScan" value="com.excilys.aflak.model" />
-	</bean>
-
-	<!-- For have one jdcp template for all dao class -->
-	<!-- no need setter of dataSource for each dao class -->
-	<!-- just @Autowired jdbcTemplate -->
-	<!-- similarly, don't forget the PlatformTransactionManager -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
 	<!-- spring tx transactional -->
 	<!-- handle thread local : to not set the connection through parameter -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 	</tx:advice>
-
-
-	<context:component-scan base-package="com.excilys.aflak.dao" />
-	<context:component-scan base-package="com.excilys.aflak.service" />
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-
+	<import resource="classpath*:/serviceContext.xml" />
+		
 </beans>
