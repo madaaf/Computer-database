@@ -6,13 +6,28 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<security:http auto-config="true" use-expressions="false">
+	<security:http auto-config="true" create-session="ifRequired" use-expressions="false">
+
+
 		<security:intercept-url pattern="/editComputer/**"
 			access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/addComputer/**"
 			access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/deleteComputer/**"
 			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/index/**" method="POST"
+access="ROLE_ADMIN" />
+		
+		<security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		
+
+		<security:form-login login-page="/customLogin"
+			login-processing-url="/j_spring_security_check" 
+			username-parameter="username"
+			password-parameter="password" 
+			authentication-failure-url="/customLogin?auth=false" />
+		
+		<security:logout logout-success-url="/index" delete-cookies="JSESSIONID" />
 		<security:csrf disabled="true" />
 	</security:http>
 
@@ -23,7 +38,7 @@
 			user-service-ref="UserService">
 		</security:authentication-provider>
 	</security:authentication-manager>
-	
+
 	<!-- dataSource is in persistence module -->
 	<import resource="classpath*:/datasource.xml" />
 
