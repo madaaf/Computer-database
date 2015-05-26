@@ -23,7 +23,8 @@
 			user-service-ref="UserService">
 		</security:authentication-provider>
 	</security:authentication-manager>
-
+	
+	<!-- dataSource is in persistence module -->
 	<import resource="classpath*:/datasource.xml" />
 
 
