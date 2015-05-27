@@ -1,4 +1,4 @@
-package com.excilys.aflak;
+package com.excilys.aflak.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
+import com.excilys.aflak.utils.ExecuteScript;
 
 //import com.excilys.aflak.dao.CompanyDAO;
 @RunWith(SpringJUnit4ClassRunner.class)

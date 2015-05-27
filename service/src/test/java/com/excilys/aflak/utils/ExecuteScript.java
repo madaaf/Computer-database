@@ -1,4 +1,4 @@
-package com.excilys.aflak;
+package com.excilys.aflak.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
