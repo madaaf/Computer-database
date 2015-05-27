@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.aflak.dto.ComputerDTO;
-import com.excilys.aflak.mapper.Mapper;
+import com.excilys.aflak.binding.dto.ComputerDTO;
+import com.excilys.aflak.mapper.ComputerMapper;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
@@ -57,9 +57,9 @@ public class AddComputerController {
 			model.addAttribute("listCompanies", listCompanies);
 			return "addComputer";
 		} else {
-			Computer com = Mapper.computerDTOToComputer(computerDTO, language);
+			Computer com = ComputerMapper.fromDto(computerDTO, language);
 			System.err.println(com.toString());
-			serviceComputer.createComputer(com);
+			serviceComputer.create(com);
 			// redirection vers une url ,recharger la page
 			// forward = > redirection jsp
 			return "redirect:index";

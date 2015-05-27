@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.aflak.dto.Page;
+import com.excilys.aflak.binding.dto.Page;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.validator.Date.Pattern;
 import com.excilys.aflak.validator.PageValidator;

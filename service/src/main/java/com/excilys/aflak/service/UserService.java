@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.excilys.aflak.dao.UserDAO;
+import com.excilys.aflak.persistence.dao.impl.UserDAO;
 import com.excilys.aflak.model.Authority;
 
 @Service(value = "UserService")

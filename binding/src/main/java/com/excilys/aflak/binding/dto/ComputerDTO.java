@@ -1,4 +1,4 @@
-package com.excilys.aflak.dto;
+package com.excilys.aflak.binding.dto;
 
 import javax.validation.constraints.NotNull;
 

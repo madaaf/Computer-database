@@ -3,11 +3,11 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags"%>
 
 
-<%@ attribute name="nbrOfPages" required="true" type="java.lang.Integer"
+<%@ attribute name="pageCount" required="true" type="java.lang.Integer"
 	description=""%>
 <%@ attribute name="limit" required="true" type="java.lang.Integer"%>
-<%@ attribute name="search" required="false" type="java.lang.String"%>
-<%@ attribute name="start" required="true" type="java.lang.Integer"
+<%@ attribute name="filter" required="false" type="java.lang.String"%>
+<%@ attribute name="page" required="true" type="java.lang.Integer"
 	description=""%>
 <%@ attribute name="end" required="true" type="java.lang.Integer"
 	description=""%>
@@ -25,11 +25,11 @@
 
 
 		<!-- bouton suivant -->
-		<li><c:if test="${start>0}">
+		<li><c:if test="${page>0}">
 				<tags:link body="<span aria-hidden='true'>&laquo;</span>"
 					pageNum="0" limit="${limit}" />
 				<li><tags:link body="<span aria-hidden='true'>&laquo;</span>"
-						pageNum="${start-1}" limit="${limit}">
+						pageNum="${page-1}" limit="${limit}">
 					</tags:link></li>
 
 			</c:if></li>
@@ -39,17 +39,17 @@
 		<c:choose>
 
 
-			<c:when test="${start<3}">
-		
-				<c:forEach var="i" begin="${start}" end="${start+4}">
+			<c:when test="${page<3}">
+
+				<c:forEach var="i" begin="${page}" end="${page+4}">
 					<c:choose>
-						<c:when test="${start==i}">
+						<c:when test="${page==i}">
 							<li class="active"><tags:link body="${i}" pageNum="${i}"
-									limit="${limit}" search="${search}"></tags:link></li>
+									limit="${limit}" filter="${filter}"></tags:link></li>
 						</c:when>
 						<c:otherwise>
 							<li><tags:link body="${i}" pageNum="${i}"
-									limit="${limit}" search="${search}"></tags:link></li>
+									limit="${limit}" filter="${filter}"></tags:link></li>
 						</c:otherwise>
 					</c:choose>
 
@@ -58,19 +58,19 @@
 
 
 
-			<c:when test="${end>nbrOfPages}">
-				<c:forEach var="i" begin="${start-5}" end="${start}">
-				
+			<c:when test="${end>pageCount}">
+				<c:forEach var="i" begin="${page-5}" end="${page}">
+
 					<c:choose>
-						<c:when test="${start==i}">
+						<c:when test="${page==i}">
 
 							<li class="active"><tags:link body="${i}" pageNum="${i}"
-									limit="${limit}" search="${search}"></tags:link></li>
+									limit="${limit}" filter="${filter}"></tags:link></li>
 						</c:when>
 						<c:otherwise>
 
 							<li><tags:link body="${i}" pageNum="${i}" limit="${limit}"
-									search="${search}"></tags:link></li>
+									filter="${filter}"></tags:link></li>
 						</c:otherwise>
 					</c:choose>
 
@@ -78,15 +78,15 @@
 			</c:when>
 
 			<c:otherwise>
-				<c:forEach var="i" begin="${start}" end="${end-1}">
+				<c:forEach var="i" begin="${page}" end="${end-1}">
 					<c:choose>
-						<c:when test="${start==i-2}">
+						<c:when test="${page==i-2}">
 							<li class="active"><tags:link body="${i-2}" pageNum="${i-2}"
-									limit="${limit}" search="${search}"></tags:link></li>
+									limit="${limit}" filter="${filter}"></tags:link></li>
 						</c:when>
 						<c:otherwise>
 							<li><tags:link body="${i-2}" pageNum="${i-2}"
-									limit="${limit}" search="${search}"></tags:link></li>
+									limit="${limit}" filter="${filter}"></tags:link></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -94,12 +94,12 @@
 		</c:choose>
 
 		<!-- bouton suivant -->
-		<li><c:if test="${start<nbrOfPages-1}">
+		<li><c:if test="${page<pageCount-1}">
 
 				<tags:link body="<span aria-hidden='true'>&raquo;</span>"
-					pageNum="${start+1}" limit="${limit}" />
+					pageNum="${page+1}" limit="${limit}" />
 				<li><tags:link body="<span aria-hidden='true'>&raquo;</span>"
-						pageNum="${nbrOfPages-1}" limit="${limit}">
+						pageNum="${pageCount-1}" limit="${limit}">
 					</tags:link></li>
 
 			</c:if></li>
@@ -111,11 +111,11 @@
 
 	<div class="btn-group btn-group-sm pull-right" role="group">
 
-		<tags:link body="10" pageNum="0" limit="10" search="${search}"
+		<tags:link body="10" pageNum="0" limit="10" filter="${filter}"
 			boostrapType="btn btn-default" />
-		<tags:link body="50" pageNum="0" limit="50" search="${search}"
+		<tags:link body="50" pageNum="0" limit="50" filter="${filter}"
 			boostrapType="btn btn-default" />
-		<tags:link body="100" pageNum="0" limit="100" search="${search}"
+		<tags:link body="100" pageNum="0" limit="100" filter="${filter}"
 			boostrapType="btn btn-default" />
 
 

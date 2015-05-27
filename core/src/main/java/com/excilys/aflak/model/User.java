@@ -1,16 +1,10 @@
 package com.excilys.aflak.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -65,4 +59,33 @@ public class User {
 		this.enabled = enabled;
 	}
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", enabled=" + enabled +
+				", userRole=" + userRole +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		if (!password.equals(user.password)) return false;
+		if (!username.equals(user.username)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = username.hashCode();
+		result = 31 * result + password.hashCode();
+		return result;
+	}
 }

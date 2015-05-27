@@ -1,26 +1,28 @@
 package com.excilys.aflak.service;
 
-import java.util.List;
-
+import com.excilys.aflak.model.Computer;
+import com.excilys.aflak.persistence.dao.impl.ComputerDAO;
+import com.excilys.aflak.persistence.dto.PageRequest;
+import com.excilys.aflak.service.validator.ComputerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.aflak.dao.ComputerDAO;
-import com.excilys.aflak.model.Computer;
+import java.util.List;
 
 // singeleton
 // variable service => instance de l'enum
 // toute les methode non static
 // on passe par SERVICE pour acceder au methode
 @Service
+@Transactional(readOnly = true)
 public class ComputerService {
 	// SERVICE;
 	@Autowired
 	private ComputerDAO dao;
 
-	@Transactional
-	public void createComputer(Computer computer) {
+	@Transactional(readOnly = false)
+	public void create(Computer computer) {
 		computer.setIntroduced(computer.getIntroduced());
 		computer.setDiscontinued(computer.getDiscontinued());
 		System.err.println(computer.toString());
@@ -28,48 +30,46 @@ public class ComputerService {
 		dao.create(computer);
 	}
 
-	@Transactional
-	public void deleteComputer(Long id) {
+	@Transactional(readOnly = false)
+	public void delete(Long id) {
 		dao.delete(id);
 	}
 
-	@Transactional
-	public void updateComputer(Computer computer) {
-		computer.setIntroduced(computer.getIntroduced());
-		computer.setDiscontinued(computer.getDiscontinued());
+	@Transactional(readOnly = false)
+	public void update(Computer computer) {
 		dao.update(computer);
 	}
 
-	@Transactional(readOnly = true)
-	public Computer findComputer(long id) {
+	public Computer find(long id) {
 		return dao.find(id);
 	}
 
-	@Transactional(readOnly = true)
-	public List<Computer> getAllComputers() {
+	public List<Computer> list() {
 		return dao.list();
 	}
 
-	@Transactional(readOnly = true)
-	public List<Computer> getSomeComputers(int debut, int nbr) {
-		return dao.getSomeComputers(debut, nbr);
+	//FIXME remove. Pagerequest does the job
+	public List<Computer> list(int debut, int nbr) {
+		return dao.list(debut, nbr);
 	}
 
-	@Transactional(readOnly = true)
-	public int getSizeTabComputers() {
-		return dao.getSizeTabComputers();
+
+	public int count() {
+		return dao.count();
 	}
 
-	@Transactional(readOnly = true)
-	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
-			String way, int debut, int limit) {
-		return dao.getSomeFilteredComputer(Validator.getFilter(filtre),
-				Validator.getColomn(colomn), Validator.getWay(way), debut,
-				limit);
+	//TODO Here we should return a Page<Computer> with the current count IN THE SAME TRANSACTION
+	public List<Computer> list(PageRequest request) {
+		// TODO
+		// Page<Computer> p = new Page<>();
+		// p.setElements(dao.list(request));
+		// p.setTotalCount(dao.count(request.filter));
+		// return p;
+		return dao.list(request);
+
 	}
 
-	@Transactional(readOnly = true)
-	public int getSizeFiltredComputer(String filtre) {
-		return dao.getSizeFilteredComputer(Validator.getFilter(filtre));
+	public int count(String filtre) {
+		return dao.count(ComputerValidator.validateFilter(filtre));
 	}
 }

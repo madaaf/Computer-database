@@ -20,13 +20,13 @@
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
-		
+
 		<div id="logout" class="navbar-right">
 			<a type="button" class="btn btn-default" href="logout">
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			</a>
 		</div>
-		
+
 		<div class="container">
 
 			<a class="navbar-brand" href="index?page=0"><spring:message
@@ -56,13 +56,13 @@
 			</c:if>
 
 			<spring:message code="label.find" var="springFind" />
-			<h1 id="homeTitle">${pageS.nbrComputers}${springFind}</h1>
+			<h1 id="homeTitle">${pageS.totalCount}${springFind}</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="index" method="GET"
 						class="form-inline">
-						<spring:message code="label.search" var="springSearch" />
-						<input type="search" id="searchbox" name="search"
+						<spring:message code="label.filter" var="springSearch" />
+						<input type="filter" id="searchbox" name="filter"
 							class="form-control" placeholder="${springSearch}" />
 						<spring:message code="label.filter" var="springFilter" />
 						<input type="submit" id="searchsubmit" value="${springFilter}"
@@ -101,22 +101,22 @@
 								code="label.discontinued" var="springDiscontinued" /> <spring:message
 								code="label.company" var="springCompany" /> <tags:link
 								body="${springName}" pageNum="0" limit="${pageS.limit}"
-								search="${pageS.search}" colomn="computer.name"
-								way="${pageS.way}">
+								filter="${pageS.filter}" field="computer.name"
+								sort="${pageS.sort}">
 							</tags:link></th>
 						<th><tags:link body="${springIntroduced}" pageNum="0"
-								limit="${pageS.limit}" search="${pageS.search}"
-								colomn="computer.introduced" way="${pageS.way}">
+								limit="${pageS.limit}" filter="${pageS.filter}"
+								field="computer.introduced" sort="${pageS.sort}">
 							</tags:link></th>
 						<!-- Table header for Discontinued Date -->
 						<th><tags:link body="${springDiscontinued}" pageNum="0"
-								limit="${pageS.limit}" search="${pageS.search}"
-								colomn="computer.discontinued" way="${pageS.way}">
+								limit="${pageS.limit}" filter="${pageS.filter}"
+								field="computer.discontinued" sort="${pageS.sort}">
 							</tags:link></th>
 						<!-- Table header for Company -->
 						<th><tags:link body="${springCompany}" pageNum="0"
-								limit="${pageS.limit}" search="${pageS.search}"
-								colomn="company.name" way="${pageS.way}">
+								limit="${pageS.limit}" filter="${pageS.filter}"
+								field="company.name" sort="${pageS.sort}">
 							</tags:link></th>
 
 					</tr>
@@ -143,8 +143,8 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<tags:page nbrOfPages="${pageS.nbrOfPages}" start="${pageS.start}"
-			end="${pageS.end}" limit="${pageS.limit}" search="${pageS.search}"></tags:page>
+		<tags:page pageCount="${pageS.pageCount}" page="${pageS.page}"
+			end="${pageS.end}" limit="${pageS.limit}" filter="${pageS.filter}"></tags:page>
 	</footer>
 
 	<script src="js/jquery.min.js"></script>

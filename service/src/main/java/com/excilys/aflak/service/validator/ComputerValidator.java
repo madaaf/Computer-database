@@ -1,4 +1,6 @@
-package com.excilys.aflak.service;
+package com.excilys.aflak.service.validator;
+
+import com.excilys.aflak.persistence.dao.ICrudDAO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validator {
+public class ComputerValidator {
 	private final static String regExInteger = "[0-9]+";
 	private static Pattern pattern;
 	private static Matcher matcher;
@@ -24,14 +26,14 @@ public class Validator {
 		return matcher.matches();
 	}
 
-	public static String getFilter(String filter) {
+	public static String validateFilter(String filter) {
 		if (filter == null || filter.equals(null) || filter.isEmpty()) {
 			return "";
 		}
 		return filter;
 	}
 
-	public static String getColomn(String column) {
+	public static String validateField(String column) {
 		if (listColomns.contains(column)) {
 			return column;
 		} else {
@@ -39,12 +41,11 @@ public class Validator {
 		}
 	}
 
-	public static String getWay(String way) {
-		if (listWays.contains(way)) {
-			return way;
-		} else {
-			return "ASC";
+	public static ICrudDAO.Sort validateSort(String way) {
+		if ("DESC".equals(way)) {
+			return ICrudDAO.Sort.DESC;
 		}
+		return ICrudDAO.Sort.ASC;
 	}
 
 }

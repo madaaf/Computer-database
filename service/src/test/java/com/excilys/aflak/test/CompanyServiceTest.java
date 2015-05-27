@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.aflak.model.Company;
-import com.excilys.aflak.model.Company.CompanyBuilder;
+import com.excilys.aflak.model.Company.Builder;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
@@ -33,13 +33,13 @@ public class CompanyServiceTest {
 	public void setUp() throws Exception {
 		listCompanies = new ArrayList<Company>();
 		listCompanies = new ArrayList<Company>();
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(1L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(1L)
 				.withName("Apple Inc.").build());
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(2L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(2L)
 				.withName("Thinking Machines").build());
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(3L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(3L)
 				.withName("RCA").build());
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(4L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(4L)
 				.withName("Netronics").build());
 		ExecuteScript.execute();
 	}
@@ -63,9 +63,9 @@ public class CompanyServiceTest {
 		Assert.assertNull(company);
 		// checked if the transaction works
 		// and the computers associated with the company id are removed
-		Computer comp1 = computerService.findComputer(1);
+		Computer comp1 = computerService.find(1);
 		Assert.assertNull(comp1);
-		Computer comp2 = computerService.findComputer(6);
+		Computer comp2 = computerService.find(6);
 		Assert.assertNull(comp2);
 	}
 }

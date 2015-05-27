@@ -16,9 +16,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utils.ExecuteScript;
 
-import com.excilys.aflak.dao.CompanyDAO;
+import com.excilys.aflak.persistence.dao.impl.CompanyDAO;
 import com.excilys.aflak.model.Company;
-import com.excilys.aflak.model.Company.CompanyBuilder;
+import com.excilys.aflak.model.Company.Builder;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,13 +31,13 @@ public class CompanyDAOTest {
 	@Before
 	public void setUp() throws Exception {
 		listCompanies = new ArrayList<Company>();
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(1L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(1L)
 				.withName("Apple Inc.").build());
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(2L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(2L)
 				.withName("Thinking Machines").build());
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(3L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(3L)
 				.withName("RCA").build());
-		listCompanies.add(CompanyBuilder.crateDefaultCompany().withId(4L)
+		listCompanies.add(Builder.crateDefaultCompany().withId(4L)
 				.withName("Netronics").build());
 		ExecuteScript.execute();
 	}

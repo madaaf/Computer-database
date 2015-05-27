@@ -12,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.aflak.model.Company.CompanyBuilder;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.model.Computer.ComputerBuilder;
+import com.excilys.aflak.model.Computer.Builder;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.utils.ExecuteScript;
 
@@ -28,72 +27,72 @@ public class ComputerServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		listComputersTest = new ArrayList<Computer>();
-		listComputersTest.add(ComputerBuilder
-				.createDefaultComputer()
-				.withId(1L)
-				.withName("MacBook Pro 15.4 inch")
-				.withCompany(
-						CompanyBuilder.crateDefaultCompany().withId(1L)
+		listComputersTest.add(Builder
+				.builder()
+				.id(1L)
+				.name("MacBook Pro 15.4 inch")
+				.company(
+						com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build());
 		listComputersTest
-				.add(ComputerBuilder
-						.createDefaultComputer()
-						.withId(2L)
-						.withName("CM-2a")
-						.withCompany(
-								CompanyBuilder.crateDefaultCompany().withId(2L)
+				.add(Builder
+						.builder()
+						.id(2L)
+						.name("CM-2a")
+						.company(
+								com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(2L)
 										.withName("Thinking Machines").build())
 						.build());
 		listComputersTest
-				.add(ComputerBuilder
-						.createDefaultComputer()
-						.withId(3L)
-						.withName("CM-200")
-						.withCompany(
-								CompanyBuilder.crateDefaultCompany().withId(2L)
+				.add(Builder
+						.builder()
+						.id(3L)
+						.name("CM-200")
+						.company(
+								com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(2L)
 										.withName("Thinking Machines").build())
 						.build());
 		listComputersTest
-				.add(ComputerBuilder
-						.createDefaultComputer()
-						.withId(4L)
-						.withName("CM-5e")
-						.withCompany(
-								CompanyBuilder.crateDefaultCompany().withId(2L)
+				.add(Builder
+						.builder()
+						.id(4L)
+						.name("CM-5e")
+						.company(
+								com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(2L)
 										.withName("Thinking Machines").build())
 						.build());
 		listComputersTest
-				.add(ComputerBuilder
-						.createDefaultComputer()
-						.withId(5L)
-						.withName("CM-5")
-						.withIntroduced(
+				.add(Builder
+						.builder()
+						.id(5L)
+						.name("CM-5")
+						.introduced(
 								LocalDateTime.of(1991, 01, 01, 00, 00, 00))
-						.withCompany(
-								CompanyBuilder.crateDefaultCompany().withId(2L)
+						.company(
+								com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(2L)
 										.withName("Thinking Machines").build())
 						.build());
-		listComputersTest.add(ComputerBuilder
-				.createDefaultComputer()
-				.withId(6L)
-				.withName("MacBook Pro")
-				.withIntroduced(LocalDateTime.of(2006, 01, 10, 00, 00, 00))
-				.withCompany(
-						CompanyBuilder.crateDefaultCompany().withId(1L)
+		listComputersTest.add(Builder
+				.builder()
+				.id(6L)
+				.name("MacBook Pro")
+				.introduced(LocalDateTime.of(2006, 01, 10, 00, 00, 00))
+				.company(
+						com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build());
 		ExecuteScript.execute();
 	}
 
 	@Test
 	public void findOne() {
-		Computer computer = service.findComputer(2);
+		Computer computer = service.find(2);
 		Assert.assertEquals(computer, listComputersTest.get(1));
 	}
 
 	@Test
 	public void getAll() {
 		List<Computer> dbComputer = new ArrayList<Computer>();
-		dbComputer = service.getAllComputers();
+		dbComputer = service.list();
 		Assert.assertArrayEquals(dbComputer.toArray(),
 				listComputersTest.toArray());
 	}
@@ -101,16 +100,16 @@ public class ComputerServiceTest {
 	@Test
 	public void createWithNullDate() {
 		// Computer to add
-		Computer com = ComputerBuilder
-				.createDefaultComputer()
-				.withName("MacBook Pro 15.4 inch")
-				.withCompany(
-						CompanyBuilder.crateDefaultCompany().withId(1L)
+		Computer com = Builder
+				.builder()
+				.name("MacBook Pro 15.4 inch")
+				.company(
+						com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build();
 		// insert the computer in the bdd
-		service.createComputer(com);
+		service.create(com);
 		// get the last computer in the bdd
-		Computer lastComputer = service.findComputer(7);
+		Computer lastComputer = service.find(7);
 		com.setId(7L);
 		Assert.assertEquals(com, lastComputer);
 	}
@@ -120,37 +119,37 @@ public class ComputerServiceTest {
 		/*
 		 * Locale locale = LocaleContextHolder.getLocale(); Pattern language =
 		 * Pattern.map(locale.getLanguage()); // Computer to add Computer com =
-		 * ComputerBuilder .createDefaultComputer()
-		 * .withName("MacBook Pro 15.4 inch") .withIntroduced(
+		 * ComputerBuilder .builder()
+		 * .name("MacBook Pro 15.4 inch") .introduced(
 		 * TimeConvertor.convertStringToLocalDateTime( "19-ded-2000", language))
-		 * .withDiscontinued( TimeConvertor.convertStringToLocalDateTime(
-		 * "30-02-2000", language)) .withCompany(
-		 * CompanyBuilder.crateDefaultCompany().withId(1L)
-		 * .withName("Apple Inc.").build()).build(); // insert the computer in
-		 * the bdd service.createComputer(com); // get the last computer in the
-		 * bdd Computer lastComputer = service.findComputer(7);
+		 * .discontinued( TimeConvertor.convertStringToLocalDateTime(
+		 * "30-02-2000", language)) .company(
+		 * CompanyBuilder.crateDefaultCompany().id(1L)
+		 * .name("Apple Inc.").build()).build(); // insert the computer in
+		 * the bdd service.create(com); // get the last computer in the
+		 * bdd Computer lastComputer = service.find(7);
 		 * Assert.assertNull(lastComputer);
 		 */
 	}
 
 	@Test
 	public void delete() {
-		service.deleteComputer(6L);
-		Computer com = service.findComputer(6);
+		service.delete(6L);
+		Computer com = service.find(6);
 		Assert.assertNull(com);
 	}
 
 	@Test
 	public void update() {
-		Computer com = ComputerBuilder
-				.createDefaultComputer()
-				.withId(1L)
-				.withName("Modified")
-				.withCompany(
-						CompanyBuilder.crateDefaultCompany().withId(1L)
+		Computer com = Builder
+				.builder()
+				.id(1L)
+				.name("Modified")
+				.company(
+						com.excilys.aflak.model.Company.Builder.crateDefaultCompany().withId(1L)
 								.withName("Apple Inc.").build()).build();
-		service.updateComputer(com);
-		Computer com2 = service.findComputer(1L);
+		service.update(com);
+		Computer com2 = service.find(1L);
 		Assert.assertEquals(com, com2);
 	}
 }
