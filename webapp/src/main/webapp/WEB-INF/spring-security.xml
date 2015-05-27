@@ -40,7 +40,7 @@ access="ROLE_ADMIN" />
 	</security:authentication-manager>
 
 	<!-- dataSource is in persistence module -->
-	<import resource="classpath*:/datasource.xml" />
+	<import resource="datasource.xml" />
 
 
 </beans>

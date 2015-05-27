@@ -8,6 +8,7 @@
 		<artifactId>parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+	
 	<groupId>com.excilys.aflak</groupId>
 	<artifactId>service</artifactId>
 	<version>1.0-SNAPSHOT</version>
