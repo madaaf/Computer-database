@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.excilys.aflak.mapper.Mapper;
+import com.excilys.aflak.mapper.ComputerMapper;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.validator.Date.Pattern;
@@ -156,7 +156,7 @@ public class Page {
 	}
 
 	public void populate(ComputerService serviceComputer, Pattern pattern) {
-		setNbrComputers(serviceComputer.getSizeFiltredComputer(getSearch()));
+		setNbrComputers(serviceComputer.count(getSearch()));
 		if (limits.contains(getLimit())) {
 			setLimit(getLimit());
 		}
@@ -183,23 +183,20 @@ public class Page {
 			setInvalidArgument("setInvalidArgument");
 		}
 
-		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+		ComputerMapper mapper = new ComputerMapper(pattern);
+		List<Computer> listComputers = null;
 		// remplir la liste de computer en fonction de la recherche
 		if (getLimit() * getStart() < getNbrComputers()) {
-			for (Computer computer : serviceComputer.getSomeFiltredComputer(
-					getSearch(), getColomn(), getWay(),
-					getLimit() * getStart(), getLimit())) {
-				listComputers.add(Mapper.computerToComputerDTO(computer,
-						pattern));
-			}
+			listComputers = serviceComputer.list(getSearch(), getColomn(),
+					getWay(), getLimit() * getStart(), getLimit());
 		} else {
-			for (Computer computer : serviceComputer.getSomeFiltredComputer(
-					getSearch(), getColomn(), getWay(), 0, getLimit())) {
-				listComputers.add(Mapper.computerToComputerDTO(computer,
-						pattern));
-			}
+			listComputers = serviceComputer.list(getSearch(), getColomn(),
+					getWay(), 0, getLimit());
+
 		}
-		setListComputers(listComputers);
+
+		List<ComputerDTO> listComputersDTO = mapper.toListDto(listComputers);
+		setListComputers(listComputersDTO);
 
 	}
 

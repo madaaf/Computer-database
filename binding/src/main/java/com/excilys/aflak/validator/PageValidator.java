@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.excilys.aflak.dao.IComputerDAO;
 import com.excilys.aflak.dto.Page;
-import com.excilys.aflak.inter.IDAOComputer;
 
 public class PageValidator implements Validator {
 
@@ -28,8 +28,8 @@ public class PageValidator implements Validator {
 			errors.rejectValue("limit", "negativeLmit");
 		}
 
-		if (!page.getColomn().equals(IDAOComputer.getColumn(page.getColomn()))) {
-			IDAOComputer.getColumn(page.getColomn());
+		if (!page.getColomn().equals(IComputerDAO.getColumn(page.getColomn()))) {
+			IComputerDAO.getColumn(page.getColomn());
 		}
 
 		if (page.getInvalidArgument() != null) {

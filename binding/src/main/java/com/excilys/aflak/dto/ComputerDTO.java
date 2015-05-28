@@ -106,32 +106,32 @@ public class ComputerDTO {
 			return new ComputerBuilderDTO();
 		}
 
-		public ComputerBuilderDTO withId(final long id) {
+		public ComputerBuilderDTO Id(final long id) {
 			this.id = id;
 			return this;
 		}
 
-		public ComputerBuilderDTO withName(final String name) {
+		public ComputerBuilderDTO name(final String name) {
 			this.name = name;
 			return this;
 		}
 
-		public ComputerBuilderDTO withIntroduced(final String introduced) {
+		public ComputerBuilderDTO introduced(final String introduced) {
 			this.introduced = introduced;
 			return this;
 		}
 
-		public ComputerBuilderDTO withDiscontinued(final String discontinued) {
+		public ComputerBuilderDTO discontinued(final String discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
 
-		public ComputerBuilderDTO withCompanyId(final long companyId) {
+		public ComputerBuilderDTO companyId(final long companyId) {
 			this.companyId = companyId;
 			return this;
 		}
 
-		public ComputerBuilderDTO withCompanyName(final String companyName) {
+		public ComputerBuilderDTO companyName(final String companyName) {
 			this.companyName = companyName;
 			return this;
 		}

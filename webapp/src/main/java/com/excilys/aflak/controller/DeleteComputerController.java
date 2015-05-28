@@ -24,7 +24,7 @@ public class DeleteComputerController {
 		String computersId[] = selection.split(",");
 
 		for (String computerId : computersId) {
-			serviceComputer.deleteComputer(Long.parseLong(computerId));
+			serviceComputer.delete(Long.parseLong(computerId));
 		}
 		return "redirect:index?deletedSuccess";
 		// response.sendRedirect("index?deletedSuccess");

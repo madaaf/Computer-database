@@ -69,31 +69,29 @@ public class Company {
 		return true;
 	}
 
-	public static class CompanyBuilder {
+	public static class Builder {
 		private Long id = null;
 		private String name = null;
 
-		private CompanyBuilder() {
+		private Builder() {
 		}
 
-		public static CompanyBuilder crateDefaultCompany() {
-			return new CompanyBuilder();
+		public static Builder builder() {
+			return new Builder();
 		}
 
-		public CompanyBuilder withId(final Long id) {
+		public Builder id(final Long id) {
 			this.id = id;
 			return this;
 		}
 
-		public CompanyBuilder withName(final String name) {
+		public Builder name(final String name) {
 			this.name = name;
 			return this;
 		}
 
 		public Company build() {
-
 			return new Company(id, name);
-
 		}
 	}
 }

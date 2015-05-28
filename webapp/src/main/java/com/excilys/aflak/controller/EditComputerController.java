@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.aflak.dto.ComputerDTO;
-import com.excilys.aflak.mapper.Mapper;
+import com.excilys.aflak.mapper.ComputerMapper;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
@@ -38,10 +38,13 @@ public class EditComputerController {
 	public String doGet(@RequestParam("id") String idCom, ModelMap model) {
 		Locale locale = LocaleContextHolder.getLocale();
 		Pattern language = Pattern.map(locale.getLanguage());
+		ComputerMapper mapper = new ComputerMapper(language);
 
 		long id = Long.parseLong(idCom);
-		Computer computer = serviceComputer.findComputer(id);
-		ComputerDTO dto = Mapper.computerToComputerDTO(computer, language);
+		Computer computer = serviceComputer.find(id);
+		ComputerDTO dto = mapper.toDto(computer);
+		// ComputerMapper.computerToComputerDTO(computer,
+		// language);
 
 		List<Company> listCompanies = new ArrayList<Company>();
 		listCompanies = serviceCompany.getAllCompanies();
@@ -58,7 +61,7 @@ public class EditComputerController {
 			BindingResult result, Model model) {
 		Locale locale = LocaleContextHolder.getLocale();
 		Pattern language = Pattern.map(locale.getLanguage());
-
+		ComputerMapper mapper = new ComputerMapper(language);
 		if (result.hasErrors()) {
 			List<Company> listCompanies = new ArrayList<Company>();
 			listCompanies = serviceCompany.getAllCompanies();
@@ -66,10 +69,11 @@ public class EditComputerController {
 			return "editComputer";
 		} else {
 			System.err.println(computerDTO.toString());
-			Computer computer = Mapper.computerDTOToComputer(computerDTO,
-					language);
+			Computer computer = mapper.fromDto(computerDTO);
+			// ComputerMapper.computerDTOToComputer(
+			// computerDTO, language);
 			System.err.println(computer.toString());
-			serviceComputer.updateComputer(computer);
+			serviceComputer.update(computer);
 			return "redirect:index";
 		}
 

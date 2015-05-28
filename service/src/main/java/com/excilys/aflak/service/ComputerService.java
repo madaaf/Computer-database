@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.aflak.dao.ComputerDAO;
+import com.excilys.aflak.dao.impl.ComputerDAO;
 import com.excilys.aflak.model.Computer;
 
 // singeleton
@@ -20,56 +20,52 @@ public class ComputerService {
 	private ComputerDAO dao;
 
 	@Transactional
-	public void createComputer(Computer computer) {
+	public void create(Computer computer) {
 		computer.setIntroduced(computer.getIntroduced());
 		computer.setDiscontinued(computer.getDiscontinued());
-		System.err.println(computer.toString());
-		System.err.println(dao.toString());
 		dao.create(computer);
 	}
 
 	@Transactional
-	public void deleteComputer(Long id) {
+	public void delete(Long id) {
 		dao.delete(id);
 	}
 
 	@Transactional
-	public void updateComputer(Computer computer) {
-		computer.setIntroduced(computer.getIntroduced());
-		computer.setDiscontinued(computer.getDiscontinued());
+	public void update(Computer computer) {
 		dao.update(computer);
 	}
 
 	@Transactional(readOnly = true)
-	public Computer findComputer(long id) {
+	public Computer find(long id) {
 		return dao.find(id);
 	}
 
 	@Transactional(readOnly = true)
-	public List<Computer> getAllComputers() {
+	public List<Computer> list() {
 		return dao.list();
 	}
 
 	@Transactional(readOnly = true)
-	public List<Computer> getSomeComputers(int debut, int nbr) {
-		return dao.getSomeComputers(debut, nbr);
+	public List<Computer> list(int debut, int nbr) {
+		return dao.list(debut, nbr);
 	}
 
 	@Transactional(readOnly = true)
-	public int getSizeTabComputers() {
-		return dao.getSizeTabComputers();
+	public int count() {
+		return dao.count();
 	}
 
 	@Transactional(readOnly = true)
-	public List<Computer> getSomeFiltredComputer(String filtre, String colomn,
-			String way, int debut, int limit) {
-		return dao.getSomeFilteredComputer(Validator.getFilter(filtre),
+	public List<Computer> list(String filtre, String colomn, String way,
+			int debut, int limit) {
+		return dao.list(Validator.getFilter(filtre),
 				Validator.getColomn(colomn), Validator.getWay(way), debut,
 				limit);
 	}
 
 	@Transactional(readOnly = true)
-	public int getSizeFiltredComputer(String filtre) {
-		return dao.getSizeFilteredComputer(Validator.getFilter(filtre));
+	public int count(String filtre) {
+		return dao.count(Validator.getFilter(filtre));
 	}
 }

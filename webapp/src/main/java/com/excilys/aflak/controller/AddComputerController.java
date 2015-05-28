@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.excilys.aflak.dto.ComputerDTO;
-import com.excilys.aflak.mapper.Mapper;
+import com.excilys.aflak.mapper.ComputerMapper;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.CompanyService;
@@ -49,6 +49,7 @@ public class AddComputerController {
 
 		Locale locale = LocaleContextHolder.getLocale();
 		Pattern language = Pattern.map(locale.getLanguage());
+		ComputerMapper mapper = new ComputerMapper(language);
 		System.err.println("servlet add " + language.name());
 		// if @Valid find errors in computerDTO annotation
 		// errors are send in BindingResult
@@ -57,14 +58,14 @@ public class AddComputerController {
 			model.addAttribute("listCompanies", listCompanies);
 			return "addComputer";
 		} else {
-			Computer com = Mapper.computerDTOToComputer(computerDTO, language);
+			Computer com = mapper.fromDto(computerDTO);
+			// ComputerMapper.computerDTOToComputer(computerDTO, language);
 			System.err.println(com.toString());
-			serviceComputer.createComputer(com);
+			serviceComputer.create(com);
 			// redirection vers une url ,recharger la page
 			// forward = > redirection jsp
 			return "redirect:index";
 			// response.sendRedirect("index");
 		}
-
 	}
 }

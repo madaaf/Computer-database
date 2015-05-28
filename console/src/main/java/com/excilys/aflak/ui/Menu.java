@@ -8,9 +8,8 @@ import java.util.Scanner;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.aflak.model.Company;
-import com.excilys.aflak.model.Company.CompanyBuilder;
+import com.excilys.aflak.model.Company.Builder;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.model.Computer.ComputerBuilder;
 import com.excilys.aflak.service.CompanyService;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.service.Validator;
@@ -81,11 +80,11 @@ public class Menu {
 		if (isInteger) {
 			idCompany = Long.parseLong(input);
 
-			Company c = CompanyBuilder.crateDefaultCompany().withId(2L).build();
+			Company c = Builder.builder().id(2L).build();
 			// new Company(2, null);
-			com = ComputerBuilder.createDefaultComputer().withId(computerId)
-					.withName(name).withIntroduced(introduced)
-					.withDiscontinued(discontinued).withCompany(c).build();
+			com = Computer.Builder.builder().id(computerId).name(name)
+					.introduced(introduced).discontinued(discontinued)
+					.company(c).build();
 			// new Computer(computerId, name, introduced, discontinued, c);
 		}
 		return com;
@@ -122,7 +121,7 @@ public class Menu {
 			int debut = 0;
 			int nbr = 10;
 			System.out.println("List of computers : ");
-			listComputer = computerService.getSomeComputers(debut, nbr);
+			listComputer = computerService.list(debut, nbr);
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
@@ -133,8 +132,7 @@ public class Menu {
 				switch (input) {
 				case "n":
 					debut++;
-					listComputer = computerService.getSomeComputers(
-							debut * nbr, nbr);
+					listComputer = computerService.list(debut * nbr, nbr);
 					for (int i = 0; i < listComputer.size(); i++) {
 						System.out.println(listComputer.get(i).toString());
 					}
@@ -160,8 +158,7 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			Computer computer = null;
 			if (isInteger) {
-				computer = computerService
-						.findComputer(Integer.parseInt(input));
+				computer = computerService.find(Integer.parseInt(input));
 			} else {
 				System.out.println("You have to enter a number");
 				break;
@@ -171,7 +168,7 @@ public class Menu {
 		case "4":
 			Computer com = createAndUpdateComputer((-1L));
 			if (com != null) {
-				computerService.createComputer(com);
+				computerService.create(com);
 				System.out.println("Your computer is created : "
 						+ com.toString());
 			} else {
@@ -195,7 +192,7 @@ public class Menu {
 
 			Computer comp = createAndUpdateComputer(idComputer);
 			if (comp != null) {
-				computerService.updateComputer(comp);
+				computerService.update(comp);
 			}
 
 			break;
@@ -208,7 +205,7 @@ public class Menu {
 			if (isInteger) {
 				idComputer = Long.parseLong(input);
 
-				computerService.deleteComputer(idComputer);
+				computerService.delete(idComputer);
 
 				break;
 			} else {

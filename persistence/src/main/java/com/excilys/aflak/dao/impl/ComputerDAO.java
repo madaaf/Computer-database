@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.aflak.inter.IDAOComputer;
+import com.excilys.aflak.dao.IComputerDAO;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.model.QCompany;
 import com.excilys.aflak.model.QComputer;
@@ -16,7 +16,7 @@ import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.types.OrderSpecifier;
 
 @Repository
-public class ComputerDAO implements IDAOComputer {
+public class ComputerDAO implements IComputerDAO {
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -49,7 +49,7 @@ public class ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public int getSizeTabComputers() {
+	public int count() {
 		QComputer qComputer = QComputer.computer;
 		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
 		long x = query.from(qComputer).count();
@@ -58,7 +58,7 @@ public class ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public int getSizeFilteredComputer(String filtre) {
+	public int count(String filtre) {
 		QComputer qComputer = QComputer.computer;
 		QCompany qCompany = QCompany.company;
 		filtre = "%" + filtre + "%";
@@ -82,7 +82,7 @@ public class ComputerDAO implements IDAOComputer {
 	}
 
 	@Override
-	public List<Computer> getSomeComputers(int debut, int nbr) {
+	public List<Computer> list(int debut, int nbr) {
 		QComputer qComputer = QComputer.computer;
 		QCompany qCompany = QCompany.company;
 		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
@@ -90,15 +90,41 @@ public class ComputerDAO implements IDAOComputer {
 				.limit(nbr).offset(debut).list(qComputer);
 	}
 
-	@Override
-	public List<Computer> getSomeFilteredComputer(String filtre, String column,
-			String way, int debut, int limit) {
-		filtre = "%" + filtre + "%";
+	/*
+	 * @Override public List<Computer> list(PageRequest pageRequest) { String
+	 * filter = "%" + pageRequest.filter + "%";
+	 * 
+	 * QComputer qComputer = QComputer.computer; QCompany qCompany =
+	 * QCompany.company; JPQLQuery query = new
+	 * HibernateQuery(sessionFactory.getCurrentSession());
+	 * 
+	 * OrderSpecifier<?> order; switch (pageRequest.field) { case
+	 * "computer.name": order = Sort.ASC.equals(pageRequest.sort) ?
+	 * qComputer.name.asc() : qComputer.name.desc(); break; case
+	 * "computer.introduced": order = Sort.ASC.equals(pageRequest.sort) ?
+	 * qComputer.introduced .asc() : qComputer.introduced.desc(); break; case
+	 * "computer.discontinued": order = Sort.ASC.equals(pageRequest.sort) ?
+	 * qComputer.discontinued .asc() : qComputer.discontinued.desc(); break;
+	 * case "computer.company": order = Sort.ASC.equals(pageRequest.sort) ?
+	 * qComputer.company.name .asc() : qComputer.company.name.desc(); break;
+	 * default: order = qComputer.id.asc(); }
+	 * 
+	 * return query .from(qComputer) .orderBy(order)
+	 * .leftJoin(qComputer.company, qCompany)
+	 * .where(qComputer.name.like(filter).or( qCompany.name.like(filter)))
+	 * .offset(pageRequest.pageSize * (pageRequest.pageNumber - 1))
+	 * .limit(pageRequest.pageSize).list(qComputer);
+	 * 
+	 * }
+	 */
 
+	@Override
+	public List<Computer> list(String filtre, String column, String way,
+			int debut, int limit) {
+		filtre = "%" + filtre + "%";
 		QComputer qComputer = QComputer.computer;
 		QCompany qCompany = QCompany.company;
 		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
-
 		OrderSpecifier<?> order;
 		switch (column) {
 		case "computer.name":
@@ -120,7 +146,6 @@ public class ComputerDAO implements IDAOComputer {
 		default:
 			order = qComputer.name.asc();
 		}
-
 		return query
 				.from(qComputer)
 				.orderBy(order)
@@ -128,7 +153,6 @@ public class ComputerDAO implements IDAOComputer {
 				.where(qComputer.name.like(filtre).or(
 						qCompany.name.like(filtre))).limit(2).offset(debut)
 				.limit(limit).offset(debut).list(qComputer);
-
 	}
 
 	@Override

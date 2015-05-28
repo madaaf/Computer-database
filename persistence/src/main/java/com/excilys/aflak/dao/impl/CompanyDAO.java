@@ -1,4 +1,4 @@
-package com.excilys.aflak.dao;
+package com.excilys.aflak.dao.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.aflak.inter.IDAOCompany;
+import com.excilys.aflak.dao.ICompanyDAO;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.QCompany;
 import com.mysema.query.jpa.JPQLQuery;
@@ -14,7 +14,7 @@ import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 
 @Repository
-public class CompanyDAO implements IDAOCompany {
+public class CompanyDAO implements ICompanyDAO {
 
 	@Autowired
 	SessionFactory sessionFactory;

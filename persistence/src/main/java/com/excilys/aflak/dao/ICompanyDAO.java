@@ -1,10 +1,10 @@
-package com.excilys.aflak.inter;
+package com.excilys.aflak.dao;
 
 import java.util.List;
 
 import com.excilys.aflak.model.Company;
 
-public interface IDAOCompany extends IDAOCrud<Company> {
+public interface ICompanyDAO extends ICrudDAO<Company> {
 	/**
 	 * Methode qui liste
 	 * 

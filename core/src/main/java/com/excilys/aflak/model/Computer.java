@@ -133,41 +133,41 @@ public class Computer {
 				.toString();
 	}
 
-	public static class ComputerBuilder {
+	public static class Builder {
 		private Long id = -1L;
 		private String name;
 		private LocalDateTime introduced;
 		private LocalDateTime discontinued;
 		private Company company;
 
-		private ComputerBuilder() {
+		private Builder() {
 		}
 
-		public static ComputerBuilder createDefaultComputer() {
-			return new ComputerBuilder();
+		public static Builder builder() {
+			return new Builder();
 		}
 
-		public ComputerBuilder withId(final Long id) {
+		public Builder id(final Long id) {
 			this.id = id;
 			return this;
 		}
 
-		public ComputerBuilder withName(final String name) {
+		public Builder name(final String name) {
 			this.name = name;
 			return this;
 		}
 
-		public ComputerBuilder withIntroduced(final LocalDateTime introduced) {
+		public Builder introduced(final LocalDateTime introduced) {
 			this.introduced = introduced;
 			return this;
 		}
 
-		public ComputerBuilder withDiscontinued(final LocalDateTime discontinued) {
+		public Builder discontinued(final LocalDateTime discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
 
-		public ComputerBuilder withCompany(final Company company) {
+		public Builder company(final Company company) {
 			this.company = company;
 			return this;
 		}

@@ -1,6 +1,9 @@
-package com.excilys.aflak.inter;
+package com.excilys.aflak.dao;
 
-public interface IDAOCrud<T> {
+public interface ICrudDAO<T> {
+	public enum Sort {
+		ASC, DESC
+	}
 
 	/**
 	 * CREATE
@@ -9,7 +12,7 @@ public interface IDAOCrud<T> {
 	 * @return id object created
 	 */
 	default public void create(T obj) {
-		throw new IllegalAccessError("error implementation create");
+		throw new IllegalStateException("error implementation create");
 	}
 
 	/**
@@ -19,7 +22,7 @@ public interface IDAOCrud<T> {
 	 * @return object find
 	 */
 	default public T find(Long id) {
-		throw new IllegalAccessError("error implementation find");
+		throw new IllegalStateException("error implementation find");
 	}
 
 	/**
@@ -29,7 +32,7 @@ public interface IDAOCrud<T> {
 	 * @return object updated
 	 */
 	default public void update(T obj) {
-		throw new IllegalAccessError("error implementation update");
+		throw new IllegalStateException("error implementation update");
 	}
 
 	/**
@@ -39,7 +42,7 @@ public interface IDAOCrud<T> {
 	 * @return boolean
 	 */
 	default public void delete(Long id) {
-		throw new IllegalAccessError("error implementation delete");
+		throw new IllegalStateException("error implementation delete");
 	}
 
 }

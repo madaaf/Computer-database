@@ -15,11 +15,13 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.EnhancedUserType;
 
+/**
+ * 
+ * For annotation @Type in Computer to validate LocalDateTime
+ */
+
 public class LocalDateTimeUserType implements EnhancedUserType, Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5627391405546625804L;
 	private static final int[] SQL_TYPES = new int[] { Types.TIMESTAMP };
 
@@ -122,5 +124,4 @@ public class LocalDateTimeUserType implements EnhancedUserType, Serializable {
 	public Object fromXMLString(String string) {
 		return LocalDateTime.parse(string);
 	}
-
 }

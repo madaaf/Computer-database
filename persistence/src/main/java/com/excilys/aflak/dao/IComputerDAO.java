@@ -1,12 +1,11 @@
-package com.excilys.aflak.inter;
+package com.excilys.aflak.dao;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 
 import com.excilys.aflak.model.Computer;
 
-public interface IDAOComputer extends IDAOCrud<Computer> {
+public interface IComputerDAO extends ICrudDAO<Computer> {
 
 	public static String getColumn(String s) {
 		HashMap<String, String> column = new HashMap<>();
@@ -21,8 +20,6 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
 		return column.get("computer.id");
 	}
 
-	Connection connect = null;
-
 	/**
 	 * READ - list object
 	 * 
@@ -35,13 +32,13 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
 	 * @return List<Computer>
 	 */
 
-	List<Computer> getSomeComputers(int debut, int nbr);
+	List<Computer> list(int debut, int nbr);
 
 	/**
 	 * @return size Table of Computer
 	 */
 
-	int getSizeTabComputers();
+	int count();
 
 	/**
 	 * Filtred company or computer name
@@ -50,15 +47,15 @@ public interface IDAOComputer extends IDAOCrud<Computer> {
 	 *            , order by, limit, debut
 	 * @return Table of Computer
 	 */
-	List<Computer> getSomeFilteredComputer(String filtre, String column,
-			String way, int limit, int debut);
+	List<Computer> list(String filtre, String column, String way, int debut,
+			int limit);
 
 	/**
 	 * Size of tab filtred
 	 * 
 	 * @return size of filtred computer
 	 */
-	int getSizeFilteredComputer(String filtre);
+	int count(String filtre);
 
 	/**
 	 * delete computer with Company id

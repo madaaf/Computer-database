@@ -1,55 +1,28 @@
 package com.excilys.aflak.mapper;
 
-import com.excilys.aflak.dto.ComputerDTO;
-import com.excilys.aflak.model.Company;
-import com.excilys.aflak.model.Company.CompanyBuilder;
-import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.model.Computer.ComputerBuilder;
-import com.excilys.aflak.validator.Date.Pattern;
-import com.excilys.aflak.validator.TimeConvertor;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Mapper {
+// T : Obj
+// U : dto
+public interface Mapper<T, U> {
+	T fromDto(U o);
 
-	public static Computer computerDTOToComputer(ComputerDTO cdto,
-			Pattern pattern) {
-		System.err.println("pattern name " + pattern.name());
-		Company company = null;
-		if (cdto.getCompanyId() != 0) {
-			company = CompanyBuilder.crateDefaultCompany()
-					.withId(cdto.getCompanyId())
-					.withName(cdto.getCompanyName()).build();
+	U toDto(T o);
+
+	default List<T> fromListDto(List<U> o) {
+		List<T> result = new ArrayList<>(o.size());
+		for (U obj : o) {
+			result.add(fromDto(obj));
 		}
-		Computer computer = ComputerBuilder
-				.createDefaultComputer()
-				.withId(cdto.getId())
-				.withName(cdto.getName())
-				.withIntroduced(
-						TimeConvertor.convertStringToLocalDateTime(
-								cdto.getIntroduced(), pattern))
-				.withDiscontinued(
-						TimeConvertor.convertStringToLocalDateTime(
-								cdto.getDiscontinued(), pattern))
-				.withCompany(company).build();
-
-		return computer;
-
+		return result;
 	}
 
-	public static ComputerDTO computerToComputerDTO(Computer computer,
-			Pattern pattern) {
-		long idCompany = 0;
-		String nameCompany = null;
-		if (computer.getCompany() != null) {
-			idCompany = computer.getCompany().getId();
-			nameCompany = computer.getCompany().getName();
+	default List<U> toListDto(List<T> o) {
+		List<U> result = new ArrayList<>(o.size());
+		for (T obj : o) {
+			result.add(toDto(obj));
 		}
-
-		return new ComputerDTO(computer.getId(), computer.getName(),
-				TimeConvertor.convertLocalDateTimeToString(
-						computer.getIntroduced(), pattern),
-				TimeConvertor.convertLocalDateTimeToString(
-						computer.getDiscontinued(), pattern), idCompany,
-				nameCompany);
-
+		return result;
 	}
 }
