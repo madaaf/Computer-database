@@ -5,17 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.excilys.aflak.client.impl.ClientCompanyService;
+import com.excilys.aflak.client.impl.ClientComputerService;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.Builder;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.CompanyService;
-import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.service.Validator;
 import com.excilys.aflak.validator.Date.Pattern;
 import com.excilys.aflak.validator.TimeConvertor;
 
+@Transactional
 public class Menu {
 
 	private static List<Computer> listComputer = new ArrayList<Computer>();
@@ -37,19 +41,23 @@ public class Menu {
 	private static boolean isInteger;
 	private static boolean isDateFr;
 
-	private static ComputerService computerService;
-	private static CompanyService companyService;
+	@Autowired
+	private static ClientComputerService clientComputer;
+	@Autowired
+	private static ClientCompanyService clientCompany;
+
+	static {
+		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+		clientComputer = appContext.getBean(ClientComputerService.class);
+		clientCompany = appContext.getBean(ClientCompanyService.class);
+	}
 
 	public static void main(String[] args) {
 
-		ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext(
-				"/applicationContext.xml");
-		computerService = springContext.getBean(ComputerService.class);
-		companyService = springContext.getBean(CompanyService.class);
-
 		printMenu();
 		selectMenu();
-		springContext.close();
+
 	}
 
 	public static void printMenu() {
@@ -121,7 +129,9 @@ public class Menu {
 			int debut = 0;
 			int nbr = 10;
 			System.out.println("List of computers : ");
-			listComputer = computerService.list(debut, nbr);
+			// listComputer = computerService.list(debut, nbr);
+
+			listComputer = clientComputer.list();
 			for (int i = 0; i < listComputer.size(); i++) {
 				System.out.println(listComputer.get(i).toString());
 			}
@@ -132,7 +142,8 @@ public class Menu {
 				switch (input) {
 				case "n":
 					debut++;
-					listComputer = computerService.list(debut * nbr, nbr);
+					listComputer = clientComputer.list();
+					// listComputer = computerService.list(debut * nbr, nbr);
 					for (int i = 0; i < listComputer.size(); i++) {
 						System.out.println(listComputer.get(i).toString());
 					}
@@ -146,7 +157,7 @@ public class Menu {
 
 		case "2":
 			System.out.println("List of companies : ");
-			listCompany = companyService.getAllCompanies();
+			listCompany = clientCompany.list();
 			for (int i = 0; i < listCompany.size(); i++) {
 				System.out.println(listCompany.get(i).toString());
 			}
@@ -158,7 +169,7 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			Computer computer = null;
 			if (isInteger) {
-				computer = computerService.find(Integer.parseInt(input));
+				computer = clientComputer.find(Long.parseLong(input));
 			} else {
 				System.out.println("You have to enter a number");
 				break;
@@ -168,7 +179,7 @@ public class Menu {
 		case "4":
 			Computer com = createAndUpdateComputer((-1L));
 			if (com != null) {
-				computerService.create(com);
+				clientComputer.create(com);
 				System.out.println("Your computer is created : "
 						+ com.toString());
 			} else {
@@ -192,7 +203,7 @@ public class Menu {
 
 			Computer comp = createAndUpdateComputer(idComputer);
 			if (comp != null) {
-				computerService.update(comp);
+				clientComputer.update(comp);
 			}
 
 			break;
@@ -205,7 +216,7 @@ public class Menu {
 			if (isInteger) {
 				idComputer = Long.parseLong(input);
 
-				computerService.delete(idComputer);
+				clientComputer.delete(idComputer);
 
 				break;
 			} else {
@@ -219,7 +230,7 @@ public class Menu {
 			isInteger = Validator.isInteger(input);
 			if (isInteger) {
 				idCompany = Long.parseLong(input);
-				companyService.deleteCompany(idCompany);
+				clientCompany.delete(idCompany);
 			} else {
 				System.err.println("\nYou have to enter a number");
 				break;

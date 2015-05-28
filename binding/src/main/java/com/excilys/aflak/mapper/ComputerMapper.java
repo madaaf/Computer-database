@@ -8,10 +8,15 @@ import com.excilys.aflak.validator.Date.Pattern;
 import com.excilys.aflak.validator.TimeConvertor;
 
 public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
+
 	private final Pattern pattern;
 
 	public ComputerMapper(Pattern pattern) {
 		this.pattern = pattern;
+	}
+
+	public ComputerMapper() {
+		pattern = Pattern.FR;
 	}
 
 	@Override

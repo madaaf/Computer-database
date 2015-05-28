@@ -15,6 +15,7 @@ public @interface Date {
 
 	public enum Pattern {
 		FR("dd-MM-yyyy"), EN("MM-dd-yyyy");
+
 		private String pattern;
 
 		private Pattern(String pattern) {

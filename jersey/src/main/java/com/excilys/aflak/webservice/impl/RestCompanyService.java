@@ -1,7 +1,8 @@
-package com.excilys.aflak.webservice;
+package com.excilys.aflak.webservice.impl;
 
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.service.CompanyService;
+import com.excilys.aflak.webservice.IRestService;
 
 @RestController
 @RequestMapping("rest/company")
@@ -22,35 +24,36 @@ public class RestCompanyService implements IRestService<Company> {
 	private CompanyService service;
 
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	@RequestMapping("findAll")
+	@Produces({ MediaType.APPLICATION_JSON })
+	@RequestMapping("list")
 	@Override
 	public List<Company> findAll() {
 		return service.getAllCompanies();
 	}
 
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@RequestMapping("find/{id}")
 	@Override
 	public Company find(@PathVariable("id") long id) {
 		return service.findCompany(id);
 	}
 
+	@DELETE
+	@RequestMapping("delete/{id}")
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
-	public void create(Company obj) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(long id) {
-		// TODO Auto-generated method stub
-
+	public void delete(@PathVariable("id") long id) {
+		service.deleteCompany(id);
 	}
 
 	@Override
 	public void update(Company obj) {
+
+	}
+
+	@Override
+	public void create(Company obj) {
 		// TODO Auto-generated method stub
 
 	}

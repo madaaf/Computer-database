@@ -37,7 +37,9 @@
 		<xml.api.version>1.4.01</xml.api.version>
 		<jsp.api.version>2.1</jsp.api.version>
 		<servlet.jstl.version>1.2</servlet.jstl.version>
-		
+		<jersey.version>2.17</jersey.version>
+		<jackson.version>2.5.3</jackson.version>
+
 	</properties>
 
 
@@ -132,6 +134,26 @@
 
 
 		<dependencies>
+			<!-- CONSOLE -->
+
+			<!-- Jersey -->
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<!-- Json parser (Jackson) -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
 
 			<!-- CORE -->
 
@@ -264,7 +286,11 @@
 				<version>${spring.version}</version>
 			</dependency>
 
-
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 		</dependencies>
 
 
