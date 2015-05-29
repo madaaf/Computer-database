@@ -16,7 +16,6 @@ import com.excilys.aflak.client.impl.ClientComputerService;
 import com.excilys.aflak.model.Company;
 import com.excilys.aflak.model.Company.Builder;
 import com.excilys.aflak.model.Computer;
-import com.excilys.aflak.service.Validator;
 import com.excilys.aflak.validator.Date.Pattern;
 import com.excilys.aflak.validator.TimeConvertor;
 
@@ -40,7 +39,7 @@ public class Menu {
 	private static Long idCompany = -1L;
 	private static Long idComputer = -1L;
 
-	private static boolean isInteger;
+	private static boolean isInteger = true;
 	private static boolean isDateFr;
 
 	@Autowired
@@ -85,7 +84,7 @@ public class Menu {
 		System.out.println("Enter the id of its company : ");
 		input = sc.nextLine();
 		// verifie si l'id correspond à un chiffre
-		isInteger = Validator.isInteger(input);
+
 		Computer com = null;
 		if (isInteger) {
 			idCompany = Long.parseLong(input);
@@ -168,7 +167,7 @@ public class Menu {
 		case "3":
 			System.out.println(" Enter the id of your computer :");
 			input = sc.nextLine();
-			isInteger = Validator.isInteger(input);
+
 			Computer computer = null;
 			if (isInteger) {
 				computer = clientComputer.find(Long.parseLong(input));
@@ -194,7 +193,7 @@ public class Menu {
 					.println(" Enter the id of the computer you want to update : ");
 			input = sc.nextLine();
 			if (!input.isEmpty()) {
-				isInteger = Validator.isInteger(input);
+
 				if (isInteger) {
 					idComputer = Long.parseLong(input);
 				} else {
@@ -214,7 +213,7 @@ public class Menu {
 			System.out
 					.println(" Enter the id of the computer you want to delete : ");
 			input = sc.nextLine();
-			isInteger = Validator.isInteger(input);
+
 			if (isInteger) {
 				idComputer = Long.parseLong(input);
 
@@ -229,7 +228,7 @@ public class Menu {
 			System.out
 					.println("Enter the id of the company you want to delete :");
 			input = sc.nextLine();
-			isInteger = Validator.isInteger(input);
+
 			if (isInteger) {
 				idCompany = Long.parseLong(input);
 				clientCompany.delete(idCompany);

@@ -25,9 +25,15 @@
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>service</artifactId>
+			<artifactId>core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- for LocaleContextHolder in dateValidator -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
 
 		<!-- Validator for Date -->
 		<dependency>

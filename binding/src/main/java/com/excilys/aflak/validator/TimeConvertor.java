@@ -13,7 +13,7 @@ public class TimeConvertor {
 	// pattern : com.excilys.aflak.validator.Date.Pattern
 	public static LocalDateTime convertStringToLocalDateTime(String date,
 			Pattern dateFormat) {
-		System.err.println("PATTERN RIEN " + dateFormat);
+
 		if (date == null || date.trim().isEmpty()
 				|| !(new DateValidator().isValid(date, dateFormat))) {
 			return null;
@@ -32,13 +32,6 @@ public class TimeConvertor {
 			return null;
 		} else {
 			return ldt.format(DateTimeFormatter.ofPattern(pattern.toString()));
-			/*
-			 * System.err.println("ldt " + ldt.toString()); int day =
-			 * ldt.getDayOfMonth(); int month = ldt.getMonthValue(); int year =
-			 * ldt.getYear(); return new
-			 * StringBuilder().append(day).append("-").append(month)
-			 * .append("-").append(year).toString();
-			 */
 		}
 	}
 

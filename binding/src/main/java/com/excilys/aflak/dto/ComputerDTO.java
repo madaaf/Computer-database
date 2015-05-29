@@ -11,6 +11,9 @@ public class ComputerDTO {
 	private long id;
 	@Length(max = 200)
 	private String name;
+	/*
+	 * @interface @Date in package com.excilys.aflak.validator;
+	 */
 	@Length(max = 10)
 	@Date
 	private String introduced;
@@ -22,7 +25,6 @@ public class ComputerDTO {
 	private String companyName;
 
 	public ComputerDTO() {
-		System.err.println("dans mon computerDTO");
 	}
 
 	public ComputerDTO(long id, String name, String introduced,

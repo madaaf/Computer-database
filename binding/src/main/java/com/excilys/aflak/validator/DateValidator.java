@@ -13,7 +13,7 @@ import com.excilys.aflak.validator.Date.Pattern;
 public class DateValidator implements ConstraintValidator<Date, String> {
 	private final org.apache.commons.validator.routines.DateValidator validator = org.apache.commons.validator.routines.DateValidator
 			.getInstance();
-	// pattern = com.excilys.aflak.validator.Date.Pattern;
+	// pattern in package com.excilys.aflak.validator.Date.Pattern;
 	private Pattern dateFormat;
 
 	@Override
@@ -36,7 +36,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 		if (validator.isValid(dateToValidate, dateFormat.toString())) {
 			LocalDateTime ldt = TimeConvertor.convertStringToLocalDateTime(
 					dateToValidate, dateFormat);
-			// sql
+			// sql limit date
 			if (ldt.getYear() < 1970 || ldt.getYear() >= 2038)
 				return false;
 			return true;

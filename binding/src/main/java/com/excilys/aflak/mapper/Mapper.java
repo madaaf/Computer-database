@@ -3,8 +3,6 @@ package com.excilys.aflak.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-// T : Obj
-// U : dto
 public interface Mapper<T, U> {
 	T fromDto(U o);
 

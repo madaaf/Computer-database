@@ -27,7 +27,7 @@
 		<!-- bouton suivant -->
 		<li><c:if test="${start>1}">
 				<tags:link body="<span aria-hidden='true'>&laquo;</span>"
-					pageNumber="1" pageSize="${pageSize}"/>                                                                                           }" />
+					pageNumber="1" pageSize="${pageSize}"/>                                                        
 				<li><tags:link body="<span aria-hidden='true'>&laquo;</span>"
 						pageNumber="${start-1}" pageSize="${pageSize}">
 					</tags:link></li>

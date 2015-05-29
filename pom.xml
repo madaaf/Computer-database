@@ -39,6 +39,7 @@
 		<servlet.jstl.version>1.2</servlet.jstl.version>
 		<jersey.version>2.17</jersey.version>
 		<jackson.version>2.5.3</jackson.version>
+		<querydsl.maven.plugin.version>1.1.3</querydsl.maven.plugin.version>
 
 	</properties>
 
@@ -53,27 +54,22 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<version>1.1.3</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 		</plugins>
 
+		<!-- Plugin conf for submodules -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.mysema.maven</groupId>
+					<artifactId>apt-maven-plugin</artifactId>
+					<version>${querydsl.maven.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 	</build>
+
+
 
 	<dependencies>
 
@@ -134,7 +130,6 @@
 
 
 		<dependencies>
-			<!-- CONSOLE -->
 
 			<!-- Jersey -->
 			<dependency>
@@ -215,6 +210,23 @@
 
 			<!-- SERVICE -->
 
+			<!-- for @Transactional -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<!-- BINDING -->
+
+			<!-- Validator for Date -->
+			<dependency>
+				<groupId>commons-validator</groupId>
+				<artifactId>commons-validator</artifactId>
+				<version>${validator.version}</version>
+			</dependency>
+
+			<!-- WEBAPP -->
 			<!-- spring security -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -233,25 +245,6 @@
 				<artifactId>spring-security-web</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
-
-			<!-- for @Transactional -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
-			<!-- BINDING -->
-
-			<!-- Validator for Date -->
-			<dependency>
-				<groupId>commons-validator</groupId>
-				<artifactId>commons-validator</artifactId>
-				<version>${validator.version}</version>
-			</dependency>
-
-			<!-- WEBAPP -->
-
 			<!-- Servlet -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
