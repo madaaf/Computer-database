@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.excilys.aflak.client.IClientService;
 import com.excilys.aflak.client.impl.ClientCompanyService;
 import com.excilys.aflak.client.impl.ClientComputerService;
 import com.excilys.aflak.model.Company;
@@ -21,6 +22,7 @@ import com.excilys.aflak.validator.TimeConvertor;
 
 @Transactional
 public class Menu {
+	public static ClassPathXmlApplicationContext context;
 
 	private static List<Computer> listComputer = new ArrayList<Computer>();
 	private static List<Company> listCompany = new ArrayList<Company>();
@@ -42,15 +44,15 @@ public class Menu {
 	private static boolean isDateFr;
 
 	@Autowired
-	private static ClientComputerService clientComputer;
+	private static IClientService<Computer> clientComputer;
 	@Autowired
-	private static ClientCompanyService clientCompany;
+	private static IClientService<Company> clientCompany;
 
 	static {
-		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
-				"applicationContext.xml");
-		clientComputer = appContext.getBean(ClientComputerService.class);
-		clientCompany = appContext.getBean(ClientCompanyService.class);
+		context = new ClassPathXmlApplicationContext(
+				"classpath:applicationContext.xml");
+		clientComputer = context.getBean(ClientComputerService.class);
+		clientCompany = context.getBean(ClientCompanyService.class);
 	}
 
 	public static void main(String[] args) {

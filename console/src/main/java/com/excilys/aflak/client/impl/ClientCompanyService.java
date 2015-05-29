@@ -19,7 +19,7 @@ import com.excilys.aflak.model.Company;
 
 @Component
 public class ClientCompanyService implements IClientService<Company> {
-	private static final String ROOT = "h ";
+	private static final String ROOT = "http://localhost:8080/jersey/rest";
 	private static final String COMPANY = "/company";
 
 	Logger logger = LoggerFactory.getLogger(ClientCompanyService.class);
@@ -31,6 +31,7 @@ public class ClientCompanyService implements IClientService<Company> {
 		WebTarget webTarget = client.target(ROOT + COMPANY + "/list");
 		Invocation.Builder invocationBuilder = webTarget.request();
 		Response response = invocationBuilder.get();
+		logger.debug("RESPONSE " + response.toString());
 		List<Company> companies = response
 				.readEntity(new GenericType<List<Company>>() {
 				});
