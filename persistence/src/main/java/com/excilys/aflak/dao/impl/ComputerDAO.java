@@ -90,37 +90,12 @@ public class ComputerDAO implements IComputerDAO {
 				.limit(nbr).offset(debut).list(qComputer);
 	}
 
-	/*
-	 * @Override public List<Computer> list(PageRequest pageRequest) { String
-	 * filter = "%" + pageRequest.filter + "%";
-	 * 
-	 * QComputer qComputer = QComputer.computer; QCompany qCompany =
-	 * QCompany.company; JPQLQuery query = new
-	 * HibernateQuery(sessionFactory.getCurrentSession());
-	 * 
-	 * OrderSpecifier<?> order; switch (pageRequest.field) { case
-	 * "computer.name": order = Sort.ASC.equals(pageRequest.sort) ?
-	 * qComputer.name.asc() : qComputer.name.desc(); break; case
-	 * "computer.introduced": order = Sort.ASC.equals(pageRequest.sort) ?
-	 * qComputer.introduced .asc() : qComputer.introduced.desc(); break; case
-	 * "computer.discontinued": order = Sort.ASC.equals(pageRequest.sort) ?
-	 * qComputer.discontinued .asc() : qComputer.discontinued.desc(); break;
-	 * case "computer.company": order = Sort.ASC.equals(pageRequest.sort) ?
-	 * qComputer.company.name .asc() : qComputer.company.name.desc(); break;
-	 * default: order = qComputer.id.asc(); }
-	 * 
-	 * return query .from(qComputer) .orderBy(order)
-	 * .leftJoin(qComputer.company, qCompany)
-	 * .where(qComputer.name.like(filter).or( qCompany.name.like(filter)))
-	 * .offset(pageRequest.pageSize * (pageRequest.pageNumber - 1))
-	 * .limit(pageRequest.pageSize).list(qComputer);
-	 * 
-	 * }
-	 */
-
 	@Override
 	public List<Computer> list(String filtre, String column, String way,
 			int debut, int limit) {
+		if (filtre == null) {
+			filtre = "";
+		}
 		filtre = "%" + filtre + "%";
 		QComputer qComputer = QComputer.computer;
 		QCompany qCompany = QCompany.company;
@@ -146,13 +121,18 @@ public class ComputerDAO implements IComputerDAO {
 		default:
 			order = qComputer.name.asc();
 		}
-		return query
+		List<Computer> c = query
 				.from(qComputer)
 				.orderBy(order)
 				.leftJoin(qComputer.company, qCompany)
 				.where(qComputer.name.like(filtre).or(
-						qCompany.name.like(filtre))).limit(2).offset(debut)
-				.limit(limit).offset(debut).list(qComputer);
+						qCompany.name.like(filtre))).limit(limit).offset(debut)
+				.list(qComputer);
+		System.err.print(c.size());
+		System.err.print("DAO");
+		System.err.print(" list computers : " + filtre + " " + column + " "
+				+ way + " " + debut + " " + limit);
+		return c;
 	}
 
 	@Override

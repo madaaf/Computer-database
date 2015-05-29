@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.excilys.aflak.dao.ICrudDAO.Sort;
 import com.excilys.aflak.dto.ComputerDTO;
+import com.excilys.aflak.dto.PageRequest;
 import com.excilys.aflak.mapper.ComputerMapper;
 import com.excilys.aflak.model.Computer;
 import com.excilys.aflak.service.ComputerService;
@@ -63,7 +65,10 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 			@PathVariable("colomn") String colomn,
 			@PathVariable("way") String way, @PathVariable("debut") int debut,
 			@PathVariable("limit") int limit) {
-		return service.list(filtre, colomn, way, debut, limit);
+		PageRequest request = PageRequest.Builder.builder().filter(filtre)
+				.field(colomn).sort(Sort.valueOf(way)).pageSize(limit)
+				.pageNumber(debut).build();
+		return service.list(request);
 	}
 
 	/* colomn, way, debut, limit */
@@ -74,7 +79,11 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 			@PathVariable("way") String way, @PathVariable("debut") int debut,
 			@PathVariable("limit") int limit) {
 
-		return service.list(null, colomn, way, debut, limit);
+		PageRequest request = PageRequest.Builder.builder().field(colomn)
+				.sort(Sort.valueOf(way)).pageSize(limit).pageNumber(debut)
+				.build();
+
+		return service.list(request);
 	}
 
 	/* filtre, debut, fin */
@@ -83,7 +92,9 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 	@RequestMapping("list/{filtre}/{debut}/{limit}")
 	public List<Computer> someComputer3(@PathVariable("filtre") String filtre,
 			@PathVariable("debut") int debut, @PathVariable("limit") int limit) {
-		return service.list(filtre, "computer.id", "ASC", debut, limit);
+		PageRequest request = PageRequest.Builder.builder().filter(filtre)
+				.pageSize(limit).pageNumber(debut).build();
+		return service.list(request);
 	}
 
 	@DELETE

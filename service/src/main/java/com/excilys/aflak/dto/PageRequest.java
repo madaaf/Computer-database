@@ -32,6 +32,10 @@ public class PageRequest {
 		private Builder() {
 		}
 
+		public static Builder builder() {
+			return new Builder();
+		}
+
 		public Builder filter(String filter) {
 			this.filter = filter;
 			return this;

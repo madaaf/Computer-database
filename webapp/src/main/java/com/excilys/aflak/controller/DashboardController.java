@@ -1,5 +1,6 @@
 package com.excilys.aflak.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.validation.Valid;
@@ -17,7 +18,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.excilys.aflak.dao.ICrudDAO.Sort;
+import com.excilys.aflak.dto.ComputerDTO;
 import com.excilys.aflak.dto.Page;
+import com.excilys.aflak.dto.PageRequest;
+import com.excilys.aflak.mapper.ComputerMapper;
 import com.excilys.aflak.service.ComputerService;
 import com.excilys.aflak.validator.Date.Pattern;
 import com.excilys.aflak.validator.PageValidator;
@@ -38,8 +43,8 @@ public class DashboardController {
 	}
 
 	/*
-	 * @Valid test the PageValidator() because of @InitBinder Otherwise it valid
-	 * the page with the anotation in page We can handle the errors with
+	 * @Valid test the PageValidator() because of @InitBinder Otherwise we also
+	 * valid the page with the annotation in page. We handle the errors with
 	 * BindingResult
 	 */
 
@@ -48,13 +53,26 @@ public class DashboardController {
 			BindingResult result, ModelMap model) {
 		Locale locale = LocaleContextHolder.getLocale();
 		Pattern language = Pattern.map(locale.getLanguage());
+		ComputerMapper mapper = new ComputerMapper(language);
+
+		PageRequest request = PageRequest.Builder.builder()
+				.filter(page.getFilter()).field(page.getField())
+				.sort(Sort.valueOf(page.getSort()))
+				.pageSize(page.getPageSize()).pageNumber(page.getPageNumber())
+				.build();
+
+		System.err.println("CONTROLLER");
+		System.err.println(request.toString());
+		List<ComputerDTO> computers = mapper.toListDto(serviceComputer
+				.list(request));
 
 		if (result.hasErrors()) {
 			logger.debug("HAS RESULT ERRORS");
-			page.initialize();
-			page.setInvalidArgument("invalidArgument");
+			// page.initialize();
+			// page.setInvalidArgument("invalidArgument");
 		}
-		page.populate(serviceComputer, language);
+		page.setTotalComputer(serviceComputer.count(page.getFilter()));
+		page.setListComputers(computers);
 
 		System.err.println(page.toString());
 		model.addAttribute("pageS", page);
@@ -62,5 +80,4 @@ public class DashboardController {
 		return "dashboard";
 
 	}
-
 }

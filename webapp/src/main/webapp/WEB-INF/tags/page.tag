@@ -3,15 +3,15 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags"%>
 
 
-<%@ attribute name="nbrOfPages" required="true" type="java.lang.Integer"
+<%@ attribute name="totalPage" required="true" type="java.lang.Integer"
 	description=""%>
-<%@ attribute name="limit" required="true" type="java.lang.Integer"%>
-<%@ attribute name="search" required="false" type="java.lang.String"%>
+<%@ attribute name="pageSize" required="true" type="java.lang.Integer"%>
+<%@ attribute name="filter" required="false" type="java.lang.String"%>
 <%@ attribute name="start" required="true" type="java.lang.Integer"
 	description=""%>
 <%@ attribute name="end" required="true" type="java.lang.Integer"
 	description=""%>
-<%@ attribute name="pageNum" required="false" type="java.lang.String"
+<%@ attribute name="pageNumber" required="false" type="java.lang.String"
 	description=""%>
 
 
@@ -25,11 +25,11 @@
 
 
 		<!-- bouton suivant -->
-		<li><c:if test="${start>0}">
+		<li><c:if test="${start>1}">
 				<tags:link body="<span aria-hidden='true'>&laquo;</span>"
-					pageNum="0" limit="${limit}" />
+					pageNumber="1" pageSize="${pageSize}"/>                                                                                           }" />
 				<li><tags:link body="<span aria-hidden='true'>&laquo;</span>"
-						pageNum="${start-1}" limit="${limit}">
+						pageNumber="${start-1}" pageSize="${pageSize}">
 					</tags:link></li>
 
 			</c:if></li>
@@ -44,12 +44,12 @@
 				<c:forEach var="i" begin="${start}" end="${start+4}">
 					<c:choose>
 						<c:when test="${start==i}">
-							<li class="active"><tags:link body="${i}" pageNum="${i}"
-									limit="${limit}" search="${search}"></tags:link></li>
+							<li class="active"><tags:link body="${i}" pageNumber="${i}"
+									pageSize="${pageSize}" filter="${filter}"></tags:link></li>
 						</c:when>
 						<c:otherwise>
-							<li><tags:link body="${i}" pageNum="${i}"
-									limit="${limit}" search="${search}"></tags:link></li>
+							<li><tags:link body="${i}" pageNumber="${i}"
+									pageSize="${pageSize}" filter="${filter}"></tags:link></li>
 						</c:otherwise>
 					</c:choose>
 
@@ -58,19 +58,19 @@
 
 
 
-			<c:when test="${end>nbrOfPages}">
+			<c:when test="${end>totalPage}">
 				<c:forEach var="i" begin="${start-5}" end="${start}">
 				
 					<c:choose>
 						<c:when test="${start==i}">
 
-							<li class="active"><tags:link body="${i}" pageNum="${i}"
-									limit="${limit}" search="${search}"></tags:link></li>
+							<li class="active"><tags:link body="${i}" pageNumber="${i}"
+									pageSize="${pageSize}" filter="${filter}"></tags:link></li>
 						</c:when>
 						<c:otherwise>
 
-							<li><tags:link body="${i}" pageNum="${i}" limit="${limit}"
-									search="${search}"></tags:link></li>
+							<li><tags:link body="${i}" pageNumber="${i}" pageSize="${pageSize}"
+									filter="${filter}"></tags:link></li>
 						</c:otherwise>
 					</c:choose>
 
@@ -81,12 +81,12 @@
 				<c:forEach var="i" begin="${start}" end="${end-1}">
 					<c:choose>
 						<c:when test="${start==i-2}">
-							<li class="active"><tags:link body="${i-2}" pageNum="${i-2}"
-									limit="${limit}" search="${search}"></tags:link></li>
+							<li class="active"><tags:link body="${i-2}" pageNumber="${i-2}"
+									pageSize="${pageSize}" filter="${filter}"></tags:link></li>
 						</c:when>
 						<c:otherwise>
-							<li><tags:link body="${i-2}" pageNum="${i-2}"
-									limit="${limit}" search="${search}"></tags:link></li>
+							<li><tags:link body="${i-2}" pageNumber="${i-2}"
+									pageSize="${pageSize}" filter="${filter}"></tags:link></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -94,12 +94,12 @@
 		</c:choose>
 
 		<!-- bouton suivant -->
-		<li><c:if test="${start<nbrOfPages-1}">
+		<li><c:if test="${start<totalPage-1}">
 
 				<tags:link body="<span aria-hidden='true'>&raquo;</span>"
-					pageNum="${start+1}" limit="${limit}" />
+					pageNumber="${start+1}" pageSize="${pageSize}" />
 				<li><tags:link body="<span aria-hidden='true'>&raquo;</span>"
-						pageNum="${nbrOfPages-1}" limit="${limit}">
+						pageNumber="${totalPage-1}" pageSize="${pageSize}">
 					</tags:link></li>
 
 			</c:if></li>
@@ -111,11 +111,11 @@
 
 	<div class="btn-group btn-group-sm pull-right" role="group">
 
-		<tags:link body="10" pageNum="0" limit="10" search="${search}"
+		<tags:link body="10" pageNumber="1" pageSize="10" filter="${filter}"
 			boostrapType="btn btn-default" />
-		<tags:link body="50" pageNum="0" limit="50" search="${search}"
+		<tags:link body="50" pageNumber="1" pageSize="50" filter="${filter}"
 			boostrapType="btn btn-default" />
-		<tags:link body="100" pageNum="0" limit="100" search="${search}"
+		<tags:link body="100" pageNumber="1" pageSize="100" filter="${filter}"
 			boostrapType="btn btn-default" />
 
 

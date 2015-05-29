@@ -29,7 +29,7 @@
 		
 		<div class="container">
 
-			<a class="navbar-brand" href="index?page=0"><spring:message
+			<a class="navbar-brand" href="index?page=1"><spring:message
 					code="label.title" /> </a> <a href="?locale=fr" class="pull-right">
 				<img id="flag" src="img/flagFr.png" />
 			</a> <a href="?locale=en" class="pull-right"> <img id="flag"
@@ -44,26 +44,16 @@
 	<section id="main">
 		<div class="container">
 
-			<!-- when computers are deleted -->
-			<c:if test="${pageS.deletedSuccess!=null}">
-				<div class="alert alert-success" id="alertDeletedComputer">
-					You successfully delete your computers.</div>
-			</c:if>
-			<!-- when invalid argument -->
-			<c:if test="${pageS.invalidArgument!=null}">
-				<div class="alert alert-danger" id="alertDeletedComputer">
-					invalidArgument.</div>
-			</c:if>
 
 			<spring:message code="label.find" var="springFind" />
-			<h1 id="homeTitle">${pageS.nbrComputers}${springFind}</h1>
+			<h1 id="homeTitle">${pageS.totalComputer} ${springFind}</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="index" method="GET"
 						class="form-inline">
-						<spring:message code="label.search" var="springSearch" />
-						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="${springSearch}" />
+						<spring:message code="label.search" var="springfilter" />
+						<input type="search" id="searchbox" name="filter"
+							class="form-control" placeholder="${springfilter}" />
 						<spring:message code="label.filter" var="springFilter" />
 						<input type="submit" id="searchsubmit" value="${springFilter}"
 							class="btn btn-primary" />
@@ -100,23 +90,23 @@
 								code="label.introduced" var="springIntroduced" /> <spring:message
 								code="label.discontinued" var="springDiscontinued" /> <spring:message
 								code="label.company" var="springCompany" /> <tags:link
-								body="${springName}" pageNum="0" limit="${pageS.limit}"
-								search="${pageS.search}" colomn="computer.name"
-								way="${pageS.way}">
+								body="${springName}" pageNumber="1" pageSize="${pageS.pageSize}"
+								filter="${pageS.filter}" field="computer.name"
+								sort="${pageS.sort}">
 							</tags:link></th>
-						<th><tags:link body="${springIntroduced}" pageNum="0"
-								limit="${pageS.limit}" search="${pageS.search}"
-								colomn="computer.introduced" way="${pageS.way}">
+						<th><tags:link body="${springIntroduced}" pageNumber="1"
+								pageSize="${pageS.pageSize}" filter="${pageS.filter}"
+								field="computer.introduced" sort="${pageS.sort}">
 							</tags:link></th>
 						<!-- Table header for Discontinued Date -->
-						<th><tags:link body="${springDiscontinued}" pageNum="0"
-								limit="${pageS.limit}" search="${pageS.search}"
-								colomn="computer.discontinued" way="${pageS.way}">
+						<th><tags:link body="${springDiscontinued}" pageNumber="1"
+								pageSize="${pageS.pageSize}" filter="${pageS.filter}"
+								field="computer.discontinued" sort="${pageS.sort}">
 							</tags:link></th>
 						<!-- Table header for Company -->
-						<th><tags:link body="${springCompany}" pageNum="0"
-								limit="${pageS.limit}" search="${pageS.search}"
-								colomn="company.name" way="${pageS.way}">
+						<th><tags:link body="${springCompany}" pageNumber="1"
+								pageSize="${pageS.pageSize}" filter="${pageS.filter}"
+								field="company.name" sort="${pageS.sort}">
 							</tags:link></th>
 
 					</tr>
@@ -143,8 +133,8 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<tags:page nbrOfPages="${pageS.nbrOfPages}" start="${pageS.start}"
-			end="${pageS.end}" limit="${pageS.limit}" search="${pageS.search}"></tags:page>
+		<tags:page totalPage="${pageS.totalPage}" start="${pageS.pageNumber}"
+			end="${pageS.pageNumber+5}" pageSize="${pageS.pageSize}" filter="${pageS.filter}"></tags:page>
 	</footer>
 
 	<script src="js/jquery.min.js"></script>

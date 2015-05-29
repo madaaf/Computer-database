@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.excilys.aflak.dao.IComputerDAO;
 import com.excilys.aflak.dto.Page;
 
 public class PageValidator implements Validator {
@@ -20,21 +19,23 @@ public class PageValidator implements Validator {
 	// errors in BindingResult
 	@Override
 	public void validate(Object o, Errors errors) {
-
-		logger.error("VALIDATE");
-		Page page = (Page) o;
-
-		if (page.getLimit() < 0) {
-			errors.rejectValue("limit", "negativeLmit");
-		}
-
-		if (!page.getColomn().equals(IComputerDAO.getColumn(page.getColomn()))) {
-			IComputerDAO.getColumn(page.getColomn());
-		}
-
-		if (page.getInvalidArgument() != null) {
-			errors.rejectValue("invalidArgument", "invalidArgument");
-		}
+		//
+		// logger.error("VALIDATE");
+		// Page page = (Page) o;
+		//
+		// if (page.getLimit() < 0) {
+		// errors.rejectValue("limit", "negativeLmit");
+		// }
+		//
+		// if
+		// (!page.getColomn().equals(IComputerDAO.getColumn(page.getColomn())))
+		// {
+		// IComputerDAO.getColumn(page.getColomn());
+		// }
+		//
+		// if (page.getInvalidArgument() != null) {
+		// errors.rejectValue("invalidArgument", "invalidArgument");
+		// }
 
 	}
 }
