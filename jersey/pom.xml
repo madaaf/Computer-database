@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>com.excilys.aflak</groupId>
-	<artifactId>jersey</artifactId>
+	<artifactId>api</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>jersey</name>
 	<url>http://maven.apache.org</url>
@@ -77,4 +77,5 @@
 
 
 
+	<packaging>war</packaging>
 </project>

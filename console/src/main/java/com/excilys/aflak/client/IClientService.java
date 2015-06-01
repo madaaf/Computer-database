@@ -8,10 +8,13 @@ public interface IClientService<T> {
 
 	T find(Long id);
 
-	void create(T o);
+	default void create(T o) {
+	};
 
-	void update(T o);
+	default void update(T o) {
+	};
 
-	void delete(long id);
+	default void delete(long id) {
+	};
 
 }

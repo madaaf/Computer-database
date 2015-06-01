@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface IRestService<T> {
 
-	void create(T obj);
+	default void create(T obj) {
+	};
 
 	/**
 	 * Delete a T with the id id.
@@ -19,7 +20,8 @@ public interface IRestService<T> {
 	 * @param obj
 	 *            the object
 	 */
-	void update(T obj);
+	default void update(T obj) {
+	};
 
 	/**
 	 * Find an T by his id.

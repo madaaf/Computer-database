@@ -19,8 +19,8 @@ import com.excilys.aflak.model.Company;
 
 @Component
 public class ClientCompanyService implements IClientService<Company> {
-	private static final String ROOT = "http://localhost:8080/jersey/rest";
-	private static final String COMPANY = "/company";
+	private static final String ROOT = "http://localhost:8080/api";
+	private static final String COMPANY = "/companies";
 
 	Logger logger = LoggerFactory.getLogger(ClientCompanyService.class);
 
@@ -28,7 +28,7 @@ public class ClientCompanyService implements IClientService<Company> {
 	public List<Company> list() {
 		Client client = ClientBuilder.newClient()
 				.register(JacksonFeature.class);
-		WebTarget webTarget = client.target(ROOT + COMPANY + "/list");
+		WebTarget webTarget = client.target(ROOT + COMPANY);
 		Invocation.Builder invocationBuilder = webTarget.request();
 		Response response = invocationBuilder.get();
 		logger.debug("RESPONSE " + response.toString());
@@ -47,24 +47,6 @@ public class ClientCompanyService implements IClientService<Company> {
 		Response response = invocationBuilder.get();
 		Company company = response.readEntity(Company.class);
 		return company;
-	}
-
-	@Override
-	public void create(Company o) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(Company o) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(long id) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

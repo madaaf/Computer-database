@@ -3,10 +3,6 @@ package com.excilys.aflak.webservice.impl;
 import java.util.List;
 import java.util.Locale;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -14,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.aflak.dao.ICrudDAO.Sort;
@@ -26,7 +23,7 @@ import com.excilys.aflak.validator.Date.Pattern;
 import com.excilys.aflak.webservice.IRestService;
 
 @RestController
-@RequestMapping("rest/computer")
+@RequestMapping("/computers")
 public class RestComputerService implements IRestService<ComputerDTO> {
 
 	@Autowired
@@ -36,9 +33,8 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 	Pattern language = Pattern.map(locale.getLanguage());
 	ComputerMapper mapper = new ComputerMapper(language);
 
-	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@RequestMapping("list")
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	@Override
 	public List<ComputerDTO> findAll() {
 		List<Computer> computers = service.list();
@@ -46,9 +42,8 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 		return computersDTO;
 	}
 
-	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@RequestMapping("/{id}")
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Override
 	public ComputerDTO find(@PathVariable("id") long id) {
 		Computer computer = service.find(id);
@@ -57,10 +52,11 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 			return null;
 		return mapper.toDto(computer);
 	}
+	
 
-	@GET
+
 	@Produces({ MediaType.APPLICATION_JSON })
-	@RequestMapping("list/{filtre}/{colomn}/{way}/{debut}/{limit}")
+	@RequestMapping(value = "/{filtre}/{colomn}/{way}/{debut}/{limit}", method = RequestMethod.GET)
 	public List<Computer> someComputer(@PathVariable("filtre") String filtre,
 			@PathVariable("colomn") String colomn,
 			@PathVariable("way") String way, @PathVariable("debut") int debut,
@@ -72,9 +68,8 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 	}
 
 	/* colomn, way, debut, limit */
-	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@RequestMapping("list/{colomn}/{way}/{debut}/{limit}")
+	@RequestMapping(value = "/{colomn}/{way}/{debut}/{limit}", method = RequestMethod.GET)
 	public List<Computer> someComputer2(@PathVariable("colomn") String colomn,
 			@PathVariable("way") String way, @PathVariable("debut") int debut,
 			@PathVariable("limit") int limit) {
@@ -87,9 +82,8 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 	}
 
 	/* filtre, debut, fin */
-	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@RequestMapping("list/{filtre}/{debut}/{limit}")
+	@RequestMapping(value = "/{filtre}/{debut}/{limit}", method = RequestMethod.GET)
 	public List<Computer> someComputer3(@PathVariable("filtre") String filtre,
 			@PathVariable("debut") int debut, @PathVariable("limit") int limit) {
 		PageRequest request = PageRequest.Builder.builder().filter(filtre)
@@ -97,16 +91,13 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 		return service.list(request);
 	}
 
-	@DELETE
-	@RequestMapping("delete/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
 	public void delete(@PathVariable("id") long id) {
 		service.delete(id);
 	}
 
-	@POST
-	@RequestMapping("create")
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
 	public void create(ComputerDTO obj) {
@@ -114,8 +105,7 @@ public class RestComputerService implements IRestService<ComputerDTO> {
 
 	}
 
-	@PUT
-	@RequestMapping("update")
+	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
 	public void update(ComputerDTO obj) {

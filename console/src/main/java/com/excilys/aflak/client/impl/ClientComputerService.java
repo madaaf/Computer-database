@@ -25,11 +25,11 @@ import com.excilys.aflak.validator.Date.Pattern;
 @Component
 public class ClientComputerService implements IClientService<Computer> {
 
-	private static final String ROOT = "http://localhost:8080/jersey/rest";
-	private static final String COMPUTER = "/computer";
-	private static final String DELETE = "/delete";
-	private static final String CREATE = "/create";
-	private static final String UPDATE = "/update";
+	private static final String ROOT = "http://localhost:8080/api";
+	private static final String COMPUTER = "/computers";
+	private static final String DELETE = "/";
+	private static final String CREATE = "/";
+	private static final String UPDATE = "/";
 
 	Logger logger = LoggerFactory.getLogger(ClientComputerService.class);
 
@@ -39,7 +39,7 @@ public class ClientComputerService implements IClientService<Computer> {
 	public List<Computer> list() {
 		Client client = ClientBuilder.newClient()
 				.register(JacksonFeature.class);
-		WebTarget webTarget = client.target(ROOT + COMPUTER + "/list");
+		WebTarget webTarget = client.target(ROOT + COMPUTER);
 		Invocation.Builder invocationBuilder = webTarget.request();
 		Response response = invocationBuilder.get();
 		List<ComputerDTO> computers = response
